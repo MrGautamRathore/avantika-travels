@@ -162,17 +162,16 @@ const allPlaces = [
     isAtive: true
   }
 ];
-
-const allBlogs = [
+ const allBlogs = [
   {
     title: "Exploring the Spiritual Heart of India: A Journey Through Ujjain",
     slug: "exploring-spiritual-heart-india-ujjain-journey",
     content: "Ujjain, one of the seven sacred cities of Hinduism, offers a unique spiritual experience. The Mahakaleshwar Temple, with its majestic architecture and powerful energy, draws millions of devotees annually. The city comes alive during the Simhastha Kumbh Mela, where saints and pilgrims gather for sacred rituals in the Shipra River. Beyond spirituality, Ujjain's ancient observatory, Vedh Shala, showcases India's astronomical heritage dating back to the 17th century. The evening aarti at Ram Ghat is a spectacle of devotion, with lamps floating on the river creating a magical atmosphere.",
     author: "Rajesh Verma",
     image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik1.avif"
-    },
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg1.jpg"
+      },
     tags: ["Spiritual", "Ujjain", "Temples", "Pilgrimage", "Hinduism"],
     date: new Date("2024-03-15"),
     category: "Spiritual Travel",
@@ -185,9 +184,9 @@ const allBlogs = [
     content: "Indore is not just the commercial capital of Madhya Pradesh but also the undisputed food capital. Starting your day with poha-jalebi at Sarafa Bazaar's night food market is a must. The famous Chappan Dukan offers 56 shops serving everything from sabudana khichdi to garadu. Don't miss the bhutte ka kees, a local specialty made from grated corn. For sweet lovers, the malpua and rabdi are heavenly. This blog takes you through the best eateries, street food joints, and traditional restaurants that make Indore a food lover's paradise.",
     author: "Priya Sharma",
     image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik2.avif"
-    },
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg2.jpg"
+      },
     tags: ["Food", "Indore", "Street Food", "Gastronomy", "Culinary"],
     date: new Date("2024-04-22"),
     category: "Food & Culture",
@@ -199,10 +198,10 @@ const allBlogs = [
     slug: "bhopal-history-meets-modernity-city-lakes",
     content: "Bhopal presents a fascinating blend of old and new. The upper lake (Bada Talab) and lower lake (Chhota Talab) create a serene landscape in the heart of the city. Visit the majestic Taj-ul-Masajid, one of Asia's largest mosques, and the Shaukat Mahal showcasing Indo-Islamic architecture. The State Museum houses exquisite sculptures and manuscripts, while Van Vihar National Park offers wildlife encounters. The tragic Bhopal Gas Tragedy is remembered at the memorial, reminding visitors of the city's resilience. Evening boat rides on the lakes provide breathtaking sunset views.",
     author: "Amit Patel",
-   image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik3.avif"
-    },
+    image: {
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg3.jpg"
+      },
     tags: ["Bhopal", "Lakes", "History", "Architecture", "City Guide"],
     date: new Date("2024-02-10"),
     category: "City Exploration",
@@ -215,9 +214,9 @@ const allBlogs = [
     content: "The Great Stupa at Sanchi is a UNESCO World Heritage Site and one of the oldest stone structures in India. Commissioned by Emperor Ashoka in the 3rd century BCE, it showcases exquisite carvings depicting Buddha's life through Jataka tales. The four toranas (gateways) are masterpieces of Buddhist art, with intricate carvings of yakshis, elephants, and spiritual symbols. The site includes several stupas, monasteries, and pillars spread across a hilltop. The nearby archaeological museum houses important artifacts found during excavations. Visiting Sanchi offers profound insights into early Buddhist art and architecture.",
     author: "Dr. Neha Singh",
     image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik4.avif"
-    },
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg4.jpg"
+      },
     tags: ["Buddhist", "UNESCO", "History", "Archaeology", "Sanchi"],
     date: new Date("2024-01-18"),
     category: "Historical",
@@ -230,9 +229,9 @@ const allBlogs = [
     content: "Located on an island formed by the Narmada River, Omkareshwar is one of the 12 Jyotirlingas. The island's shape resembles the sacred syllable 'Om', adding to its spiritual significance. Pilgrims take a boat ride to reach the temple, creating a serene journey across the river. Apart from the main Omkareshwar Temple, there are 108 other shrines on the island. The Mamleshwar Temple on the south bank is equally important. The best time to visit is during the monsoon when the Narmada River is in full flow, creating a majestic landscape. The evening aarti with thousands of lamps is a sight to behold.",
     author: "Ravi Joshi",
     image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik5.avif"
-    },
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg5.jpg"
+      },
     tags: ["Pilgrimage", "Narmada", "Jyotirlinga", "Spiritual", "Rivers"],
     date: new Date("2024-05-30"),
     category: "Spiritual Travel",
@@ -245,9 +244,9 @@ const allBlogs = [
     content: "While places like Khajuraho and Pachmarhi get most attention, Madhya Pradesh has numerous hidden treasures. Visit Orchha for its magnificent palaces and temples by the Betwa River. The rock paintings of Bhimbetka offer a glimpse into prehistoric life. Bandhavgarh National Park provides excellent tiger sightings. The marble rocks of Bhedaghat create a spectacular gorge on the Narmada. Chanderi is famous for its traditional handloom sarees, and Mandu showcases Afghan architecture with its romantic tales. These lesser-known destinations offer authentic experiences away from tourist crowds.",
     author: "Anjali Deshmukh",
     image: {
-      public_id: "ujjain_spiritual_blog_1",
-      url: "/pik6.avif"
-    },
+        public_id: "ujjain_mahakal_temple_1",
+        url: "/bg6.jpg"
+      },
     tags: ["Hidden Gems", "Offbeat", "Nature", "Wildlife", "Culture"],
     date: new Date("2024-06-12"),
     category: "Travel Tips",
@@ -534,7 +533,7 @@ const siteData = {
   logo: "/logo.jpg",
   secondaryImage: "/pik2.avif",
   email: "info@avanikatravels.com",
-  phone: "+91 98765 43210",
+  phone: "+91 9302088025",
   alternatePhone: "+91 87654 32109",
   location: "Ujjain, Madhya Pradesh, India",
   address: "123, Mahakal Road, Near Mahakal Mandir, Ujjain, MP - 456001",
@@ -1001,9 +1000,9 @@ export function SiteProvider({ children }) {
 
   const value = {
     siteData,
-    places :allPlaces,
-    packages:allPackages,
-    blogs:allBlogs,
+    places,
+    packages,
+    blogs: allBlogs,
     contacts,
     reviews,
     loading,

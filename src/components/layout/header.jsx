@@ -8,11 +8,12 @@ import { useSite } from "@/context/site-context"
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Places", href: "/places" },
+  { name: "Destinations", href: "/places" },
   { name: "Packages", href: "/packages" },
+  { name: "Services", href: "/services" },
   { name: "Blogs", href: "/blogs" },
   { name: "About Us", href: "/about" },
-   { name: "Contact", href: "/contact" }, 
+  { name: "Contact", href: "/contact" },
 ]
 
 export default function Header() {

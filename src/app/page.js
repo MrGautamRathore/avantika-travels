@@ -25,6 +25,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+    
       <PlacesSection />
       <PackagesSection />
     </>

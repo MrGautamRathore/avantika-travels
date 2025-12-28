@@ -23,7 +23,7 @@ export default function PlaceCard({ place, index = 0, variant = "default" }) {
       className={`group relative ${isLarge ? "col-span-2 row-span-2" : ""}`}
     >
       <Link href={`/places/${place.slug}`}>
-        <div className={`relative rounded-2xl overflow-hidden ${isLarge ? "h-[420px]" : "h-48"}`}>
+        <div className={`relative rounded-2xl overflow-hidden ${isLarge ? "h-[530px]" : "h-48"}`}>
           <Image
             src={imageUrl}
             alt={place.title || place.name}

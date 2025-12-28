@@ -20,12 +20,14 @@ export default function Footer() {
     { name: "Terms & Conditions", href: "/terms-and-conditions" },
   ]
 
-  const destinations = [
-    { name: "Ujjain", href: "/places/ujjain" },
-    { name: "Indore", href: "/places/indore" },
-    { name: "Dewas", href: "/places/dewas" },
-  ]
-
+const destinations = [
+  { name: "Holiday Packages", href: "/packages?type=holiday" },
+  { name: "Adventure Trips", href: "/packages?type=adventure" },
+  { name: "Honeymoon Tours", href: "/packages?type=honeymoon" },
+  { name: "Pilgrimage Tours", href: "/packages?type=pilgrimage" },
+  { name: "Family Vacations", href: "/packages?type=family" },
+  { name: "Weekend Getaways", href: "/packages?type=weekend" },
+]
   const handleSecretTap = () => {
     setTapCount(prev => prev + 1)
 
@@ -52,7 +54,7 @@ export default function Footer() {
                     <div className="flex items-center gap-2">
 
 
-                      <img src="/logo1.png" alt="Avantika Travels logo" className="h-16 w-18 hover:scale-110 transition " />
+                      <img src="/logo1.png" alt="Avantika Travels logo" className="h-16 w-18 hover:scale-110 transition rounded shadow-2xl shadow-white/80" />
             <h3 className="text-2xl font-bold">
               {siteData.name.split(" ")[0]}
               <span className="text-primary">{siteData.name.split(" ")[1] || ""}</span>
@@ -180,8 +182,8 @@ export default function Footer() {
       {/* Secret admin access for mobile - tap 5 times */}
       <div
         onClick={handleSecretTap}
-        className="fixed bottom-0 right-0 w-4 h-4 opacity-0 cursor-pointer"
-        style={{ zIndex: -1 }}
+        className="fixed bottom-0 right-0 w-20 h-20 opacity-0 bg-amber-400 cursor-pointer"
+        style={{ zIndex: 1 }}
       />
     </footer>
   )

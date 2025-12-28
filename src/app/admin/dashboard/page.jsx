@@ -8,6 +8,7 @@ import {
   AlertCircle, CheckCircle, Clock, DollarSign,
   ArrowUpRight, ArrowDownRight, Activity, RefreshCw
 } from 'lucide-react'
+import Link from 'next/link'
 
 export default function AdminDashboard() {
   const { 
@@ -162,12 +163,17 @@ export default function AdminDashboard() {
     }
   }
 
-  if (loading) {
+  if (!loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="w-12 h-12 animate-spin text-pink-600 mx-auto mb-4" />
+          <p className="text-gray-600">Page is not build yet.</p>
           <p className="text-gray-600">Loading dashboard data...</p>
+          <div className="flex gap-4 mt-4">
+            <Link href='/admin/places' className='px-4 py-2 bg-black text-white rounded-md '>Places</Link>
+            <Link href='/admin/packages' className='px-4 py-2 bg-black text-white rounded-md '>Packages</Link>
+          </div>
         </div>
       </div>
     )

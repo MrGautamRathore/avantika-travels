@@ -269,7 +269,7 @@ export default function AdminLogin() {
         {/* Footer */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            © {new Date().getFullYear()} Travel Website Admin. All rights reserved.
+            © {new Date().getFullYear()} Avantika Travels Admin <span className='text-red-400'> Gautam Rathore</span>. All rights reserved.
           </p>
           <p className="text-xs text-gray-500 mt-1">
             Need help? <a href="mailto:support@example.com" className="text-pink-600 hover:text-pink-700">Contact support</a>
