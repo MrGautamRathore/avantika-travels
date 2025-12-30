@@ -173,6 +173,7 @@ export default function AdminDashboard() {
           <div className="flex gap-4 mt-4">
             <Link href='/admin/places' className='px-4 py-2 bg-black text-white rounded-md '>Places</Link>
             <Link href='/admin/packages' className='px-4 py-2 bg-black text-white rounded-md '>Packages</Link>
+            <Link href='/admin/blogs' className='px-4 py-2 bg-black text-white rounded-md '>Blogs</Link>
           </div>
         </div>
       </div>

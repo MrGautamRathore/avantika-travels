@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 import axios from "axios"
 
 const SiteContext = createContext()
-const allPlaces = [
+/* const allPlaces = [
   {
     title: "Ujjain",
     slug: "ujjain-madhya-pradesh",
@@ -520,9 +520,9 @@ const allPackages = [
     createdAt: new Date("2024-06-08"),
     updatedAt: new Date("2024-11-22")
   }
-];
+]; */
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api'
 
 // Site configuration data
 const siteData = {
@@ -1002,7 +1002,7 @@ export function SiteProvider({ children }) {
     siteData,
     places,
     packages,
-    blogs: allBlogs,
+    blogs,
     contacts,
     reviews,
     loading,

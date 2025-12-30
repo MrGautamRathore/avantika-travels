@@ -18,6 +18,7 @@ export default function PackagesSection() {
     { id: "honeymoon", name: "Honeymoon Tours" },
     { id: "pilgrimage", name: "Pilgrimage Tours" },
     { id: "family", name: "Family Vacations" },
+    { id: "upcoming", name: "Upcoming Group Trips" },
   ]
 
   const filteredPackages = activeCategory === "all" 
