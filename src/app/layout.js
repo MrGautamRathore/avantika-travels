@@ -7,8 +7,8 @@ import Footer from "@/components/layout/footer"
 import WhatsAppIcon from "@/components/ui/whatsapp-icon"
 import { MetadataProvider } from "@/components/seo/metadata-provider"
 import { StructuredData } from "@/components/seo/structured-data"
-import SEOTracker from "@/components/analytics/seo-tracker"
-
+/* import SEOTracker from "@/components/analytics/seo-tracker"
+ */
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -18,7 +18,7 @@ const poppins = Poppins({
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#E91E63",
+  themeColor: "#f9307e",
 }
 
 

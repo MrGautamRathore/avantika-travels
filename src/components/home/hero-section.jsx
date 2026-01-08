@@ -39,7 +39,7 @@ export default function HeroSection({
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/bg4.jpg')`,
+          backgroundImage: `url(${siteData.heroImage})`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />

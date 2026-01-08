@@ -9,7 +9,7 @@ export default function ThemeProvider({ children }) {
   useEffect(() => {
     if (siteData?.theme) {
       const root = document.documentElement
-
+      
       // Update CSS custom properties
       root.style.setProperty('--dynamic-primary', siteData.theme.primaryColor || '#000000')
       root.style.setProperty('--dynamic-secondary', siteData.theme.secondaryColor || '#ffffff')
