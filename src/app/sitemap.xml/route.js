@@ -1,10 +1,10 @@
 import { getServerSideSitemap } from 'next-sitemap'
-import { NextResponse } from 'next/server'
+//import { NextResponse } from 'next/server'
 
 export async function GET(request) {
   try {
     // Base URL for the sitemap
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'
+    const baseUrl =  'https://avantikatravels.com'
 
     // Static pages with their priorities and change frequencies
     const staticPages = [
@@ -75,7 +75,7 @@ export async function GET(request) {
 
     try {
       // Fetch places
-      const placesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/places`, {
+      const placesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/places`, {
         cache: 'no-store'
       })
 
@@ -91,7 +91,7 @@ export async function GET(request) {
       }
 
       // Fetch packages
-      const packagesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/packages`, {
+      const packagesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/packages`, {
         cache: 'no-store'
       })
 
@@ -107,7 +107,7 @@ export async function GET(request) {
       }
 
       // Fetch blogs
-      const blogsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/blogs`, {
+      const blogsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/blogs`, {
         cache: 'no-store'
       })
 

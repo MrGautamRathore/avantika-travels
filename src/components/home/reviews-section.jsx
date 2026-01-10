@@ -110,23 +110,14 @@ export default function ReviewsSection() {
   }
 
   return (
-    <section className="py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="bg-muted/30">
+      <div className="container py-10 mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">Customer Reviews</h2>
           <p className="text-muted-foreground">See what our customers say about their experience</p>
         </div>
 
-        {/* Post Review Button */}
-        <div className="text-center mb-8">
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            {showForm ? 'Cancel' : 'Post a Review'}
-          </button>
-        </div>
-
+       
         {/* Post Review Form */}
         {showForm && (
           <div className="max-w-2xl mx-auto bg-card p-6 rounded-lg shadow-md mb-8 border">
@@ -249,6 +240,16 @@ export default function ReviewsSection() {
             ))
           )}
         </div>
+         {/* Post Review Button */}
+        <div className="text-center py-4">
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors  shadow-xl"
+          >
+            {showForm ? 'Cancel' : 'Post a Review'}
+          </button>
+        </div>
+
       </div>
     </section>
   )

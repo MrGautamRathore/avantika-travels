@@ -90,7 +90,7 @@ export function SiteProvider({ children }) {
         const websiteRes = await axios.get(`${API_BASE_URL}/website`)
         
         setSiteData(websiteRes.data)
-        console.log('website data',websiteRes.data);
+       // console.log('website data',websiteRes.data);
         
       } catch (websiteErr) {
         console.warn('Website data not loaded, keeping default data:', websiteErr)

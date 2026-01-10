@@ -23,7 +23,7 @@ export default function ContactPopup() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      setIsMobile(window.innerWidth < 328)
     }
 
     checkMobile()
@@ -91,7 +91,7 @@ export default function ContactPopup() {
               initial={{ opacity: 0, scale: 0.9, x: 20, y: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: 20, y: 20 }}
-              className="fixed bottom-4 right-4 bg-card border border-border rounded-2xl shadow-2xl max-w-sm w-full max-h-[80vh] overflow-y-auto"
+              className="fixed bottom-4 right-0 sm:right-4 bg-card border border-border rounded-2xl shadow-2xl max-w-sm w-full max-h-[80vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}

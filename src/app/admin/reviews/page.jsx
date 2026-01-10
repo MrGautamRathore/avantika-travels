@@ -14,7 +14,7 @@ export default function AdminReviews() {
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
-  const [filterType, setFilterType] = useState('all')
+
   const [ratingFilter, setRatingFilter] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
 
@@ -37,10 +37,7 @@ export default function AdminReviews() {
     email: '',
     rating: 5,
     comment: '',
-    status: 'pending',
-    packageId: '',
-    placeId: '',
-    images: []
+    status: 'pending'
   })
 
   // Image upload states
@@ -61,16 +58,12 @@ export default function AdminReviews() {
 
   const handleEdit = (review) => {
     setEditingReview(review)
-    setImages(review.images || [])
     setFormData({
       userName: review.userName,
       email: review.email,
       rating: review.rating,
       comment: review.comment,
-      status: review.status,
-      packageId: review.packageId?._id || '',
-      placeId: review.placeId?._id || '',
-      images: review.images || []
+      status: review.status
     })
     setShowForm(true)
   }
@@ -166,12 +159,9 @@ export default function AdminReviews() {
         (review.placeId?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
       
       const matchesStatus = filterStatus === 'all' || review.status === filterStatus
-      const matchesType = filterType === 'all' || 
-        (filterType === 'package' && review.packageId) ||
-        (filterType === 'place' && review.placeId)
       const matchesRating = ratingFilter === 'all' || review.rating === parseInt(ratingFilter)
-      
-      return matchesSearch && matchesStatus && matchesType && matchesRating
+
+      return matchesSearch && matchesStatus && matchesRating
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -237,7 +227,7 @@ export default function AdminReviews() {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by name, email, comment, or item..."
+                  placeholder="Search by name, email, comment..."
                   className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                 />
                 <User className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
@@ -261,19 +251,7 @@ export default function AdminReviews() {
               </select>
             </div>
 
-            {/* Type Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-              >
-                <option value="all">All Types</option>
-                <option value="package">Packages</option>
-                <option value="place">Places</option>
-              </select>
-            </div>
+
 
             {/* Rating Filter */}
             <div>
@@ -457,26 +435,7 @@ export default function AdminReviews() {
                     </button>
                   </div>
 
-                  {/* Quick Status Actions */}
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {statusOptions
-                      .filter(status => status.value !== review.status)
-                      .map((status) => (
-                        <button
-                          key={status.value}
-                          onClick={() => handleStatusChange(review._id, status.value)}
-                          className={`px-3 py-1 text-xs rounded-lg transition-colors ${
-                            status.value === 'approved' 
-                              ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                              : status.value === 'rejected'
-                              ? 'bg-red-100 text-red-800 hover:bg-red-200'
-                              : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                          }`}
-                        >
-                          Mark as {status.label}
-                        </button>
-                      ))}
-                  </div>
+               
                 </div>
               </div>
             ))}
@@ -587,21 +546,20 @@ export default function AdminReviews() {
               <Star className="w-16 h-16 mx-auto" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {searchTerm || filterStatus !== 'all' || filterType !== 'all' || ratingFilter !== 'all' 
-                ? 'No matching reviews found' 
+              {searchTerm || filterStatus !== 'all' || ratingFilter !== 'all'
+                ? 'No matching reviews found'
                 : 'No reviews yet'}
             </h3>
             <p className="text-gray-600 mb-6">
-              {searchTerm || filterStatus !== 'all' || filterType !== 'all' || ratingFilter !== 'all'
+              {searchTerm || filterStatus !== 'all' || ratingFilter !== 'all'
                 ? 'Try adjusting your search or filter criteria'
                 : 'Customer reviews will appear here once submitted'}
             </p>
-            {(searchTerm || filterStatus !== 'all' || filterType !== 'all' || ratingFilter !== 'all') && (
+            {(searchTerm || filterStatus !== 'all' || ratingFilter !== 'all') && (
               <button
                 onClick={() => {
                   setSearchTerm('')
                   setFilterStatus('all')
-                  setFilterType('all')
                   setRatingFilter('all')
                 }}
                 className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center"
@@ -707,7 +665,7 @@ export default function AdminReviews() {
                     </select>
                   </div>
 
-                  <div>
+              {/*     <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Review For
                     </label>
@@ -727,8 +685,8 @@ export default function AdminReviews() {
                       )}
                     </div>
                   </div>
-
-                  <div>
+ */}
+                 {/*  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Images
                     </label>
@@ -777,7 +735,7 @@ export default function AdminReviews() {
                       )}
                     </div>
                   </div>
-
+ */}
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="text-sm font-medium text-gray-700 mb-3">Review Information</h3>
                     <div className="space-y-2 text-sm">
