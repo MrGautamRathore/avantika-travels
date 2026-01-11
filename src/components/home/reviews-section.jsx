@@ -17,7 +17,6 @@ export default function ReviewsSection() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [filter, setFilter] = useState('all') // all, 5, 4, 3, 2, 1
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false)
 
   useEffect(() => {
     filterReviews()
@@ -48,7 +47,7 @@ export default function ReviewsSection() {
 
     setSubmitting(true)
     try {
-      const response = await fetch('/api/reviews', {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL+'/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -196,7 +195,7 @@ export default function ReviewsSection() {
               <p className="text-muted-foreground">No reviews found for the selected filter.</p>
             </div>
           ) : (
-            filteredReviews.map((review) => (
+            filteredReviews.slice(0,3).map((review) => (
               <div key={review._id} className="bg-card p-6 rounded-lg shadow-md border">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">

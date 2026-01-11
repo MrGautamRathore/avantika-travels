@@ -1,70 +1,90 @@
 import { getServerSideSitemap } from 'next-sitemap'
 //import { NextResponse } from 'next/server'
 
+// Helper function to sanitize and encode URLs
+function sanitizeUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  // Encode special characters but keep slashes and colons
+  return encodeURI(url).replace(/%5B/g, '[').replace(/%5D/g, ']').replace(/%40/g, '@');
+}
+
+// Helper function to format date to ISO string
+function formatDate(date) {
+  if (!date) return new Date().toISOString();
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+}
+
+// Helper function to validate sitemap entry
+function validateSitemapEntry(entry) {
+  return entry.url && entry.url.trim() !== '' &&
+         entry.lastModified && entry.changeFrequency && entry.priority !== undefined;
+}
+
 export async function GET(request) {
   try {
     // Base URL for the sitemap
-    const baseUrl =  'https://avantikatravels.com'
+    const baseUrl = 'https://avantikatravels.com'
 
     // Static pages with their priorities and change frequencies
     const staticPages = [
       {
-        url: baseUrl,
-        lastModified: new Date(),
+        url: sanitizeUrl(baseUrl),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'daily',
         priority: 1.0,
       },
       {
-        url: `${baseUrl}/about`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/about`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'monthly',
         priority: 0.8,
       },
       {
-        url: `${baseUrl}/contact`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/contact`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'monthly',
         priority: 0.8,
       },
       {
-        url: `${baseUrl}/places`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/places`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'weekly',
         priority: 0.9,
       },
       {
-        url: `${baseUrl}/packages`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/packages`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'weekly',
         priority: 0.9,
       },
       {
-        url: `${baseUrl}/blogs`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/blogs`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'daily',
         priority: 0.8,
       },
       {
-        url: `${baseUrl}/services`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/services`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'monthly',
         priority: 0.7,
       },
       {
-        url: `${baseUrl}/booking`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/booking`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'monthly',
         priority: 0.7,
       },
       {
-        url: `${baseUrl}/privacy-policy`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/privacy-policy`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'yearly',
         priority: 0.3,
       },
       {
-        url: `${baseUrl}/terms-and-conditions`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/terms-and-conditions`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'yearly',
         priority: 0.3,
       },
@@ -81,12 +101,15 @@ export async function GET(request) {
 
       if (placesResponse.ok) {
         const places = await placesResponse.json()
-        const placePages = places.map(place => ({
-          url: `${baseUrl}/places/${place.slug}`,
-          lastModified: new Date(place.updatedAt || place.createdAt || new Date()),
-          changeFrequency: 'weekly',
-          priority: 0.8,
-        }))
+        const placePages = places
+          .filter(place => place.slug && place.slug.trim() !== '')
+          .map(place => ({
+            url: sanitizeUrl(`${baseUrl}/places/${place.slug}`),
+            lastModified: formatDate(place.updatedAt || place.createdAt),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+          }))
+          .filter(validateSitemapEntry)
         dynamicPages.push(...placePages)
       }
 
@@ -97,12 +120,15 @@ export async function GET(request) {
 
       if (packagesResponse.ok) {
         const packages = await packagesResponse.json()
-        const packagePages = packages.map(pkg => ({
-          url: `${baseUrl}/packages/${pkg.slug}`,
-          lastModified: new Date(pkg.updatedAt || pkg.createdAt || new Date()),
-          changeFrequency: 'weekly',
-          priority: 0.8,
-        }))
+        const packagePages = packages
+          .filter(pkg => pkg.slug && pkg.slug.trim() !== '')
+          .map(pkg => ({
+            url: sanitizeUrl(`${baseUrl}/packages/${pkg.slug}`),
+            lastModified: formatDate(pkg.updatedAt || pkg.createdAt),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+          }))
+          .filter(validateSitemapEntry)
         dynamicPages.push(...packagePages)
       }
 
@@ -114,13 +140,14 @@ export async function GET(request) {
       if (blogsResponse.ok) {
         const blogs = await blogsResponse.json()
         const blogPages = blogs
-          .filter(blog => blog.published !== false)
+          .filter(blog => blog.slug && blog.slug.trim() !== '' && blog.published !== false)
           .map(blog => ({
-            url: `${baseUrl}/blogs/${blog.slug}`,
-            lastModified: new Date(blog.updatedAt || blog.createdAt || blog.date || new Date()),
+            url: sanitizeUrl(`${baseUrl}/blogs/${blog.slug}`),
+            lastModified: formatDate(blog.updatedAt || blog.createdAt || blog.date),
             changeFrequency: 'monthly',
             priority: 0.6,
           }))
+          .filter(validateSitemapEntry)
         dynamicPages.push(...blogPages)
       }
 
@@ -130,8 +157,8 @@ export async function GET(request) {
       ]
 
       const categoryPages = packageCategories.map(category => ({
-        url: `${baseUrl}/packages?type=${category}`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${baseUrl}/packages?type=${category}`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'weekly',
         priority: 0.7,
       }))
@@ -143,8 +170,8 @@ export async function GET(request) {
       // Continue with static pages only
     }
 
-    // Combine all pages
-    const allPages = [...staticPages, ...dynamicPages]
+    // Combine all pages and filter valid entries
+    const allPages = [...staticPages, ...dynamicPages].filter(validateSitemapEntry)
 
     // Return sitemap using next-sitemap
     return getServerSideSitemap(allPages)
@@ -155,30 +182,30 @@ export async function GET(request) {
     // Fallback sitemap with basic pages
     const fallbackPages = [
       {
-        url: process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com',
-        lastModified: new Date(),
+        url: sanitizeUrl(process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'daily',
         priority: 1.0,
       },
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/places`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/places`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'weekly',
         priority: 0.9,
       },
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/packages`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/packages`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'weekly',
         priority: 0.9,
       },
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/blogs`,
-        lastModified: new Date(),
+        url: sanitizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://avantikatravels.com'}/blogs`),
+        lastModified: formatDate(new Date()),
         changeFrequency: 'daily',
         priority: 0.8,
       },
-    ]
+    ].filter(validateSitemapEntry)
 
     return getServerSideSitemap(fallbackPages)
   }
