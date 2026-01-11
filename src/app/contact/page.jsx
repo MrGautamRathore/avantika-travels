@@ -122,7 +122,7 @@ export default function ContactPage() {
               <div className="mt-8 p-6 rounded-2xl overflow-hidden h-[200px] bg-muted flex items-center justify-center">
                 <div className="text-center">
                   <FiMapPin className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <p className="text-muted-foreground text-sm">{siteData.location}</p>
+                  <p className="text-muted-foreground text-sm">{siteData.contactInfo.location}, {siteData.contactInfo.region}</p>
                 </div>
               </div>
             </motion.div>
