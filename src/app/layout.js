@@ -12,11 +12,11 @@ import { StructuredData } from "@/components/seo/structured-data";
 export const metadata = {
   metadataBase: new URL('https://avantikatravels.com'),
   title: {
-    default: "Avantika Travels | Mahakal Mandir Tours, Ujjain Pilgrimage & Madhya Pradesh Travel",
+    default: "Avantika Travels | Mahakal Mandir Tours Packages, Ujjain & Indore Travel",
     template: "%s | Avantika Travels"
   },
-  description: "Discover Mahakal Mandir tours, Ujjain pilgrimage packages, and Madhya Pradesh travel experiences with Avantika Travels. Best spiritual journeys and taxi services.",
-  keywords: ["Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Indore travel"],
+  description: "Discover Madhya Pradesh tours, Ujjain pilgrimage packages, and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
+  keywords: ["Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Best travel for ujjain to indore", "best Indore travel", "Indore travel", "best travel", "best travel to visit madhya pradesh", "cheapest package to travel madhya pradesh", 'best avantika tours', 'best tour packages of avantika travels', 'bhasm aarti time at mahakal mandir', 'mahakal mandir darsan', 'sabse achhe travel packages', 'ujjain jane ke liye sabse badhiya travels'],
   
   // Icons configuration (Corrected)
   icons: {
