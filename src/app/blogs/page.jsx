@@ -5,6 +5,7 @@ import PageHeader from "@/components/ui/page-header"
 import BlogCard from "@/components/ui/blog-card"
 import Pagination from "@/components/ui/pagination"
 import { useSite } from "@/context/site-context"
+import Head from "next/head"
 
 export default function BlogsPage() {
   const { blogs } = useSite()
