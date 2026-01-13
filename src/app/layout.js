@@ -70,13 +70,11 @@ export default function RootLayout({ children }) {
       <body className={`${poppins.variable} font-sans antialiased`}>
         <SiteProvider>
           <ThemeProvider>
-            <MetadataProvider>
               <StructuredData />
               <Header />
               <main>{children}</main>
               <Footer />
               <WhatsAppIcon />
-            </MetadataProvider>
           </ThemeProvider>
         </SiteProvider>
       </body>
