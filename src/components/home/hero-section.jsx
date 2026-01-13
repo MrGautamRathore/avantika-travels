@@ -36,12 +36,16 @@ export default function HeroSection({
   return (
     <section className="relative py-8 flex items-center">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${siteData.heroImage})`,
-        }}
-      >
+      <div className="absolute inset-0">
+        <Image
+          src={siteData.heroImage}
+          alt="Avantika Travels - Mahakal Mandir Tours & Ujjain Pilgrimage"
+          fill
+          priority
+          quality={75}
+          className="object-cover"
+          sizes="100vw"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
       </div>
 

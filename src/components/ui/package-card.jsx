@@ -23,7 +23,9 @@ export default function PackageCard({ pkg, index = 0 }) {
               alt={`${pkg.name} - ${pkg.duration} Tour Package to ${pkg.destination}, Madhya Pradesh | Avantika Travels`}
               fill
               priority={index < 3}
+              quality={75}
               className="object-cover group-hover:scale-110 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             {pkg.discount > 0 && (
               <div className="absolute top-3 right-3 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">

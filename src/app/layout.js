@@ -12,11 +12,11 @@ import { StructuredData } from "@/components/seo/structured-data";
 export const metadata = {
   metadataBase: new URL('https://avantikatravels.com'),
   title: {
-    default: "Avantika Travels | Best Mahakal Mandir & MP Tour Packages",
+    default: "Avantika Travels | Mahakal Mandir Tours, Ujjain Pilgrimage & Madhya Pradesh Travel",
     template: "%s | Avantika Travels"
   },
-  description: "Experience the divine beauty of Mahakal Mandir with Avantika Travels. Best pilgrimage tours and Ujjain-Indore taxi services.",
-  keywords: ["travels","tour","ujjain travels","indore travels","avantika","Avantika Travels", "Mahakal Mandir Ujjain", "Ujjain Tour Packages", "Indore Travels", "Travels in Ujjain", "Travels"],
+  description: "Discover Mahakal Mandir tours, Ujjain pilgrimage packages, and Madhya Pradesh travel experiences with Avantika Travels. Best spiritual journeys and taxi services.",
+  keywords: ["Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Indore travel"],
   
   // Icons configuration (Corrected)
   icons: {
