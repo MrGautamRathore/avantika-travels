@@ -7,6 +7,7 @@ import Link from "next/link"
 import { FiUser, FiClock, FiCalendar, FiArrowLeft, FiShare2, FiFacebook, FiTwitter } from "react-icons/fi"
 import BlogCard from "@/components/ui/blog-card"
 import { useSite } from "@/context/site-context"
+import Head from "next/head"
 
 export default function BlogDetailsPage({ params }) {
   const resolvedParams = use(params)
@@ -89,10 +90,10 @@ export default function BlogDetailsPage({ params }) {
                   year: "numeric",
                 })}
               </span>
-              <span className="flex items-center gap-2">
+              {/* <span className="flex items-center gap-2">
                 <FiClock className="w-4 h-4" />
                 {blog.readTime}
-              </span>
+              </span> */}
             </div>
           </motion.div>
         </div>

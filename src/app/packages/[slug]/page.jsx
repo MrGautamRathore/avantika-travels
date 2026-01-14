@@ -53,10 +53,10 @@ export default function PackageDetailsPage({ params }) {
   return (
     <>
       <PageHeader title={pkg.name} subtitle={pkg.description.substring(0, 100)} backgroundImage={mainImage} />
-<PackageSchema packageData={data}  mainImage={mainImage} />
+<PackageSchema packageData={pkg}  mainImage={mainImage} />
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Image Gallery */}
@@ -71,6 +71,8 @@ export default function PackageDetailsPage({ params }) {
                   fill 
                   className="object-cover" 
                   priority
+                  quality={75}
+                  sizes="50vw"
                 />
               </motion.div>
 
@@ -88,6 +90,7 @@ export default function PackageDetailsPage({ params }) {
                         src={image.url} 
                         alt={`${pkg.name} - ${index + 2}`} 
                         fill 
+                        sizes="50vw"
                         className="object-cover"
                       />
                     </div>
