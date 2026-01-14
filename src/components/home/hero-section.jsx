@@ -60,7 +60,7 @@ export default function HeroSection({
           >
             {/* <span className="bold">Discover Your</span> <span className="text-primar">Perfect Journey</span> */}
             
-            <span className=""> Explore India & Beyond with </span><span className="bold text-5xl text-primary">Avantika Travels</span>
+            <span className=""> Explore India & Beyond with </span><span className="bold text-5xl  md:text-6xl lg:text-7xl  text-primary">Avantika Travels</span>
           </motion.h1>
 
           <motion.p
