@@ -48,11 +48,7 @@ export default function PackageCard({ pkg, index = 0 }) {
               {pkg.name}
             </h3>
 
-            {/* <div className="flex items-center gap-1 mb-3">
-              <FiStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-              <span className="font-semibold text-foreground">{pkg.rating}</span>
-              <span className="text-muted-foreground text-sm">({pkg.reviews})</span>
-            </div> */}
+          
 
             <div className="flex items-center justify-between">
               <div>

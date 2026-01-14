@@ -49,7 +49,7 @@ export default function HomePage() {
       <Head>
         <title>Avantika Travels | Mahakal Mandir Tours, Ujjain Pilgrimage & Madhya Pradesh Travel</title>
         <meta name="description" content="Discover Mahakal Mandir tours, Ujjain pilgrimage packages, and Madhya Pradesh travel experiences with Avantika Travels. Best spiritual journeys and taxi services." />
-        <meta name="keywords" content="Mahakal Mandir tours, Ujjain pilgrimage, Madhya Pradesh travel, Avantika Travels, spiritual tours, pilgrimage packages" />
+        <meta name="keywords" content="Mahakal Mandir tours, Ujjain pilgrimage, Madhya Pradesh travel, Avantika Travels, spiritual tours, pilgrimage packages, Ujjain tours, Best travel for ujjain to indore, best Indore tour packages" />
         <meta property="og:title" content="Avantika Travels | Mahakal Mandir Tours, Ujjain Pilgrimage & Madhya Pradesh Travel" />
         <meta property="og:description" content="Discover Mahakal Mandir tours, Ujjain pilgrimage packages, and Madhya Pradesh travel experiences with Avantika Travels. Best spiritual journeys and taxi services." />
         <meta property="og:type" content="website" />
