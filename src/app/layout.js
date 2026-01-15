@@ -8,6 +8,7 @@ import WhatsAppIcon from "@/components/ui/whatsapp-icon";
 //import { MetadataProvider } from "@/components/seo/metadata-provider";
 import { StructuredData } from "@/components/seo/structured-data";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { Suspense } from "react";
 
 // 1. All SEO & Icons in Metadata Object
 export const metadata = {
@@ -73,6 +74,7 @@ export default function RootLayout({ children }) {
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WC73H9S95D"></script>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
+       <Suspense>
         <SiteProvider>
           <ThemeProvider>
               <StructuredData />
@@ -83,7 +85,7 @@ export default function RootLayout({ children }) {
           </ThemeProvider>
         </SiteProvider>
                 <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_ID} /> {/* Replace with your GA ID */}
-
+</Suspense>
       </body>
     </html>
   );
