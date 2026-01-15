@@ -68,7 +68,15 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-     
+     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WC73H9S95D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WC73H9S95D');
+</script>
       <body className={`${poppins.variable} font-sans antialiased`}>
         <SiteProvider>
           <ThemeProvider>
