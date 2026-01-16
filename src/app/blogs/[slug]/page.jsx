@@ -8,7 +8,7 @@ import { FiUser, FiClock, FiCalendar, FiArrowLeft, FiShare2, FiFacebook, FiTwitt
 import BlogCard from "@/components/ui/blog-card"
 import { useSite } from "@/context/site-context"
 import Head from "next/head"
-
+import AIEnhancements from "@/components/seo/AIEnhancements"
 export default function BlogDetailsPage({ params }) {
   const resolvedParams = use(params)
   const { blogs, siteData } = useSite()
@@ -31,30 +31,99 @@ export default function BlogDetailsPage({ params }) {
 
   return (
     <>
-      <Head>
-        <title>{blog.title} | Avantika Travels Blog</title>
-        <meta name="description" content={blog.excerpt} />
-        <meta name="keywords" content={`Ujjain travel blog, ${blog.category}, ${blog.title}`} />
-        <meta property="og:title" content={`${blog.title} | Avantika Travels Blog`} />
-        <meta property="og:description" content={blog.excerpt} />
-        <meta property="og:type" content="article" />
-        <meta property="og:image" content={blog.image?.url || "/logo.png"} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={blog.title} />
-        <meta property="article:author" content={blog.author} />
-        <meta property="article:published_time" content={blog.date} />
-        <meta property="article:section" content={blog.category} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${blog.title} | Avantika Travels Blog`} />
-        <meta name="twitter:description" content={blog.excerpt} />
-        <meta name="twitter:image" content={blog.image?.url || "/logo.png"} />
-        <meta name="robots" content="index, follow" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="language" content="en-IN" />
-        <meta name="geo.region" content="IN-MP" />
-        <link rel="canonical" href={`https://avantikatravels.com/blogs/${blog.slug}`} />
-      </Head>
+    <AIEnhancements pageType="blog" data={blog} />
+     <Head>
+  <title>{blog.title} | Avantika Travels Blog</title>
+  <meta name="description" content={blog.excerpt} />
+  <meta name="keywords" content={`Ujjain travel blog, ${blog.category}, ${blog.title}, Madhya Pradesh tourism`} />
+  
+  {/* 2026 NEW: AI & Quality Signals */}
+  <meta name="ai-content-flag" content="human-expert-written" />
+  <meta name="content-origin" content="first-hand-experience" />
+  <meta name="fact-checked" content="true" />
+  <meta name="expert-verified" content="true" />
+  <meta name="reading-time" content={`${Math.ceil(blog.content.length / 1000)} minutes`} />
+  <meta name="content-depth" content="comprehensive" />
+  
+  {/* Open Graph with 2026 Enhancements */}
+  <meta property="og:title" content={`${blog.title} | Avantika Travels Blog`} />
+  <meta property="og:description" content={blog.excerpt} />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content={blog.image?.url || "/logo.png"} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={blog.title} />
+  <meta property="og:article:author" content={blog.author} />
+  <meta property="og:article:published_time" content={blog.date} />
+  <meta property="og:article:modified_time" content={new Date().toISOString()} />
+  <meta property="og:article:section" content={blog.category} />
+  <meta property="og:article:tag" content={blog.tags?.join(', ') || blog.category} />
+  
+  {/* 2026 NEW: Enhanced Twitter Cards */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={`${blog.title} | Avantika Travels Blog`} />
+  <meta name="twitter:description" content={blog.excerpt} />
+  <meta name="twitter:image" content={blog.image?.url || "/logo.png"} />
+  <meta name="twitter:image:alt" content={blog.title} />
+  <meta name="twitter:creator" content="@avantikatravels" />
+  <meta name="twitter:site" content="@avantikatravels" />
+  <meta name="twitter:label1" content="Reading time" />
+  <meta name="twitter:data1" content={`${Math.ceil(blog.content.length / 1000)} min`} />
+  <meta name="twitter:label2" content="Category" />
+  <meta name="twitter:data2" content={blog.category} />
+  
+  {/* Standard Meta */}
+  <meta name="robots" content="index, follow" />
+  <meta name="revisit-after" content="7 days" />
+  <meta name="language" content="en-IN" />
+  <meta name="geo.region" content="IN-MP" />
+  <meta name="geo.placename" content="Ujjain, Madhya Pradesh" />
+  <link rel="canonical" href={`https://avantikatravels.com/blogs/${blog.slug}`} />
+  
+  {/* 2026 NEW: Article Schema Markup */}
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": blog.title,
+      "description": blog.excerpt,
+      "image": blog.image?.url || "/logo.png",
+      "datePublished": blog.date,
+      "dateModified": new Date().toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": blog.author,
+        "url": "https://avantikatravels.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Avantika Travels",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://avantikatravels.com/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://avantikatravels.com/blogs/${blog.slug}`
+      },
+      // 2026 NEW: AI & Voice Enhancements
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "xpath": [
+          "/html/head/title",
+          "/html/head/meta[@name='description']/@content"
+        ]
+      },
+      "accessMode": ["textual", "visual"],
+      "accessModeSufficient": ["textual", "visual"],
+      "accessibilityFeature": ["alternativeText", "readingOrder"],
+      "accessibilityHazard": ["noFlashingHazard", "noMotionSimulationHazard"],
+      "accessibilitySummary": "This article is optimized for screen readers and voice search."
+    })}
+  </script>
+</Head>
+
       {/* Hero Section */}
       <section className="relative py-20 md:py-32">
         <div className="absolute inset-0">

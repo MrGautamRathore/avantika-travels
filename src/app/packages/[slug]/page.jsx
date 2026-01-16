@@ -10,6 +10,7 @@ import PageHeader from "@/components/ui/page-header"
 import PackageCard from "@/components/ui/package-card"
 import { useSite } from "@/context/site-context"
 import PackageSchema from "@/components/seo/PackageSchema";
+import AIEnhancements from "@/components/seo/AIEnhancements"
 export default function PackageDetailsPage({ params }) {
   const resolvedParams = use(params)
   const { packages, siteData } = useSite()
@@ -52,6 +53,7 @@ export default function PackageDetailsPage({ params }) {
 
   return (
     <>
+    <AIEnhancements pageType="package" data={pkg} />
       <PageHeader title={pkg.name} subtitle={pkg.description.substring(0, 100)} backgroundImage={mainImage} />
 <PackageSchema packageData={pkg}  mainImage={mainImage} />
       <section className="py-16 md:py-24 bg-white">

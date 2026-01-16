@@ -62,9 +62,6 @@ export default function HomePage() {
         <meta name="twitter:description" content="Discover Mahakal Mandir tours, Ujjain pilgrimage packages, and Madhya Pradesh travel experiences with Avantika Travels. Best spiritual journeys and taxi services." />
         <meta name="twitter:image" content="/logo.png" />
         <meta name="robots" content="index, follow" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="language" content="en-IN" />
-        <meta name="geo.region" content="IN-MP" />
         <link rel="canonical" href="https://avantikatravels.com/" />
       </Head>
       <HeroSection

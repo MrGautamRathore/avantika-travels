@@ -8,6 +8,7 @@ import { FiMapPin, FiCalendar, FiStar, FiArrowRight, FiUsers, FiTrendingUp } fro
 import PageHeader from "@/components/ui/page-header"
 import PackageCard from "@/components/ui/package-card"
 import { useSite } from "@/context/site-context"
+import AIEnhancements from "@/components/seo/AIEnhancements"
 
 export default function PlaceDetailsPage({ params }) {
   const resolvedParams = use(params)
@@ -37,7 +38,7 @@ export default function PlaceDetailsPage({ params }) {
   const mainImage = place.images && place.images.length > 0 ? place.images[0].url : "/placeholder.svg"
 
   return (
-    <>
+    <><AIEnhancements pageType="place" data={place} />
       <PageHeader 
         title={place.title} 
         subtitle={place.description.substring(0, 150)} 
