@@ -14,16 +14,16 @@ import { Suspense } from "react";
 export const metadata = {
   metadataBase: new URL('https://avantikatravels.com'),
   title: {
-    default: "Avantika Travels | Best Madhya Pradesh Tour Packages",
+    default: "Best Madhya Pradesh Tour Packages",
     template: "%s | Avantika Travels"
   },
-  description: "Discover Madhya Pradesh tours, Ujjain pilgrimage packages, and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
+  description: "Discover Madhya Pradesh tours, Ujjain pilgrimage packages and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
   keywords: ["Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Best travel for ujjain to indore", "best Indore tour packages", "Indore tours", "best travel", "best places to visit in madhya pradesh", "cheapest package to travel madhya pradesh", 'best avantika tours', 'best tour packages of avantika travels', 'bhasm aarti time at mahakal mandir', 'mahakal mandir darsan', 'sabse achhe travel packages', 'ujjain jane ke liye sabse badhiya travels', 'Best Madhya Pradesh Tour Packages'],
   
   // Icons configuration (Corrected)
   icons: {
     icon: [
-      { url: '/favicon.ico',rel: 'icon' },
+      { url: '/favicon.ico',rel: 'icon',  sizes:'any' },
       { url: '/favicon.png', sizes: '48x48', type: 'image/png' },
       { url: '/favicon-16x16.png', sizes: '16x16' , type: 'image/png' },
       { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
@@ -71,7 +71,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WC73H9S95D"></script>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
        <Suspense>
