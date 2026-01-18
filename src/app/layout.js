@@ -96,7 +96,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: "Avantika Travels | Madhya Pradesh Tourism",
     description: "Your trusted travel partner for spiritual journeys",
-    images: ['/pik2.avif'],
+    images: ['https://avantikatravels.com/logo.png'],
     creator: '@avantikatravels',
     site: '@avantikatravels',
   },
@@ -216,17 +216,15 @@ export default function RootLayout({ children }) {
     <html lang="en-IN" className={`${poppins.variable}`}>
       <head>
         {/* 2026 FIX: Simplified Favicon Implementation */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="icon" href="/favicon.png" sizes="any"/>
+        <link rel="icon" href="/favicon-16x16.png" sizes="16x16" />
+        <link rel="icon" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
         
-        {/* 2026 NEW: Preload Critical Resources */}
-        <link
-          rel="preload"
-          href={`${metadata.metadataBase}/_next/static/css/app/layout.css`}
-          as="style"
-        />
+      
         
         {/* 2026 NEW: Privacy & Consent Mode */}
         <script
@@ -241,6 +239,7 @@ export default function RootLayout({ children }) {
             `
           }}
         />
+    
       </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>

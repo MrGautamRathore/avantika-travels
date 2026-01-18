@@ -242,6 +242,11 @@ export function SiteProvider({ children }) {
         Object.keys(packageData).forEach(key => {
           if (key === 'selectedFiles') {
             packageData.selectedFiles.forEach(file => formData.append('images', file))
+          } else if (key === 'itinerary' || key === 'inclusions' || key === 'exclusions') {
+            // Handle arrays properly in FormData
+            if (Array.isArray(packageData[key])) {
+              packageData[key].forEach(item => formData.append(key, item))
+            }
           } else if (key !== 'images') {
             formData.append(key, packageData[key])
           }
@@ -276,6 +281,11 @@ export function SiteProvider({ children }) {
         Object.keys(packageData).forEach(key => {
           if (key === 'selectedFiles') {
             packageData.selectedFiles.forEach(file => formData.append('images', file))
+          } else if (key === 'itinerary' || key === 'inclusions' || key === 'exclusions') {
+            // Handle arrays properly in FormData
+            if (Array.isArray(packageData[key])) {
+              packageData[key].forEach(item => formData.append(key, item))
+            }
           } else if (key !== 'images') {
             formData.append(key, packageData[key])
           }
