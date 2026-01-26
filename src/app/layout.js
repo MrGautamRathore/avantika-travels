@@ -17,13 +17,13 @@ export const metadata = {
     default: "Best Madhya Pradesh Tour Packages | Spiritual Tourism Experts",
     template: "%s | Avantika Travels"
   },
-  description: "Discover Madhya Pradesh tours, Ujjain pilgrimage packages and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
-  keywords: ["Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Best travel for ujjain to indore", "best Indore tour packages", "Indore tours", "best travel", "best places to visit in madhya pradesh", "cheapest package to travel madhya pradesh", 'best avantika tours', 'best tour packages of avantika travels', 'bhasm aarti time at mahakal mandir', 'mahakal mandir darsan', 'sabse achhe travel packages', 'ujjain jane ke liye sabse badhiya travels', 'Best Madhya Pradesh Tour Packages'],
+  description: "Discover Madhya Pradesh tours, Ujjain Travels and Ujjain pilgrimage packages and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
+  keywords: ["Ujjain Travels","Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Best travel for ujjain to indore", "best Indore tour packages", "Indore tours", "best travel agency", "best places to visit in madhya pradesh", "cheapest package to travel madhya pradesh", 'best avantika tours', 'best tour packages of avantika travels', 'bhasm aarti time at mahakal mandir', 'mahakal mandir darsan', 'sabse achhe travel packages', 'ujjain jane ke liye sabse badhiya travels', 'Best Madhya Pradesh Tour Packages'],
   
   // 2026 FIXED: Simplified Icons Configuration
-  icons: {
+ /*  icons: {
     icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
+    shortcut: '/logo.png',
     apple: '/apple-touch-icon.png',
     other: [
       {
@@ -46,7 +46,8 @@ export const metadata = {
       },
     ],
   },
-  
+   */
+ 
   manifest: '/site.webmanifest',
 
   // 2026 NEW: AI & Voice Search Meta Tags
@@ -79,27 +80,31 @@ export const metadata = {
     }],
     locale: 'en_IN',
     type: 'website',
-    // 2026 NEW: Enhanced OG
-    /* audio: '/audio/tour-preview.mp3', */
-   /*  videos: [
-      {
-        url: '/video/tour-preview.mp4',
-        width: 1280,
-        height: 720,
-        type: 'video/mp4',
-      }
-    ], */
+  
   },
 
   // 2026 ENHANCED: Twitter Cards
-  twitter: {
-    card: 'summary_large_image',
-    title: "Avantika Travels | Madhya Pradesh Tourism",
-    description: "Your trusted travel partner for spiritual journeys",
-    images: ['https://avantikatravels.com/logo.png'],
-    creator: '@avantikatravels',
-    site: '@avantikatravels',
-  },
+ images: [
+      {
+        url: "/logo2.jpg",
+        width: 940,
+        height: 940,
+        alt: "Avantika Travels - Book Your Tour Package",
+      },
+      {
+        url: "/icon.jpg",
+        width: 940,
+        height: 940,
+        alt: "Ujjain Travels and Madhya Pradesh Tours with Avantika Travels",
+      },
+      {
+        url: "/logo.png",
+        width: 846,
+        height: 846,
+        alt: "Avantika Travels - Best Travel Agency in Ujjain",
+      }
+      
+    ],
 
   // 2026 NEW: Additional Meta Tags
   other: {

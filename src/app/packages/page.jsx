@@ -59,17 +59,14 @@ export default function PackagesPage() {
         <meta property="og:description" content="Affordable pilgrimage and leisure packages. Get customized Ujjain-Indore-Omkareshwar tour itineraries from Avantika Travels." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/logo.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="800" />
         <meta property="og:image:alt" content="Ujjain & Indore Tour Packages - Avantika Travels" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Ujjain & Indore Tour Packages | Mahakal Darshan Booking" />
         <meta name="twitter:description" content="Affordable pilgrimage and leisure packages. Get customized Ujjain-Indore-Omkareshwar tour itineraries from Avantika Travels." />
         <meta name="twitter:image" content="/logo.png" />
-        <meta name="robots" content="index, follow" />
-        <meta name="revisit-after" content="7 days" />
         <meta name="language" content="en-IN" />
-        <meta name="geo.region" content="IN-MP" />
         <link rel="canonical" href="https://avantikatravels.com/packages" />
       </Head>
       <PageHeader

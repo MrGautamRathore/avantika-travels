@@ -75,7 +75,7 @@ export default function ContactPage() {
       <Head>
         <title>Contact Avantika Travels | Book Your Ujjain Taxi Now</title>
         <meta name="description" content="Contact Avantika Travels for taxi booking in Ujjain and Indore. Call +91 8720006707 for instant quotes and 24/7 travel assistance." />
-        <meta name="keywords" content="Contact Avantika Travels, Ujjain taxi number, book car in Indore" />
+        <meta name="keywords" content="Ujjain Travels Contact, Ujjain Travels Agencies, Ujjain Indore Travels, Avantika Travels, Contact Avantika Travels, Ujjain taxi number, book car in Indore" />
         <meta property="og:title" content="Contact Avantika Travels | Book Your Ujjain Taxi Now" />
         <meta property="og:description" content="Contact Avantika Travels for taxi booking in Ujjain and Indore. Call +91 8720006707 for instant quotes and 24/7 travel assistance." />
         <meta property="og:type" content="website" />
@@ -93,7 +93,7 @@ export default function ContactPage() {
 
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}

@@ -97,9 +97,7 @@ const destinations = [
               </a>
           </div>
 
-          <p className="text-center text-gray-400 text-sm mt-4">
-            Designed and developed by <a href="https://create-website-solutions.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Aamin Patel</a>
-          </p>
+         
         </div>
 
           {/* Quick Links */}
