@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { FiPhone, FiMail, FiMapPin, FiClock, FiSend, FiCheck } from "react-icons/fi"
+import { FiPhone, FiMail, FiMapPin, FiClock, FiSend, FiCheck, FiInfo } from "react-icons/fi"
+import { FaWhatsapp } from "react-icons/fa"
 import Head from "next/head"
 import PageHeader from "@/components/ui/page-header"
 import { useSite } from "@/context/site-context"
@@ -39,7 +40,7 @@ export default function ContactPage() {
       setTimeout(() => setIsSubmitted(false), 5000)
     } catch (err) {
       console.error('Error submitting contact form:', err)
-      setError('Failed to send message. Please try again.')
+      setError('Failed to send message. Please try again or call us directly.')
     } finally {
       setIsSubmitting(false)
     }
@@ -48,50 +49,107 @@ export default function ContactPage() {
   const contactInfo = [
     {
       icon: FiPhone,
-      title: "Phone",
-      details: [siteData.contactInfo.phone, siteData.alternatePhone],
+      title: "Call Us (24/7 Support)",
+      details: [siteData.contactInfo.phone, siteData.alternatePhone || "+91 9876543210"],
       link: `tel:${siteData.contactInfo.phone}`,
+      description: "For urgent taxi booking & inquiries"
+    },
+    {
+      icon: FaWhatsapp,
+      title: "Chat on WhatsApp",
+      details: ["Click to chat with expert"],
+      link: `https://wa.me/${siteData.contactInfo.phone?.replace(/\D/g, '')}`,
+      description: "Get instant quotes & itinerary"
     },
     {
       icon: FiMail,
-      title: "Email",
+      title: "Email Us",
       details: [siteData.contactInfo.email],
       link: `mailto:${siteData.contactInfo.email}`,
+      description: "For corporate booking & packages"
     },
     {
       icon: FiMapPin,
-      title: "Address",
+      title: "Visit Our Office",
       details: [siteData.contactInfo.address],
+      description: "Near Mahakal Temple, Ujjain"
     },
     {
       icon: FiClock,
       title: "Working Hours",
-      details: [siteData.workingHours],
+      details: [siteData.workingHours || "Monday - Sunday: 24 Hours"],
+      description: "Always open for devotees"
     },
   ]
+
+  // SEO Schema for Local Business
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Avantika Travels",
+    "image": "https://avantikatravels.com/logo.png",
+    "telephone": siteData.contactInfo.phone,
+    "email": siteData.contactInfo.email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": siteData.contactInfo.address,
+      "addressLocality": "Ujjain",
+      "addressRegion": "Madhya Pradesh",
+      "postalCode": "456001",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "23.1765", 
+      "longitude": "75.7885"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": siteData.contactInfo.phone,
+      "contactType": "customer service",
+      "areaServed": "IN",
+      "availableLanguage": ["English", "Hindi"]
+    }
+  }
 
   return (
     <>
       <Head>
-        <title>Contact Avantika Travels | Book Your Ujjain Taxi Now</title>
-        <meta name="description" content="Contact Avantika Travels for taxi booking in Ujjain and Indore. Call +91 8720006707 for instant quotes and 24/7 travel assistance." />
-        <meta name="keywords" content="Ujjain Travels Contact, Ujjain Travels Agencies, Ujjain Indore Travels, Avantika Travels, Contact Avantika Travels, Ujjain taxi number, book car in Indore" />
-        <meta property="og:title" content="Contact Avantika Travels | Book Your Ujjain Taxi Now" />
-        <meta property="og:description" content="Contact Avantika Travels for taxi booking in Ujjain and Indore. Call +91 8720006707 for instant quotes and 24/7 travel assistance." />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="/pik9.avif" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Avantika Travels | Book Your Ujjain Taxi Now" />
-        <meta name="twitter:description" content="Contact Avantika Travels for taxi booking in Ujjain and Indore. Call +91 8720006707 for instant quotes and 24/7 travel assistance." />
-        <meta name="twitter:image" content="/pik9.avif" />
+        <title>Contact Avantika Travels | Ujjain Taxi Booking Number & Address</title>
+        <meta name="description" content="Looking for Ujjain travel agent contact number? Call Avantika Travels at +91 8720006707 for Mahakal Darshan taxi, Indore airport cab, and Omkareshwar tour booking." />
+        <meta name="keywords" content="Avantika Travels contact number, Ujjain taxi service phone number, travel agency in Ujjain address, Indore to Ujjain taxi booking contact, Mahakal darshan enquiry" />
+        <link rel="canonical" href="https://avantikatravels.com/contact" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </Head>
+
       <PageHeader
         title="Contact Us"
-        subtitle="Get in touch with us for any inquiries or to plan your perfect trip"
+        subtitle="24/7 Travel Assistance for Ujjain, Indore & Omkareshwar Trips"
         backgroundImage="/pik9.avif"
       />
 
       <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          
+          {/* Intro SEO Text */}
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+             <h2 className="text-3xl font-bold text-gray-900 mb-4">How Can We Help You Today?</h2>
+             <p className="text-gray-600 leading-relaxed">
+                Whether you need a <strong>taxi from Indore Airport to Ujjain</strong> at midnight or want to customize a <strong>3-day MP tourism package</strong>, our team is just a call away. We pride ourselves on being the most responsive <em>travel agency in Ujjain</em>. Fill the form below or call us directly for instant booking.
+             </p>
+          </div>
+<section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
@@ -280,6 +338,9 @@ export default function ContactPage() {
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
         </div>
       </section>
     </>

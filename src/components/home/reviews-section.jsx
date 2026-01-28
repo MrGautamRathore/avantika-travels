@@ -93,9 +93,11 @@ export default function ReviewsSection() {
   return (
     <section className="bg-muted/30">
       <div className="container py-10 mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">Customer Reviews</h2>
-          <p className="text-muted-foreground">See what our customers say about their experience</p>
+      <div className="text-center mb-12 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">What Our Yatris Say</h2>
+          <p className="text-gray-600">
+            We have served thousands of happy devotees on their <strong>Ujjain and Omkareshwar Yatra</strong>. Read their genuine experiences with our taxi and tour services.
+          </p>
         </div>
 
        

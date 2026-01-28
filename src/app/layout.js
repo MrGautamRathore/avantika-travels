@@ -9,48 +9,64 @@ import { StructuredData } from "@/components/seo/structured-data";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Suspense } from "react";
 import AIEnhancements from "@/components/seo/AIEnhancements";
+import Script from "next/script"; // Import Script component
 
-// 2026 SEO: AI-Optimized Metadata
+// Font Optimization
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: 'swap',
+  preload: true,
+});
+
+// 1. Viewport Export (Separated for Next.js 14+)
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  minimumScale: 1,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f9307e' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }
+  ],
+  colorScheme: 'light dark',
+};
+
+// 2. Metadata Export
+// ... imports
+
+// 2026 SEO: Advanced Metadata Strategy
 export const metadata = {
   metadataBase: new URL('https://avantikatravels.com'),
-  title: {
-    default: "Best Madhya Pradesh Tour Packages | Spiritual Tourism Experts",
-    template: "%s | Avantika Travels"
-  },
-  description: "Discover Madhya Pradesh tours, Ujjain Travels and Ujjain pilgrimage packages and India travel experiences with Avantika Travels. Best spiritual journeys and taxi services. Best travel services in ujjain, indore and dewas.",
-  keywords: ["Ujjain Travels","Mahakal Mandir tours", "Ujjain pilgrimage", "Madhya Pradesh travel", "Avantika Travels", "spiritual tours", "pilgrimage packages", "Ujjain tours", "Best travel for ujjain to indore", "best Indore tour packages", "Indore tours", "best travel agency", "best places to visit in madhya pradesh", "cheapest package to travel madhya pradesh", 'best avantika tours', 'best tour packages of avantika travels', 'bhasm aarti time at mahakal mandir', 'mahakal mandir darsan', 'sabse achhe travel packages', 'ujjain jane ke liye sabse badhiya travels', 'Best Madhya Pradesh Tour Packages'],
   
-  // 2026 FIXED: Simplified Icons Configuration
- /*  icons: {
+  // 1. Title Strategy: Brand + Primary Location Keyword
+  title: {
+    default: "Avantika Travels | Best Ujjain Taxi & Mahakal Tour Packages",
+    template: "%s | Avantika Travels Ujjain" // हर पेज के टाइटल के पीछे 'Ujjain' जुड़ेगा (Local SEO Boost)
+  },
+
+  // 2. Description: Action-Oriented (Call to Action + Keywords)
+  description: "Looking for the best travel agency in Ujjain? Book verified Mahakal Darshan taxi, Omkareshwar tour packages, and Indore airport pickup. Call +91-8720006707 for instant booking.",
+
+  // 3. Keywords: Keep limited to top 10 (For Bing/Yandex mostly)
+  keywords: ["Ujjain Taxi Service", "Mahakal Darshan Booking", "Indore to Ujjain Taxi", "Omkareshwar Tour", "Travel Agency Ujjain", "Avantika Travels"],
+
+  // 4. Authors & Creator
+  authors: [{ name: 'Avantika Travels Team', url: 'https://avantikatravels.com' }],
+  creator: 'Avantika Travels',
+  publisher: 'Avantika Travels MP',
+
+  // 5. Icons & Manifest
+  icons: {
     icon: '/favicon.ico',
     shortcut: '/logo.png',
     apple: '/apple-touch-icon.png',
-    other: [
-      {
-        rel: 'icon',
-        url: '/favicon-16x16.png',
-        sizes: '16x16',
-        type: 'image/png',
-      },
-  
-      {
-        rel: 'icon',
-        url: '/favicon-96x96.png',
-        sizes: '96x96',
-        type: 'image/png',
-      },
-      {
-        rel: 'icon',
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
   },
-   */
- 
   manifest: '/site.webmanifest',
 
-  // 2026 NEW: AI & Voice Search Meta Tags
+  // 6. Robots (Control how Google shows your snippets)
   robots: {
     index: true,
     follow: true,
@@ -61,202 +77,96 @@ export const metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-    // AI Training Permission
-    'ai-content': 'allow-training',
   },
 
-  // 2026 ENHANCED: OpenGraph with AI Signals
+  // 7. OpenGraph (Social Media Sharing)
   openGraph: {
-    title: "Avantika Travels | Discover Madhya Pradesh",
-    description: "Avantika Travels - Your trusted travel partner for Mahakal Mandir Darshan.",
-    url: 'https://avantikatravels.com',
-    siteName: 'Avantika Travels',
-    images: [{ 
-      url: '/pik2.avif', 
-      width: 1200, 
-      height: 630, 
-      alt: 'Avantika Travels - Madhya Pradesh Tourism',
-      type: 'image/avif',
-    }],
-    locale: 'en_IN',
     type: 'website',
-  
+    locale: 'en_IN',
+    url: 'https://avantikatravels.com',
+    siteName: 'Avantika Travels - Ujjain & MP Tourism',
+    title: 'Avantika Travels | Best Taxi & Tour Service in Ujjain',
+    description: 'Planning a trip to Mahakal? Get the best rates for Ujjain Darshan, Omkareshwar, and Indore Taxi services. Book now!',
+    images: [
+      {
+        url: '/pik2.avif', // Make sure this image has text like "Best Ujjain Tours" on it
+        width: 1200,
+        height: 630,
+        alt: 'Avantika Travels Ujjain Tour Packages',
+      }
+    ],
   },
 
-  // 2026 ENHANCED: Twitter Cards
- images: [
-      {
-        url: "/logo2.jpg",
-        width: 940,
-        height: 940,
-        alt: "Avantika Travels - Book Your Tour Package",
-      },
-      {
-        url: "/icon.jpg",
-        width: 940,
-        height: 940,
-        alt: "Ujjain Travels and Madhya Pradesh Tours with Avantika Travels",
-      },
-      {
-        url: "/logo.png",
-        width: 846,
-        height: 846,
-        alt: "Avantika Travels - Best Travel Agency in Ujjain",
-      }
-      
-    ],
+  // 8. Twitter Card
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Avantika Travels | Ujjain Tour Experts',
+    description: 'Book Mahakal Darshan Taxi & MP Tour Packages. Reliable & Affordable.',
+    images: ['/pik2.avif'],
+    creator: '@avantikatravels', // Add your handle if you have one
+  },
 
-  // 2026 NEW: Additional Meta Tags
+  // 9. Local SEO & Geo Tags (Crucial for Maps Ranking)
   other: {
-    // AI Content Signals
-    'ai-content-flag': 'human-expert-written',
-    'content-origin': 'verified-experts',
-    'fact-checked': 'true',
-    
-    // Sustainability & Accessibility (2026 Ranking Factors)
-    'sustainability-score': '85',
-    'accessibility-score': '92',
-    'carbon-footprint': '0.8g CO2 per pageview',
-    
-    // Voice Search Optimization
-    'voice-optimized': 'true',
-    'phonetic-keywords': 'महाकाल मंदिर, उज्जैन यात्रा, मध्य प्रदेश टूर',
-    
-    // Performance Metrics
-    'performance-score': '95',
-    'core-web-vitals': 'good',
-    
-    // Local SEO Enhanced
-    'geo.position': '23.1765;75.7885',
-    'geo.placename': 'Ujjain, Madhya Pradesh',
     'geo.region': 'IN-MP',
-    
-    // Verification
+    'geo.placename': 'Ujjain',
+    'geo.position': '23.1765;75.7885',
+    'ICBM': '23.1765, 75.7885',
     'google-site-verification': "Kzya8PN69Pu0Wy8EeAaDq8-GKXBErwII4ela_A_nTqY",
     
+    // Voice Search Optimization Tags
+    'format-detection': 'telephone=no', // Prevents random numbers from becoming links
   },
 
-  // 2026 NEW: Viewport Enhancements
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    minimumScale: 1,
-    userScalable: true,
-    themeColor: [
-      { media: '(prefers-color-scheme: light)', color: '#f9307e' },
-      { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }
-    ],
-    colorScheme: 'light dark',
-  },
-
-  // 2026 NEW: Authors and Contributors
-  authors: [
-    { name: 'Avantika Travels Team' },
-    { name: 'Madhya Pradesh Tourism Experts' }
-  ],
-
-  // 2026 NEW: Canonical URL Pattern
+  // 10. Canonical URL (Prevents Duplicate Content Issues)
   alternates: {
-    canonical: 'https://avantikatravels.com',
-    languages: {
-      'en-IN': 'https://avantikatravels.com',
-    }
+    canonical: './',
   }
 };
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: 'swap', // 2026 Performance Improvement
-  preload: true,
-});
+// ... Rest of your component code
+
 const defaultSiteData = {
   name: "Avantika Travels",
   tagline: "Discover the Divine Beauty of Madhya Pradesh",
-  description:
-    "Experience the spiritual essence and cultural heritage of Madhya Pradesh with Avantika Travels. We specialize in pilgrimages to Mahakal Mandir and tours across Ujjain, Indore, and Dewas.",
-  keywords: [
-    "avantika",
-    "travels",
-    "avantika travels",
-    "ujjain travels",
-    "Mahakal Mandir",
-    "Ujjain travel",
-    "Madhya Pradesh pilgrimage",
-    "Indore tours",
-    "Dewas travel",
-    "spiritual tours India",
-    "Mahakal Temple Ujjain",
-    "religious tourism Madhya Pradesh",
-    "pilgrimage packages India",
-    "temple tours central India",
-    "sacred sites Madhya Pradesh"
-  ],
-  logo: "/logo.png",
-  secondaryImage: "/pik2.avif",
-  heroImage: "/pik5.avif",
-contactInfo: { email: "info@avanikatravels.com",
-  phone: "+91 8720006707",
-  alternatePhone: "+91 8720006707",
-  location: "Ujjain, Madhya Pradesh, India",
-  address: "123, Mahakal Road, Near Mahakal Mandir, Ujjain, MP - 456001",
-  region: "Madhya Pradesh"},
-  mainAttraction: "Mahakal Mandir",
-  socialLinks: {
-    facebook: "https://facebook.com/avanikatravels",
-    instagram: "https://instagram.com/avanikatravels",
-    twitter: "https://twitter.com/avanikatravels",
-    youtube: "https://youtube.com/avanikatravels",
+  // ... (Keep your existing data structure same) ...
+  contactInfo: { 
+    email: "info@avanikatravels.com",
+    phone: "+91 8720006707",
+    // ...
   },
-  workingHours: "Mon - Sat: 9:00 AM - 7:00 PM",
-  theme: {
-    primaryColor: "#f9307a",
-    secondaryColor: "#ffffff"
-  }
+  // ...
 }
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en-IN" className={`${poppins.variable}`}>
       <head>
-        {/* 2026 FIX: Simplified Favicon Implementation */}
-        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
-        <link rel="icon" href="/favicon.png" sizes="any"/>
-        <link rel="icon" href="/favicon-16x16.png" sizes="16x16" />
-        <link rel="icon" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+        {/* Manual links removed to avoid conflicts with Metadata API */}
         
-      
-        
-        {/* 2026 NEW: Privacy & Consent Mode */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied'
-              });
-            `
-          }}
-        />
-    
+        {/* 6. Optimized Script Loading for Consent/Analytics */}
+        <Script id="consent-mode" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied'
+            });
+          `}
+        </Script>
       </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
         <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-lg">Loading Avantika Travels...</div>
+          <div className="min-h-screen flex items-center justify-center bg-white text-primary">
+            <div className="text-lg font-bold animate-pulse">Loading Avantika Travels...</div>
           </div>
         }>
           <SiteProvider>
             <ThemeProvider>
               <StructuredData />
-                 <AIEnhancements pageType="global" data={defaultSiteData} />
+              <AIEnhancements pageType="global" data={defaultSiteData} />
               <Header />
               <main className="min-h-screen">{children}</main>
               <Footer />
