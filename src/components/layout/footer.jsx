@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Optimization: Use Next.js Image
 import {
   FiFacebook,
   FiInstagram,
@@ -19,238 +20,177 @@ export default function Footer() {
   const router = useRouter();
   const [tapCount, setTapCount] = useState(0);
   const tapTimeoutRef = useRef(null);
+
   const handleSecretTap = () => {
     setTapCount((prev) => prev + 1);
-
     if (tapTimeoutRef.current) {
       clearTimeout(tapTimeoutRef.current);
     }
-
     tapTimeoutRef.current = setTimeout(() => {
       setTapCount(0);
-    }, 2000); // Reset after 2 seconds
+    }, 2000); 
 
     if (tapCount + 1 >= 5) {
       router.push("/admin/login");
       setTapCount(0);
     }
   };
+
   const quickLinks = [
-    {
-      name: "About Us",
-      href: "/about",
-      title:
-        "About Avantika Travels - Leading Travel Agency in Indore, Madhya Pradesh",
-    },
-    {
-      name: "Contact Us",
-      href: "/contact",
-      title: "Contact Avantika Travels - Get in Touch for Your Next Trip",
-    },
-    {
-      name: "Blogs",
-      href: "/blogs",
-      title: "Travel Blogs - Madhya Pradesh Tourism Guide & Travel Tips",
-    },
-    {
-      name: "Privacy Policy",
-      href: "/privacy-policy",
-      title: "Privacy Policy - Avantika Travels Data Protection",
-    },
-    {
-      name: "Terms & Conditions",
-      href: "/terms-and-conditions",
-      title: "Terms & Conditions - Avantika Travels Service Agreement",
-    },
+    { name: "About Us", href: "/about", title: "About Avantika Travels - Leading Travel Agency in Ujjain" },
+    { name: "Contact Us", href: "/contact", title: "Contact for Ujjain Taxi & Tour Booking" },
+    { name: "Blogs", href: "/blogs", title: "Read Latest MP Tourism Guides & Tips" },
+    { name: "Privacy Policy", href: "/privacy-policy", title: "Read our Privacy Policy" },
+    { name: "Terms & Conditions", href: "/terms-and-conditions", title: "Read Terms of Service" },
   ];
 
   const destinations = [
-    {
-      name: "Holiday Packages",
-      href: "/packages?type=holiday",
-      title: "Holiday Packages in Madhya Pradesh - Family & Group Tours",
-    },
-    {
-      name: "Adventure Trips",
-      href: "/packages?type=adventure",
-      title:
-        "Adventure Trips in Madhya Pradesh - Trekking & Outdoor Activities",
-    },
-    {
-      name: "Honeymoon Tours",
-      href: "/packages?type=honeymoon",
-      title: "Romantic Honeymoon Tours in Madhya Pradesh - Couples Getaways",
-    },
-    {
-      name: "Pilgrimage Tours",
-      href: "/packages?type=pilgrimage",
-      title: "Religious Pilgrimage Tours - Sacred Sites in Madhya Pradesh",
-    },
-    {
-      name: "Family Vacations",
-      href: "/packages?type=family",
-      title: "Family Vacation Packages - Safe & Enjoyable Trips for All Ages",
-    },
-    {
-      name: "Weekend Getaways",
-      href: "/packages?type=weekend",
-      title: "Weekend Getaways from Indore - Short Trip Packages",
-    },
+    { name: "Holiday Packages", href: "/packages?type=holiday", title: "Best Holiday Packages in Madhya Pradesh" },
+    { name: "Adventure Trips", href: "/packages?type=adventure", title: "Adventure Activities & Trekking in MP" },
+    { name: "Honeymoon Tours", href: "/packages?type=honeymoon", title: "Romantic Honeymoon Packages in Pachmarhi & Mandu" },
+    { name: "Pilgrimage Tours", href: "/packages?type=pilgrimage", title: "Mahakal Darshan & Omkareshwar Yatra Packages" },
+    { name: "Family Vacations", href: "/packages?type=family", title: "Family Tour Packages for Ujjain & Indore" },
+    { name: "Weekend Getaways", href: "/packages?type=weekend", title: "Short Weekend Trips from Indore" },
   ];
 
   return (
-    <footer className="bg-foreground text-white">
+    <footer className="bg-foreground text-white" itemScope itemType="http://schema.org/WPFooter">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <img
-                src="/logo1.png"
-                alt="Avantika Travels logo"
-                className="h-18 w-18 hover:scale-110 transition rounded shadow-2xl shadow-white/80"
-              />
-              <h3 className="text-2xl font-bold">
+          
+          {/* Company Info - Logo & Description */}
+          <div className="space-y-4" itemScope itemType="http://schema.org/Organization">
+            <Link href="/" className="flex items-center gap-2 group" title="Avantika Travels Home">
+              <div className="relative h-16 w-16 overflow-hidden rounded shadow-2xl shadow-white/20 group-hover:scale-105 transition-transform">
+                 <Image
+                    src="/logo1.png"
+                    alt="Avantika Travels - Best Travel Agency in Ujjain"
+                    fill
+                    className="object-cover rounded-2xl rounded-t-4xl rounded-b-sm"
+                    sizes="64px"
+                 />
+              </div>
+              <h3 className="text-2xl font-bold" itemProp="name">
                 {siteData.name.split(" ")[0]}
                 <span className="text-primary">
                   {siteData.name.split(" ")[1] || ""}
                 </span>
               </h3>
-            </div>
+            </Link>
 
-            <p className="text-gray-300 leading-relaxed">
-              {siteData.description.slice(0, 150)}...
+            <p className="text-gray-300 leading-relaxed text-sm" itemProp="description">
+              {siteData.description.slice(0, 180)}... Trusted for Mahakal Darshan & MP Tours.
             </p>
+            
+            {/* Social Links with Aria Labels for Accessibility */}
             <div className="flex gap-4">
-              <a
-                href={siteData.socialLinks.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
-              >
+              <a href={siteData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiFacebook className="w-5 h-5" />
               </a>
-              <a
-                href={siteData.socialLinks.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
-              >
+              <a href={siteData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiInstagram className="w-5 h-5" />
               </a>
-              <a
-                href={siteData.socialLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
-              >
+              <a href={siteData.socialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Twitter" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiTwitter className="w-5 h-5" />
               </a>
-              <a
-                href={siteData.socialLinks.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
-              >
+              <a href={siteData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiYoutube className="w-5 h-5" />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">{siteData.name}</h4>
+          <nav aria-label="Footer Quick Links">
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-300 hover:text-primary transition-colors"
+                    title={link.title}
+                    className="text-gray-300 hover:text-primary transition-colors hover:pl-1"
                   >
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           {/* Destinations */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Destinations</h4>
+          <nav aria-label="Popular Destinations">
+            <h4 className="text-lg font-semibold mb-4">Popular Tours</h4>
             <ul className="space-y-3">
               {destinations.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-300 hover:text-primary transition-colors"
+                    title={link.title}
+                    className="text-gray-300 hover:text-primary transition-colors hover:pl-1"
                   >
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Newsletter */}
+          {/* Newsletter / CTA */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Join Our Newsletter</h4>
-            <p className="text-gray-300 mb-4">
-              Get exclusive access to travel deals, offers and adventure ideas.
+            <h4 className="text-lg font-semibold mb-4">Plan Your Trip</h4>
+            <p className="text-gray-300 mb-4 text-sm">
+              Get exclusive deals on <strong>Ujjain & Indore Taxi Services</strong> directly to your inbox.
             </p>
-            <form className="flex gap-2">
+            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
               <div className="flex-1 relative">
+                <label htmlFor="footer-email" className="sr-only">Email Address</label>
                 <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
+                  id="footer-email"
                   type="email"
-                  placeholder="Email"
-                  className="w-full bg-white/10 border border-white/20 rounded-full py-3 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-primary"
+                  placeholder="Your Email"
+                  className="w-full bg-white/10 border border-white/20 rounded-full py-3 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm"
                 />
               </div>
               <button
                 type="submit"
-                className="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
+                className="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap text-sm"
               >
-                Join us
+                Subscribe
               </button>
             </form>
           </div>
         </div>
 
-        {/* Contact Info */}
+        {/* Contact Info Bar */}
         <div className="mt-12 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-gray-300 text-sm">
-              <a
-                href={`tel:${siteData.contactInfo.phone}`}
-                className="flex items-center gap-2 hover:text-primary transition-colors"
-              >
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-gray-300 text-sm" itemScope itemType="http://schema.org/PostalAddress">
+              <a href={`tel:${siteData.contactInfo.phone}`} className="flex items-center gap-2 hover:text-primary transition-colors" title="Call for Booking">
                 <FiPhone className="w-4 h-4" />
-                {siteData.contactInfo.phone}
+                <span itemProp="telephone">{siteData.contactInfo.phone}</span>
               </a>
-              <a
-                href={`mailto:${siteData.contactInfo.email}`}
-                className="flex items-center gap-2 hover:text-primary transition-colors"
-              >
+              <a href={`mailto:${siteData.contactInfo.email}`} className="flex items-center gap-2 hover:text-primary transition-colors" title="Email for Enquiry">
                 <FiMail className="w-4 h-4" />
-                {siteData.contactInfo.email}
+                <span itemProp="email">{siteData.contactInfo.email}</span>
               </a>
               <span className="flex items-center gap-2">
-                <FiMapPin className="w-4 h-4" />
-                {siteData.contactInfo.location}
+                <FiMapPin className="w-4 h-4 shrink-0" />
+                <span itemProp="addressLocality">{siteData.contactInfo.location}</span>
               </span>
             </div>
             <p className="text-gray-400 text-sm">
-              All rights reserved. © Avantika Travels. {new Date().getFullYear()}
+              © {new Date().getFullYear()} <span itemProp="legalName">Avantika Travels</span>. All rights reserved.
             </p>
           </div>
 
-          <p className="text-center text-gray-400 text-sm mt-4">
-            Designed and developed by{" "}
+          <p className="text-center text-gray-500 text-xs mt-6">
+            Designed with ❤️ by{" "}
             <a
               href="https://website-developers.vercel.app"
               target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary text-primary transition-colors"
+              rel="noopener noreferrer nofollow" // Added nofollow for external link
+              className="hover:text-primary text-gray-400 transition-colors"
             >
               Website Developers
             </a>
@@ -261,8 +201,8 @@ export default function Footer() {
       {/* Secret admin access for mobile - tap 5 times */}
       <div
         onClick={handleSecretTap}
-        className="fixed bottom-0 right-0 w-20 h-20 opacity-0 bg-amber-400 cursor-pointer"
-        style={{ zIndex: 1 }}
+        className="fixed bottom-0 right-0 w-16 h-16 z-50 cursor-default" // Made smaller and invisible but clickable
+        aria-hidden="true"
       />
     </footer>
   );

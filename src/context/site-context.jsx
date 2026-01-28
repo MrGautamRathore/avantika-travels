@@ -11,25 +11,37 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/a
 // Default site configuration data (fallback)
 const defaultSiteData = {
   name: "Avantika Travels",
-  tagline: "Discover the Divine Beauty of Madhya Pradesh",
-  description:
-    "Experience the spiritual essence and cultural heritage of Madhya Pradesh with Avantika Travels. We specialize in pilgrimages to Mahakal Mandir and tours across Ujjain, Indore, and Dewas.",
+  // Tagline: Short & Catchy (Brand Positioning)
+  tagline: "Your Trusted Partner for Mahakal Darshan & MP Tours",
+  
+  // Description: The SEO Powerhouse (Keep it between 150-160 characters for Meta tags, but here we can go up to 300 for Schema)
+  description: 
+    "Plan your spiritual journey with Avantika Travels, the best travel agency in Ujjain. We specialize in affordable Ujjain Mahakal Darshan taxi services, Indore to Ujjain airport transfers, and customized Omkareshwar-Maheshwar tour packages. Experience comfortable travel with our sanitized fleet and 24/7 local support.",
+
+  // Keywords: Updated Strategy (Mix of Short & Long Tail)
   keywords: [
-    "avantika",
-    "travels",
-    "avantika travels",
-    "ujjain travels",
-    "Mahakal Mandir",
-    "Ujjain travel",
-    "Madhya Pradesh pilgrimage",
-    "Indore tours",
-    "Dewas travel",
-    "spiritual tours India",
-    "Mahakal Temple Ujjain",
-    "religious tourism Madhya Pradesh",
-    "pilgrimage packages India",
-    "temple tours central India",
-    "sacred sites Madhya Pradesh"
+    // 1. Core Service Keywords
+    "Travel agency in Ujjain",
+    "Taxi service in Ujjain",
+    "Best tour operator Ujjain",
+    "Car rental Ujjain",
+    
+    // 2. Location Specific (High Volume)
+    "Indore to Ujjain taxi",
+    "Ujjain to Omkareshwar taxi fare",
+    "Indore airport to Mahakal temple cab",
+    
+    // 3. Religious/Attraction Keywords
+    "Mahakal Darshan booking",
+    "Bhasma Aarti Ujjain",
+    "Mahakal Lok Corridor tour",
+    "Omkareshwar Jyotirlinga yatra",
+    
+    // 4. Niche/Long Tail
+    "One day Ujjain tour package",
+    "Family tour packages Madhya Pradesh",
+    "Luxury taxi for Mahakal darshan",
+    "Avantika Travels Ujjain contact"
   ],
   logo: "/logo.png",
   secondaryImage: "/pik2.avif",
