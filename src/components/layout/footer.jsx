@@ -174,10 +174,19 @@ export default function Footer() {
                 <FiMail className="w-4 h-4" />
                 <span itemProp="email">{siteData.contactInfo.email}</span>
               </a>
-              <span className="flex items-center gap-2">
-                <FiMapPin className="w-4 h-4 shrink-0" />
-                <span itemProp="addressLocality">{siteData.contactInfo.location}</span>
-              </span>
+              <a
+  href="https://share.google/ROllp7phdAfAwrSoI"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-2 hover:text-primary transition-colors"
+  title="View Avantika Travels on Google Maps"
+>
+  <FiMapPin className="w-4 h-4 shrink-0" />
+  <span itemProp="addressLocality">
+    {siteData.contactInfo.location}
+  </span>
+</a>
+
             </div>
             <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()} <span itemProp="legalName">Avantika Travels</span>. All rights reserved.

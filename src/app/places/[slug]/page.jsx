@@ -272,8 +272,8 @@ export default function PlaceDetailsPage({ params }) {
                 <div className="bg-gradient-to-br from-primary via-pink-600 to-gray-700 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
                     
-                    <h3 className="font-bold text-xl mb-2 relative z-10">Visit {place.title} Today!</h3>
-                    <p className="text-pink-100 text-sm mb-6 relative z-10">
+                    <h3 className="font-bold text-xl text-gray-900  mb-2 relative z-10">Visit {place.title} Today!</h3>
+                    <p className="text-gray-700 text-sm mb-6 relative z-10">
                         Book a hassle-free taxi from Indore or Ujjain. Comfortable cars & experienced drivers.
                     </p>
 

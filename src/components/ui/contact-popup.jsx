@@ -32,7 +32,7 @@ export default function ContactPopup() {
     if (!isMobile) {
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 5000)
+      }, 8000)
 
       return () => {
         clearTimeout(timer)

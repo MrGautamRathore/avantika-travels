@@ -201,7 +201,7 @@ export default function BlogsPage() {
         </article>
 
         {/* --- CTA SECTION --- */}
-        <section className="bg-gradient-to-br from-gray-900 to-gray-800 py-16 text-center text-white relative overflow-hidden">
+        <section className="bg-gradient-to-br from-gray-100 to-gray-200 py-16 text-center text-white relative overflow-hidden">
             <div className="container mx-auto px-4 relative z-10">
                 <h2 className="text-2xl md:text-3xl font-bold mb-6 text-black">Want a Hassle-Free Darshan Experience?</h2>
                 <p className="text-gray-800 mb-8 max-w-2xl mx-auto">
@@ -222,7 +222,7 @@ export default function BlogsPage() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg hover:text-primary hover:scale-105 transition-all"
                     >
-                        <FaWhatsapp className="w-5 h-5" />
+                        <FaWhatsapp className="w-5 h-5 text-green-500" />
                         Chat with Expert
                     </a>
                 </div>

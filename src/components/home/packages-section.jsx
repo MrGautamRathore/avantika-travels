@@ -92,7 +92,7 @@ export default function PackagesSection() {
            <div className="grid md:grid-cols-2 gap-8 text-gray-600 text-sm leading-relaxed">
               <div>
                 <p className="mb-4">
-                  <strong>Complete Mahakal Yatra:</strong> We specialize in religious tourism. From assisting with <em>Bhasma Aarti online booking</em> information to guiding you through the new <strong>Mahakal Corridor (Mahakal Lok)</strong>, our drivers and guides ensure you don't miss anything.
+                  <strong>Complete Mahakal Yatra:</strong> We specialize in <Link href="/services" className="text-primary hover:underline">religious tourism</Link>. From assisting with <em>Bhasma Aarti online booking</em> information to guiding you through the new <strong>Mahakal Corridor (Mahakal Lok)</strong>, our drivers and guides ensure you don't miss anything.
                 </p>
                 <p>
                   <strong>Transparent Pricing:</strong> No hidden charges. Our <strong>Ujjain taxi fare list</strong> is clear. Whether you need a tempo traveller for a group or a sedan for a private trip, you get the best rates in the market.
@@ -103,7 +103,7 @@ export default function PackagesSection() {
                   <strong>Connectivity:</strong> Landing at Indore Airport? Our <strong>Indore to Ujjain taxi service</strong> is available 24/7. We also cover nearby religious sites like <strong>Omkareshwar</strong>, <strong>Maheshwar</strong>, and <strong>Baglamukhi Mata</strong>.
                 </p>
                 <p>
-                  <strong>Local Expertise:</strong> Being a local <em>Ujjain travel agency</em>, we know the best time to visit temples to avoid crowds and the best places to taste authentic Malwa food like Poha-Jalebi and Dal-Bafla.
+                  <strong>Local Expertise:</strong> Being a local <Link href="/about" className="text-primary hover:underline"><em>Ujjain travel agency</em></Link>, we know the best time to visit temples to avoid crowds and the best places to taste authentic Malwa food like Poha-Jalebi and Dal-Bafla.
                 </p>
               </div>
            </div>

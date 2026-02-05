@@ -5,8 +5,9 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import Head from "next/head"
-import { FiMapPin, FiClock, FiCheck, FiPhone, FiInfo, FiHelpCircle, FiShield, FiX, FiAlertCircle } from "react-icons/fi"
+import { FiMapPin, FiClock, FiCheck, FiPhone, FiInfo, FiHelpCircle, FiShield, FiX, FiAlertCircle, FiShare2 } from "react-icons/fi"
 import { FaWhatsapp, FaGooglePay } from "react-icons/fa"
+import { FaTelegram, FaInstagram, FaTwitter } from "react-icons/fa"
 import PageHeader from "@/components/ui/page-header"
 import PackageCard from "@/components/ui/package-card"
 import { useSite } from "@/context/site-context"
@@ -148,16 +149,86 @@ export default function PackageDetailsPage({ params }) {
                 <div className="grid grid-cols-4 gap-3 mb-10">
                   {pkg.images.slice(1, 5).map((image, index) => (
                     <div key={index} className="relative h-20 md:h-24 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-primary transition-all">
-                      <Image 
-                        src={image.url} 
-                        alt={`${pkg.name} view ${index + 1}`} 
-                        fill 
+                      <Image
+                        src={image.url}
+                        alt={`${pkg.name} view ${index + 1}`}
+                        fill
                         className="object-cover"
                       />
                     </div>
                   ))}
                 </div>
               )}
+
+              {/* Share Package Section */}
+              <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+                      <FiShare2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">Share this Package</p>
+                      <p className="text-xs text-gray-500">Help others discover great experiences</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    {/* WhatsApp Share */}
+                    <button
+                      onClick={() => {
+                        const text = `Check out this amazing tour package: ${pkg.name}\n\n - Destination: ${pkg.destination}\n - Duration: ${pkg.duration}\n - Price: ₹${pkg.price}\n\n${pkg.pickupPoint ? `- Pickup: ${pkg.pickupPoint}\n` : ''}${pkg.dropPoint ? `- Drop: ${pkg.dropPoint}\n` : ''}${pkg.tripDate ? `- Date: ${new Date(pkg.tripDate).toLocaleDateString()}\n` : ''}\n${currentUrl}`
+                        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`
+                        window.open(whatsappUrl, '_blank')
+                      }}
+                      className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                      title="Share on WhatsApp"
+                    >
+                      <FaWhatsapp className="w-5 h-5" />
+                    </button>
+
+                    {/* Telegram Share */}
+                    <button
+                      onClick={() => {
+                        const text = `Check out this amazing tour package: ${pkg.name}\n\n📍 Destination: ${pkg.destination}\n⏱️ Duration: ${pkg.duration}\n💰 Price: ₹${pkg.price}\n\n${pkg.pickupPoint ? `🚗 Pickup: ${pkg.pickupPoint}\n` : ''}${pkg.dropPoint ? `🏁 Drop: ${pkg.dropPoint}\n` : ''}${pkg.tripDate ? `📅 Date: ${new Date(pkg.tripDate).toLocaleDateString()}\n` : ''}\n${currentUrl}`
+                        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(text)}`
+                        window.open(telegramUrl, '_blank')
+                      }}
+                      className="w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors"
+                      title="Share on Telegram"
+                    >
+                      <FaTelegram className="w-5 h-5" />
+                    </button>
+
+                    {/* Twitter Share */}
+                    <button
+                      onClick={() => {
+                        const text = `Check out this amazing tour package: ${pkg.name} - ${pkg.destination}, ${pkg.duration} @ ₹${pkg.price} ${pkg.tripDate ? `on ${new Date(pkg.tripDate).toLocaleDateString()}` : ''}`
+                        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`
+                        window.open(twitterUrl, '_blank')
+                      }}
+                      className="w-10 h-10 bg-blue-400 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-colors"
+                      title="Share on Twitter"
+                    >
+                      <FaTwitter className="w-5 h-5" />
+                    </button>
+
+                    {/* Instagram Share (opens Instagram app/website) */}
+                    <button
+                      onClick={() => {
+                        const text = `Check out this amazing tour package: ${pkg.name}\n\n📍 Destination: ${pkg.destination}\n⏱️ Duration: ${pkg.duration}\n💰 Price: ₹${pkg.price}\n\n${pkg.pickupPoint ? `🚗 Pickup: ${pkg.pickupPoint}\n` : ''}${pkg.dropPoint ? `🏁 Drop: ${pkg.dropPoint}\n` : ''}${pkg.tripDate ? `📅 Date: ${new Date(pkg.tripDate).toLocaleDateString()}\n` : ''}\n${currentUrl}`
+                        navigator.clipboard.writeText(text).then(() => {
+                          window.open('https://www.instagram.com/', '_blank')
+                          alert('Package details copied to clipboard! You can now paste it in Instagram.')
+                        })
+                      }}
+                      className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full flex items-center justify-center transition-colors"
+                      title="Share on Instagram"
+                    >
+                      <FaInstagram className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               {/* Quick Info Bar */}
               <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-wrap gap-6 mb-8 items-center justify-between">
@@ -179,6 +250,39 @@ export default function PackageDetailsPage({ params }) {
                         <p className="font-semibold text-gray-900">{pkg.destination}</p>
                     </div>
                  </div>
+                 {pkg.pickupPoint && (
+                   <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-600">
+                          <FiMapPin className="w-5 h-5" />
+                      </div>
+                      <div>
+                          <p className="text-xs text-gray-500 uppercase font-bold">Pickup Point</p>
+                          <p className="font-semibold text-gray-900">{pkg.pickupPoint}</p>
+                      </div>
+                   </div>
+                 )}
+                 {pkg.dropPoint && (
+                   <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center text-red-600">
+                          <FiMapPin className="w-5 h-5" />
+                      </div>
+                      <div>
+                          <p className="text-xs text-gray-500 uppercase font-bold">Drop Point</p>
+                          <p className="font-semibold text-gray-900">{pkg.dropPoint}</p>
+                      </div>
+                   </div>
+                 )}
+                 {pkg.tripDate && (
+                   <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
+                          <FiClock className="w-5 h-5" />
+                      </div>
+                      <div>
+                          <p className="text-xs text-gray-500 uppercase font-bold">Trip Date</p>
+                          <p className="font-semibold text-gray-900">{new Date(pkg.tripDate).toLocaleDateString()}</p>
+                      </div>
+                   </div>
+                 )}
                  <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-purple-600">
                         <FiShield className="w-5 h-5" />

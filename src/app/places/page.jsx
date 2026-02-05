@@ -138,23 +138,23 @@ export default function PlacesPage() {
             
             <div className="container mx-auto px-4 relative z-10">
                 <h2 className="text-3xl font-bold mb-8 text-primary">Ready to Explore Madhya Pradesh?</h2>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Link
-                        href={`tel:${siteData?.contactInfo?.phone || '+918720006707'}`}
-                        className="flex items-center gap-2 bg-white text-black font-bold px-6 py-3 rounded-full shadow-lg hover:bg-gray-100 hover:scale-105 transition-all text-lg"
+                        href={`tel:${siteData.contactInfo?.phone?.replace(/\D/g, '') || '918720006707'}`}
+                        className="flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full shadow-lg hover:bg-primary-dark hover:scale-105 transition-all"
                     >
                         <FiPhone className="w-5 h-5" />
-                        Call for Enquiry
+                        Call For Enquiry
                     </Link>
 
                     <a
-                        href={`https://wa.me/${siteData?.contactInfo?.phone?.replace(/\D/g, '') || '918720006707'}?text=Hi, I want to visit specific places in MP. Please guide.`}
+                        href={`https://wa.me/${siteData.contactInfo?.phone?.replace(/\D/g, '') || '918720006707'}?text=Hi, I read your place descriptions and need help planning my next trip.`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 bg-green-500 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:bg-green-600 hover:scale-105 transition-all text-lg"
+                        className="flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg hover:text-primary hover:scale-105 transition-all"
                     >
-                        <FaWhatsapp className="w-5 h-5" />
-                        Plan on WhatsApp
+                        <FaWhatsapp className="w-5 h-5 text-green-500" />
+                        Chat with Expert
                     </a>
                 </div>
                 <p className="mt-6 text-sm text-gray-800 opacity-90 font-medium tracking-wide">

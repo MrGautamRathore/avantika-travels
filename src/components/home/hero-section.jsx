@@ -4,12 +4,10 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { FiSearch } from "react-icons/fi"
 import Image from "next/image"
+import Link from "next/link"
 import { useSite } from "@/context/site-context"
 
 export default function HeroSection({
-  selectedTripType,
-  setSelectedTripType,
-  selectedRegion,
   setSelectedRegion,
   onSearch,
 }) {
@@ -53,7 +51,7 @@ export default function HeroSection({
               <span className="block text-2xl md:text-3xl font-medium mb-2 text-gray-300">
                 Welcome to the City of Mahakal
               </span>
-              Explore <span className="text-primary">Ujjain & Omkareshwar</span> with Avantika Travels
+              Explore <span className="text-primary">Ujjain & Omkareshwar</span> with <Link href="/about" className="hover:underline">Avantika Travels</Link>
             </h1>
           </motion.header>
 
@@ -64,7 +62,7 @@ export default function HeroSection({
             className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl"
           >
             <p>
-              Your trusted partner for <strong>Mahakal Darshan</strong>, <strong>Indore to Ujjain Taxi services</strong>, and complete Madhya Pradesh tourism. We offer affordable <strong>Ujjain tour packages</strong> tailored for families and couples.
+              Your trusted partner for <strong>Mahakal Darshan</strong>, <strong>Indore to Ujjain Taxi services</strong>, and complete Madhya Pradesh tourism. We offer affordable <a href="/packages"><strong>Ujjain tour packages</strong></a> tailored for families and couples.
             </p>
           </motion.div>
 

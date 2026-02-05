@@ -34,6 +34,9 @@ export default function AdminPackages() {
     duration: '',
     destination: '',
     category: '',
+    pickupPoint: '',
+    dropPoint: '',
+    tripDate: '',
     images: [],
     itinerary: [],
     inclusions: [],
@@ -124,6 +127,9 @@ export default function AdminPackages() {
       duration: '',
       destination: '',
       category: '',
+      pickupPoint: '',
+      dropPoint: '',
+      tripDate: '',
       images: [],
       itinerary: [],
       inclusions: [],
@@ -143,6 +149,9 @@ export default function AdminPackages() {
       duration: pkg.duration,
       destination: pkg.destination,
       category: pkg.category,
+      pickupPoint: pkg.pickupPoint || '',
+      dropPoint: pkg.dropPoint || '',
+      tripDate: pkg.tripDate ? new Date(pkg.tripDate).toISOString().split('T')[0] : '',
       images: pkg.images || [],
       itinerary: pkg.itinerary || [],
       inclusions: pkg.inclusions || [],
@@ -640,7 +649,7 @@ export default function AdminPackages() {
                         required
                       />
                     </div>
- <div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Category *
                       </label>
@@ -650,6 +659,44 @@ export default function AdminPackages() {
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                         required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Pickup Point
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.pickupPoint}
+                        onChange={(e) => setFormData({ ...formData, pickupPoint: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        placeholder="e.g., Airport, Hotel, Railway Station"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Drop Point
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.dropPoint}
+                        onChange={(e) => setFormData({ ...formData, dropPoint: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        placeholder="e.g., Airport, Hotel, Railway Station"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Trip Date
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.tripDate}
+                        onChange={(e) => setFormData({ ...formData, tripDate: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                       />
                     </div>
 
@@ -939,6 +986,18 @@ export default function AdminPackages() {
                     <div>
                       <p className="text-sm text-gray-500">Duration</p>
                       <p className="text-black">{showDetails.duration}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Pickup Point</p>
+                      <p className="text-black">{showDetails.pickupPoint || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Drop Point</p>
+                      <p className="text-black">{showDetails.dropPoint || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Trip Date</p>
+                      <p className="text-black">{showDetails.tripDate ? new Date(showDetails.tripDate).toLocaleDateString() : 'Not specified'}</p>
                     </div>
                   </div>
 

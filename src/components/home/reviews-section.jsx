@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { FaStar, FaFilter } from 'react-icons/fa'
+import Link from 'next/link'
 import { useSite } from '../../context/site-context'
 
 export default function ReviewsSection() {
@@ -99,6 +100,18 @@ export default function ReviewsSection() {
             We have served thousands of happy devotees on their <strong>Ujjain and Omkareshwar Yatra</strong>. Read their genuine experiences with our taxi and tour services.
           </p>
         </div>
+<div className="flex justify-center mb-10">
+  <a
+    href="https://share.google/ROllp7phdAfAwrSoI"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-2 bg-white border border-border text-foreground px-6 py-3 rounded-full font-medium hover:bg-primary hover:text-primary-foreground transition-all shadow-md"
+    title="View Avantika Travels Reviews on Google Maps"
+  >
+    <FaStar className="text-yellow-400" />
+    View all Reviews on Google
+  </a>
+</div>
 
        
         {/* Post Review Form */}

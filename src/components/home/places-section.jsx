@@ -119,7 +119,7 @@ export default function PlacesSection() {
             <div>
               <h4 className="text-lg font-semibold text-gray-800 mb-2">How to Plan Your Trip?</h4>
               <p>
-                Most travelers arrive via Indore. The <strong>Indore to Ujjain distance</strong> is about 55km, which takes roughly 1 to 1.5 hours by taxi. At Avantika Travels, we suggest a <strong>2-day itinerary</strong>: Day 1 for Mahakal Darshan, Kaal Bhairav, and Harsiddhi Mata Temple; Day 2 for an <strong>Omkareshwar & Mamleshwar Jyotirlinga trip</strong>. Don't forget to book your <em>Bhasma Aarti</em> tickets online in advance!
+                Most travelers arrive via Indore. The <strong>Indore to Ujjain distance</strong> is about 55km, which takes roughly 1 to 1.5 hours by <Link href="/services" className="text-primary hover:underline">taxi</Link>. At <Link href="/about" className="text-primary hover:underline">Avantika Travels</Link>, we suggest a <strong>2-day itinerary</strong>: Day 1 for Mahakal Darshan, Kaal Bhairav, and Harsiddhi Mata Temple; Day 2 for an <strong>Omkareshwar & Mamleshwar Jyotirlinga trip</strong>. Don't forget to <Link href="/contact" className="text-primary hover:underline">book your <em>Bhasma Aarti</em> tickets</Link> online in advance!
               </p>
             </div>
           </div>
