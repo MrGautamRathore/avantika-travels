@@ -44,7 +44,7 @@ const defaultSiteData = {
     "Avantika Travels Ujjain contact"
   ],
   logo: "/logo.png",
-  secondaryImage: "/pik2.avif",
+  secondaryImage: "/mahakal-coridor-ujjain.png",
   heroImage: "/pik5.avif",
 contactInfo: { email: "info@avanikatravels.com",
   phone: "+91 8720006707",

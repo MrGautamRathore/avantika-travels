@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { FiMaximize2, FiX, FiMapPin, FiChevronRight, FiUser, FiArrowLeft } from "react-icons/fi"
+import { FiMaximize2, FiX, FiMapPin, FiChevronRight, FiUser, FiArrowLeft, FiShare2, FiCheck } from "react-icons/fi"
+import { FaFacebook, FaTwitter, FaWhatsapp, FaLink } from "react-icons/fa"
 import Link from "next/link"
 import PageHeader from "@/components/ui/page-header"
+import { useSite } from "@/context/site-context"
 
 export default function GalleryDetailPage() {
   const params = useParams()
@@ -16,6 +18,46 @@ export default function GalleryDetailPage() {
   const [error, setError] = useState(null)
   const [activeTrip, setActiveTrip] = useState(null)
   const [mainImage, setMainImage] = useState("")
+  const { siteData } = useSite()
+  const [copied, setCopied] = useState(false)
+
+  // Get current URL for sharing
+  const getShareUrl = () => {
+    if (typeof window !== "undefined") {
+      return window.location.href
+    }
+    return ""
+  }
+
+  // Copy link to clipboard
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(getShareUrl())
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error("Failed to copy:", err)
+    }
+  }
+
+  // Share to Facebook
+  const shareToFacebook = () => {
+    const url = encodeURIComponent(getShareUrl())
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank")
+  }
+
+  // Share to Twitter
+  const shareToTwitter = () => {
+    const text = encodeURIComponent(`Check out this amazing trip to ${gallery?.location}!`)
+    const url = encodeURIComponent(getShareUrl())
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank")
+  }
+
+  // Share to WhatsApp
+  const shareToWhatsApp = () => {
+    const text = encodeURIComponent(`Check out this amazing trip to ${gallery?.location}! ${getShareUrl()}`)
+    window.open(`https://wa.me/?text=${text}`, "_blank")
+  }
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -95,19 +137,59 @@ export default function GalleryDetailPage() {
 
       <main className="bg-gray-50 min-h-screen py-16">
         <div className="container mx-auto px-4">
-          {/* Back Button */}
+          {/* Back Button and Share Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="mb-8"
           >
-            <Link
-              href="/gallery"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
-            >
-              <FiArrowLeft className="w-5 h-5" />
-              Back to Gallery
-            </Link>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <Link
+                href="/gallery"
+                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+              >
+                <FiArrowLeft className="w-5 h-5" />
+                Back to Gallery
+              </Link>
+
+              {/* Social Media Share Icons */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                  <FiShare2 className="w-4 h-4" />
+                  Share:
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={shareToFacebook}
+                    className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+                    title="Share on Facebook"
+                  >
+                    <FaFacebook className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={shareToTwitter}
+                    className="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center hover:bg-sky-600 transition-colors"
+                    title="Share on Twitter"
+                  >
+                    <FaTwitter className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={shareToWhatsApp}
+                    className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors"
+                    title="Share on WhatsApp"
+                  >
+                    <FaWhatsapp className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={copyToClipboard}
+                    className="w-10 h-10 bg-gray-700 text-white rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors relative"
+                    title="Copy Link"
+                  >
+                    {copied ? <FiCheck className="w-5 h-5" /> : <FaLink className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           {/* Gallery Detail Card */}
@@ -119,6 +201,16 @@ export default function GalleryDetailPage() {
             <div className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100 p-8">
               {/* Header Info */}
               <div className="text-center mb-8">
+                {/* Logo Display */}
+                {siteData?.logo && (
+                  <div className="mb-6">
+                    <img 
+                      src={siteData.logo} 
+                      alt="Company Logo" 
+                      className="h-16 md:h-20 mx-auto object-contain"
+                    />
+                  </div>
+                )}
                 <div className="flex items-center justify-center gap-2 text-primary text-lg font-bold mb-2">
                   <FiMapPin className="w-5 h-5" />
                   {gallery.location}

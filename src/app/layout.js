@@ -89,10 +89,10 @@ export const metadata = {
     description: 'Planning a trip to Mahakal? Get the best rates for Ujjain Darshan, Omkareshwar, and Indore Taxi services. Book now!',
     images: [
       {
-        url: '/pik2.avif', // Make sure this image has text like "Best Ujjain Tours" on it
+        url: '/omkareshwar.png', // Make sure this image has text like "Best Ujjain Tours" on it
         width: 1200,
         height: 630,
-        alt: 'Avantika Travels Ujjain Tour Packages',
+        alt: 'Avantika Travels Ujjain To Omkareshwar tour Packages',
       }
     ],
   },
@@ -102,7 +102,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Avantika Travels | Ujjain Tour Experts',
     description: 'Book Mahakal Darshan Taxi & MP Tour Packages. Reliable & Affordable.',
-    images: ['/pik2.avif'],
+    images: ['/omkareshwar.png'],
     creator: '@avantikatravels', // Add your handle if you have one
   },
 

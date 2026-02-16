@@ -112,7 +112,7 @@ export default function PackageDetailsPage({ params }) {
       <PageHeader 
         title={pkg.name} 
         subtitle={`Experience the best of ${pkg.destination} with our premium service.`} 
-        backgroundImage={mainImage} 
+        backgroundImage={mainImage ||  pkg.images[0].url} 
       />
       
       <PackageSchema packageData={pkg} mainImage={mainImage} />
