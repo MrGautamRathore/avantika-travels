@@ -10,10 +10,12 @@ const navLinks = [
   { name: "Home", href: "/", title: "Avantika Travels - Best Travel Agency in Madhya Pradesh" },
   { name: "Destinations", href: "/places", title: "Explore Religious Pilgrimage Sites in Madhya Pradesh - Avantika Travels" },
   { name: "Packages", href: "/packages", title: "Tour Packages to Madhya Pradesh - Holiday, Pilgrimage & Adventure Tours" },
+  { name: "Gallery", href: "/gallery", title: "Travel Memories - Customer Stories & Photos from Madhya Pradesh Tours" },
   { name: "Services", href: "/services", title: "Travel Services - Car Rental, Hotel Booking, Tour Guide in Madhya Pradesh" },
   { name: "Blogs", href: "/blogs", title: "Travel Blogs - Madhya Pradesh Tourism Guide & Travel Tips" },
-  { name: "About Us", href: "/about", title: "About Avantika Travels - Leading Travel Agency in Indore, Madhya Pradesh" },
-  { name: "Contact", href: "/contact", title: "Contact Avantika Travels - Get in Touch for Your Next Trip" },
+/*   { name: "About Us", href: "/about", title: "About Avantika Travels - Leading Travel Agency in Indore, Madhya Pradesh" },
+  { name: "Contact", href: "/contact", title: "Contact Avantika Travels - Get in Touch for Your Next Trip" }, */
+
 ]
 
 export default function Header() {

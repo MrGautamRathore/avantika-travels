@@ -85,7 +85,7 @@ export default function PackagesPage() {
       <PageHeader
         title="Ujjain & MP Tour Packages"
         subtitle="Affordable Mahakal Darshan, Omkareshwar Yatra & Indore Taxi Services tailored for you."
-        backgroundImage="/pik4.avif"
+        backgroundImage="/mahakal-coridor-ujjain.png"
       />
 
       <main className="bg-gray-50">

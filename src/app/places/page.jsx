@@ -65,8 +65,8 @@ export default function PlacesPage() {
 
       <PageHeader
         title="Explore Madhya Pradesh"
-        subtitle="From the spiritual energy of Mahakal to the natural beauty of Pachmarhi."
-        backgroundImage="/pik7.avif"
+        subtitle="From the spiritual energy of Gwalior Fort to the natural beauty of Pachmarhi."
+        backgroundImage="/gwalior1.jpeg"
       />
 
       <main className="bg-gray-50">

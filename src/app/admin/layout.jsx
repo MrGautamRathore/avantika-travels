@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { 
   Menu, X, Home, Package, MapPin, FileText, 
   MessageSquare, Star, LogOut, User, ChevronRight,
-   Settings,
+   Settings,ImagesIcon,
    NetworkIcon
 } from 'lucide-react'
 import { MdDashboard } from "react-icons/md";
@@ -69,6 +69,7 @@ export default function AdminLayout({ children }) {
    { href: '/admin/blogs', label: 'Blogs', icon: FileText },
    { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
       { href: '/admin/reviews', label: 'Reviews', icon: Star },
+      { href: '/admin/galleries', label: 'Galleries', icon: ImagesIcon },
       { href: '/admin/website', label: 'Website', icon: NetworkIcon },
   ]
 

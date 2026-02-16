@@ -9,6 +9,7 @@ import HeroSection from "@/components/home/hero-section"
 // Dynamic imports
 const PlacesSection = dynamic(() => import("@/components/home/places-section"))
 const PackagesSection = dynamic(() => import("@/components/home/packages-section"))
+const GallerySection = dynamic(() => import("@/components/home/gallery-section"))
 const ReviewsSection = dynamic(() => import("@/components/home/reviews-section"))
 const SearchResultsSection = dynamic(() => import("@/components/home/search-results-section"))
 const ContactPopup = dynamic(() => import("@/components/ui/contact-popup"))
@@ -89,6 +90,7 @@ export default function HomePage() {
 
       <PlacesSection />
       <PackagesSection />
+      <GallerySection />
       <ReviewsSection />
       <ContactPopup />
     </main>

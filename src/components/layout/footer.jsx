@@ -38,6 +38,7 @@ export default function Footer() {
 
   const quickLinks = [
     { name: "About Us", href: "/about", title: "About Avantika Travels - Leading Travel Agency in Ujjain" },
+    { name: "Gallery", href: "/gallery", title: "Travel Memories - Customer Stories & Photos from Madhya Pradesh Tours" },
     { name: "Contact Us", href: "/contact", title: "Contact for Ujjain Taxi & Tour Booking" },
     { name: "Blogs", href: "/blogs", title: "Read Latest MP Tourism Guides & Tips" },
     { name: "Privacy Policy", href: "/privacy-policy", title: "Read our Privacy Policy" },
@@ -84,16 +85,16 @@ export default function Footer() {
             
             {/* Social Links with Aria Labels for Accessibility */}
             <div className="flex gap-4">
-              <a href={siteData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+              <a href={siteData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook" className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiFacebook className="w-5 h-5" />
               </a>
-              <a href={siteData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+              <a href={siteData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram" className="w-10 h-10  bg-pink-500  rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiInstagram className="w-5 h-5" />
               </a>
-              <a href={siteData.socialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Twitter" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+              <a href={siteData.socialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Twitter" className="w-10 h-10 b bg-sky-500  rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiTwitter className="w-5 h-5" />
               </a>
-              <a href={siteData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+              <a href={siteData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube" className="w-10 h-10 b bg-red-500  rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <FiYoutube className="w-5 h-5" />
               </a>
             </div>
@@ -136,30 +137,23 @@ export default function Footer() {
           </nav>
 
           {/* Newsletter / CTA */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Plan Your Trip</h4>
-            <p className="text-gray-300 mb-4 text-sm">
-              Get exclusive deals on <strong>Ujjain & Indore Taxi Services</strong> directly to your inbox.
-            </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <div className="flex-1 relative">
-                <label htmlFor="footer-email" className="sr-only">Email Address</label>
-                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  id="footer-email"
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full bg-white/10 border border-white/20 rounded-full py-3 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap text-sm"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
+      <div className="hidden lg:block">
+  <h4 className="text-lg font-semibold mb-4">Rated 5★ on Google</h4>
+
+  <p className="text-gray-300 text-sm mb-4">
+    See what our happy travelers say about Mahakal Darshan & MP Tours.
+  </p>
+
+  <a
+    href="https://share.google/ROllp7phdAfAwrSoI"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors text-sm"
+  >
+    View Google Reviews
+  </a>
+</div>
+
         </div>
 
         {/* Contact Info Bar */}

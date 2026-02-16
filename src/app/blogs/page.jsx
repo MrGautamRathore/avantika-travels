@@ -78,7 +78,7 @@ export default function BlogsPage() {
       <PageHeader
         title="Travel Stories & Guides"
         subtitle="Expert tips for your spiritual journey to Mahakal and beyond."
-        backgroundImage="/pik5.avif"
+        backgroundImage="/sanchi-stup.png"
       />
 
       <main className="bg-gray-50">

@@ -72,6 +72,7 @@ export function SiteProvider({ children }) {
   const [blogs, setBlogs] = useState([])
   const [contacts, setContacts] = useState([])
   const [reviews, setReviews] = useState([])
+  const [galleries, setGalleries] = useState([])
   const [siteData, setSiteData] = useState(defaultSiteData)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -87,12 +88,13 @@ export function SiteProvider({ children }) {
       setError(null)
 
       // Fetch other data in parallel
-      const [placesRes, packagesRes, blogsRes, contactsRes, reviewsRes] = await Promise.all([
+      const [placesRes, packagesRes, blogsRes, contactsRes, reviewsRes, galleriesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/places`),
         axios.get(`${API_BASE_URL}/packages`),
         axios.get(`${API_BASE_URL}/blogs/published`),
         axios.get(`${API_BASE_URL}/contacts`),
-        axios.get(`${API_BASE_URL}/reviews`)
+        axios.get(`${API_BASE_URL}/reviews`),
+        axios.get(`${API_BASE_URL}/galleries`)
       ])
 
       setPlaces(placesRes.data)
@@ -100,6 +102,7 @@ export function SiteProvider({ children }) {
       setBlogs(blogsRes.data)
       setContacts(contactsRes.data)
       setReviews(reviewsRes.data)
+      setGalleries(galleriesRes.data)
 
       // Fetch website data separately - only update if successful
       try {
@@ -467,6 +470,104 @@ export function SiteProvider({ children }) {
     }
   }
 
+  // Galleries CRUD operations
+  const fetchGalleries = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/galleries`)
+      setGalleries(response.data)
+      return response.data
+    } catch (err) {
+      console.error('Error fetching galleries:', err)
+      throw err
+    }
+  }
+
+  const createGallery = async (galleryData, token) => {
+    try {
+      let response
+      if (galleryData.selectedFiles && galleryData.selectedFiles.length > 0) {
+        // Send as FormData for image uploads
+        console.log('galleryData', galleryData);
+        
+        const formData = new FormData()
+        Object.keys(galleryData).forEach(key => {
+          if (key === 'selectedFiles') {
+            galleryData.selectedFiles.forEach(file => formData.append('images', file))
+          } else if (key !== 'images') {
+            formData.append(key, galleryData[key])
+          }
+        })
+        response = await axios.post(`${API_BASE_URL}/galleries`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      } else {
+        // Send as JSON for no images
+        const { selectedFiles, ...dataToSend } = galleryData
+        response = await axios.post(`${API_BASE_URL}/galleries`, dataToSend, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      }
+      setGalleries(prev => [...prev, response.data])
+      return response.data
+    } catch (err) {
+      console.error('Error creating gallery:', err)
+      throw err
+    }
+  }
+
+  const updateGallery = async (id, galleryData, token) => {
+    try {
+      let response
+      if (galleryData.selectedFiles && galleryData.selectedFiles.length > 0) {
+        // Send as FormData for image uploads
+         console.log('galleryData', galleryData);
+        
+        const formData = new FormData()
+        Object.keys(galleryData).forEach(key => {
+          if (key === 'selectedFiles') {
+            galleryData.selectedFiles.forEach(file => formData.append('images', file))
+          } else if (key !== 'images') {
+            formData.append(key, galleryData[key])
+          }
+        })
+        response = await axios.put(`${API_BASE_URL}/galleries/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      } else {
+        // Send as JSON for no images
+        const { selectedFiles, ...dataToSend } = galleryData
+        response = await axios.put(`${API_BASE_URL}/galleries/${id}`, dataToSend, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      }
+      setGalleries(prev => prev.map(gallery => gallery._id === id ? response.data : gallery))
+      return response.data
+    } catch (err) {
+      console.error('Error updating gallery:', err)
+      throw err
+    }
+  }
+
+  async function deleteGallery (id, token) {
+    try {
+      console.log('at context',id, token);
+      
+      await axios.delete(`${API_BASE_URL}/galleries/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setGalleries(prev => prev.filter(gallery => gallery._id !== id))
+    } catch (err) {
+      console.error('Error deleting gallery:', err)
+      throw err
+    }
+  }
+
   // Reviews CRUD operations
   const fetchReviews = async (token = null) => {
     try {
@@ -536,6 +637,13 @@ export function SiteProvider({ children }) {
     }
   }
 
+  const toggleGalleryStatus = async (id, token) => {
+    const gallery = galleries.find(g => g._id === id)
+    if (gallery) {
+      await updateGallery(id, { ...gallery, status: !gallery.status }, token)
+    }
+  }
+
   const toggleReviewStatus = async (id, token) => {
     const review = reviews.find(r => r._id === id)
     if (review) {
@@ -595,7 +703,7 @@ export function SiteProvider({ children }) {
     contacts,
     reviews,
     loading,
-    error,
+    error,galleries,
     // Places
     fetchPlaces,
     createPlace,
@@ -622,6 +730,8 @@ export function SiteProvider({ children }) {
     deleteReview,
     // Website
     updateWebsiteData,
+    // Galleries
+    deleteGallery ,
     // Toggle status
     togglePlaceStatus,
     togglePackageStatus,

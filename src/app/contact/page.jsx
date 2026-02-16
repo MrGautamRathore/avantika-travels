@@ -136,7 +136,7 @@ export default function ContactPage() {
       <PageHeader
         title="Contact Us"
         subtitle="24/7 Travel Assistance for Ujjain, Indore & Omkareshwar Trips"
-        backgroundImage="/pik9.avif"
+        backgroundImage="/maheshwar1.jpeg"
       />
 
       <section className="py-16 md:py-24 bg-white">

@@ -378,11 +378,11 @@ export default function PackageDetailsPage({ params }) {
             </div>
 
             {/* --- RIGHT COLUMN: STICKY BOOKING CARD --- */}
-            <div className="lg:col-span-4">
-              <div className="sticky top-24 space-y-6">
+            <div className="lg:col-span-4 w-screen">
+              <div className="flex flex-col md:flex-row stic w-full space-y-6 gap-8">
                 
                 {/* 1. Price & Booking Card */}
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div className="bg-white flex-1 rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                     <div className="bg-gradient-to-r from-primary to-pink-500 p-6 text-white text-center">
                         <p className="text-gray-700 text-sm font-medium uppercase tracking-wider mb-1">Best Deal Offer</p>
                         <div className="flex items-baseline justify-center gap-1 text-black">
@@ -393,12 +393,12 @@ export default function PackageDetailsPage({ params }) {
                     
                     <div className="p-6 flex flex-col gap-2">
                         {/* --- IMPORTANT NOTE ABOUT GUIDE FEE --- */}
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-5 flex gap-3 items-start">
+                      {/*   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-5 flex gap-3 items-start">
                              <FiAlertCircle className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
                              <div className="text-xs text-yellow-800">
                                  <strong>Note:</strong> Guide fee of <strong>₹1000/day</strong> is applicable if the group size is less than 12 people.
                              </div>
-                        </div>
+                        </div> */}
 
                         <div className="text-sm text-center px-2 text-gray-500 bg-gray-50 py-2 rounded-lg border border-gray-200 mb-5">
                             No hidden charges • Instant Confirmation
@@ -436,8 +436,10 @@ export default function PackageDetailsPage({ params }) {
                 </div>
 
                 {/* 2. Trust Badges */}
-                <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4">
-                    <h4 className="font-bold text-gray-800 mb-2">Why Book with Avantika?</h4>
+                <div className="flex flex-col gap-6 w-1/2">
+
+                <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm space-y-4">
+                    <h4 className="font-bold text-gray-800 mb-2">Why Book with Avantika Travels?</h4>
                     <div className="flex gap-3 items-start">
                         <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center shrink-0">
                             <FiCheck className="text-blue-600 w-4 h-4" />
@@ -459,12 +461,13 @@ export default function PackageDetailsPage({ params }) {
                 </div>
 
                 {/* 3. Need Custom Plan? */}
-                <div className="bg-gray-900 text-white rounded-2xl p-6 text-center">
+                <div className="bg-gray-900 text-white rounded-2xl p-8 text-center">
                     <h4 className="font-bold text-lg mb-2">Need a Custom Plan?</h4>
                     <p className="text-gray-400 text-sm mb-4">We can customize this package for your family.</p>
                     <Link href="/contact" className="text-primary font-semibold hover:text-white transition-colors underline">
                         Request Custom Quote
                     </Link>
+                </div>
                 </div>
 
               </div>

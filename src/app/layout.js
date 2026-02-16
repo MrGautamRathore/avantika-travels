@@ -155,8 +155,7 @@ export default function RootLayout({ children }) {
             });
           `}
         </Script>
-        <script src="https://cdn.counter.dev/script.js" data-id="4118ced0-591b-4232-9a15-f6fd72ffe86a" data-utcoffset="6"></script>
-      </head>
+     </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
         <Suspense fallback={
@@ -176,6 +175,12 @@ export default function RootLayout({ children }) {
           </SiteProvider>
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_ID} />
         </Suspense>
+        <Script 
+          src="https://cdn.counter.dev/script.js" 
+          data-id="4118ced0-591b-4232-9a15-f6fd72ffe86a" 
+          data-utcoffset="6"
+          strategy="afterInteractive" // Isse page load hone ke baad script chalegi
+        />
       </body>
     </html>
   );
