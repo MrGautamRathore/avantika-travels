@@ -289,7 +289,7 @@ export default function BookingForm() {
     const numPeople = parseInt(formData.numberOfPeople);
     let total = packageData.price * numPeople;
 
-    const packageBaseLocation = packageData.destination || "Ujjain";
+    const packageBaseLocation = packageData.pickupPoint || "Ujjain";
 
     let pickupFare = 0;
     if (formData.pickupPoints) {

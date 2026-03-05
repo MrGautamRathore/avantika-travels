@@ -230,18 +230,7 @@ export default function PackageDetailsPage({ params }) {
                       <FaTelegram className="w-5 h-5" />
                     </button>
 
-                    {/* Twitter Share */}
-                    <button
-                      onClick={() => {
-                        const text = `Check out this amazing tour package: ${pkg.name} - ${pkg.destination}, ${pkg.duration} @ ₹${pkg.price} ${pkg.tripDate ? `on ${new Date(pkg.tripDate).toLocaleDateString()}` : ""}`;
-                        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
-                        window.open(twitterUrl, "_blank");
-                      }}
-                      className="w-10 h-10 bg-blue-400 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-colors"
-                      title="Share on Twitter"
-                    >
-                      <FaTwitter className="w-5 h-5" />
-                    </button>
+                   
 
                     {/* Instagram Share (opens Instagram app/website) */}
                     <button
@@ -321,8 +310,25 @@ export default function PackageDetailsPage({ params }) {
                     </div>
                   </div>
                 )}
-                {(pkg.tripDate ||
-                  (pkg.upcomingDates && pkg.upcomingDates.length > 0)) && (
+                {pkg.upcomingDates && pkg.upcomingDates.length > 0 && (
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
+                      <FiClock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase font-bold">
+                        Next Trip
+                      </p>
+                      <p className="font-semibold text-gray-900">
+                        {new Date(pkg.upcomingDates[0]).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {(!pkg.upcomingDates || pkg.upcomingDates.length === 0) && (pkg.tripDate && (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
                       <FiClock className="w-5 h-5" />
@@ -338,7 +344,7 @@ export default function PackageDetailsPage({ params }) {
                       </p>
                     </div>
                   </div>
-                )}
+                ))}
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-purple-600">
                     <FiShield className="w-5 h-5" />
