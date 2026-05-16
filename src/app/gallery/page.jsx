@@ -13,61 +13,10 @@ import {
 import PageHeader from "@/components/ui/page-header";
 import { useSite } from "@/context/site-context";
 
-// SEO Metadata for Gallery Page
-export const metadata = {
-  title: "Gallery | Ujjain MP Travel Photos & Customer Memories | Avantika Travels",
-  description: "Explore beautiful photos from Ujjain Mahakal Darshan, Omkareshwar tours, and Madhya Pradesh spiritual journeys. See happy customer memories with Avantika Travels.",
-  keywords: [
-    "Ujjain gallery",
-    "Mahakal photos",
-    "Omkareshwar images",
-    "MP travel photos",
-    "customer travel memories",
-    "Ujjain taxi gallery",
-    "pilgrimage photos",
-    "Avantika Travels gallery",
-    "spiritual tour photos",
-    "Indore Ujjain tour images",
-    "Mahakal darshan pictures",
-    "travel memories Ujjain"
-  ],
-  openGraph: {
-    title: "Gallery | Ujjain & MP Travel Photos | Avantika Travels",
-    description: "Real photos from happy customers on Mahakal Darshan and Omkareshwar tours.",
-    url: "https://avantikatravels.com/gallery",
-    siteName: "Avantika Travels",
-    images: [
-      {
-        url: "/pik4.avif",
-        width: 1200,
-        height: 630,
-        alt: "Ujjain Travel Gallery - Avantika Travels"
-      }
-    ],
-    locale: "en_IN",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ujjain Travel Gallery | Avantika Travels",
-    description: "Customer photos from Mahakal Darshan and MP tours.",
-    images: ["/pik4.avif"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-    },
-  },
-  alternates: {
-    canonical: "https://avantikatravels.com/gallery",
-  },
-};
+import Head from "next/head";
 
 export default function GalleryPage() {
+
   const [galleries, setGalleries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -147,6 +96,46 @@ export default function GalleryPage() {
 
   return (
     <>
+      <Head>
+        <title>Gallery | Ujjain MP Travel Photos & Customer Memories | Avantika Travels</title>
+        <meta
+          name="description"
+          content="Explore beautiful photos from Ujjain Mahakal Darshan, Omkareshwar tours, and Madhya Pradesh spiritual journeys. See happy customer memories with Avantika Travels."
+        />
+        <meta
+          name="keywords"
+          content="Ujjain gallery, Mahakal photos, Omkareshwar images, MP travel photos, customer travel memories, Ujjain taxi gallery, pilgrimage photos, Avantika Travels gallery, spiritual tour photos, Indore Ujjain tour images, Mahakal darshan pictures, travel memories Ujjain"
+        />
+        <meta
+          property="og:title"
+          content="Gallery | Ujjain & MP Travel Photos | Avantika Travels"
+        />
+        <meta
+          property="og:description"
+          content="Real photos from happy customers on Mahakal Darshan and Omkareshwar tours."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_IN" />
+        <meta property="og:url" content="https://avantikatravels.com/gallery" />
+        <meta property="og:site_name" content="Avantika Travels" />
+        <meta property="og:image" content="/pik4.avif" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Ujjain Travel Gallery - Avantika Travels" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Ujjain Travel Gallery | Avantika Travels"
+        />
+        <meta
+          name="twitter:description"
+          content="Customer photos from Mahakal Darshan and MP tours."
+        />
+        <meta name="twitter:image" content="/pik4.avif" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <link rel="canonical" href="https://avantikatravels.com/gallery" />
+      </Head>
+
       <PageHeader
         title="Travel Memories"
         subtitle="Dekhiye hamare happy passengers ki kahaniyan unhi ki zubani."
