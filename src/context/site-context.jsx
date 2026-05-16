@@ -22,13 +22,13 @@ const defaultSiteData = {
   keywords: [
     // 1. Core Service Keywords
     "Travel agency in Ujjain",
-    "Taxi service in Ujjain",
+    "Tour Packages in Ujjain",
     "Best tour operator Ujjain",
-    "Car rental Ujjain",
+    "Ujjain to Omkareshwar Tour Packages",
     
     // 2. Location Specific (High Volume)
-    "Indore to Ujjain taxi",
-    "Ujjain to Omkareshwar taxi fare",
+    "Indore to Ujjain tour package",
+    "Ujjain to Omkareshwar tour package with best price",
     "Indore airport to Mahakal temple cab",
     
     // 3. Religious/Attraction Keywords

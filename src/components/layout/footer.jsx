@@ -190,12 +190,12 @@ export default function Footer() {
           <p className="text-center text-gray-500 text-xs mt-6">
             Designed with ❤️ by{" "}
             <a
-              href="https://website-developers.vercel.app"
+              href="https://business-sathi.vercel.app"
               target="_blank"
               rel="noopener noreferrer nofollow" // Added nofollow for external link
               className="hover:text-primary text-gray-400 transition-colors"
             >
-              Website Developers
+              Business Sathi
             </a>
           </p>
         </div>

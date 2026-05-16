@@ -43,7 +43,7 @@ export const metadata = {
   
   // 1. Title Strategy: Brand + Primary Location Keyword
   title: {
-    default: "Avantika Travels | Best Ujjain Taxi & Mahakal Tour Packages",
+    default: "Avantika Travels | Best Mahakal Ujjain & Omkareshwar Tour Packages",
     template: "%s | Avantika Travels Ujjain" // हर पेज के टाइटल के पीछे 'Ujjain' जुड़ेगा (Local SEO Boost)
   },
 
@@ -51,7 +51,7 @@ export const metadata = {
   description: "Looking for the best travel agency in Ujjain? Book verified Mahakal Darshan taxi, Omkareshwar tour packages, and Indore airport pickup. Call +91-8720006707 for instant booking.",
 
   // 3. Keywords: Keep limited to top 10 (For Bing/Yandex mostly)
-  keywords: ["Ujjain Taxi Service", "Mahakal Darshan Booking", "Indore to Ujjain Taxi", "Omkareshwar Tour", "Travel Agency Ujjain", "Avantika Travels"],
+  keywords: ["Ujjain tour packages", "Mahakal Darshan Booking", "Indore to Ujjain Taxi", "Omkareshwar Tour", "Travel Agency Ujjain", "Avantika Travels","Avantika Travels Ujjain To Omkareshwar tour Packages","Best Travel Agent in Ujjain","Best Travel Company in Ujjain","Best Travel Agency in Ujjain"],
 
   // 4. Authors & Creator
   authors: [{ name: 'Avantika Travels Team', url: 'https://avantikatravels.com' }],
@@ -85,7 +85,7 @@ export const metadata = {
     locale: 'en_IN',
     url: 'https://avantikatravels.com',
     siteName: 'Avantika Travels - Ujjain & MP Tourism',
-    title: 'Avantika Travels | Best Taxi & Tour Service in Ujjain',
+    title: 'Avantika Travels | Best Tour and Travel Company in Ujjain',
     description: 'Planning a trip to Mahakal? Get the best rates for Ujjain Darshan, Omkareshwar, and Indore Taxi services. Book now!',
     images: [
       {
@@ -101,7 +101,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Avantika Travels | Ujjain Tour Experts',
-    description: 'Book Mahakal Darshan Taxi & MP Tour Packages. Reliable & Affordable.',
+    description: 'Book Mahakal Darshan & MP Tour Packages. Reliable & Affordable.',
     images: ['/omkareshwar.png'],
     creator: '@avantikatravels', // Add your handle if you have one
   },
