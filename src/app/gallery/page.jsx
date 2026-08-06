@@ -139,7 +139,7 @@ export default function GalleryPage() {
       <PageHeader
         title="Travel Memories"
         subtitle="Dekhiye hamare happy passengers ki kahaniyan unhi ki zubani."
-        backgroundImage="/pik4.avif"
+        backgroundImage="/gallery.webp"
       />
 
       <main className="bg-gray-50 min-h-screen py-16">

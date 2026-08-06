@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { useSite } from '../../../context/site-context'
-import { X, Edit, Trash2, Eye, Upload, Image as ImageIcon, Plus, Check, AlertCircle } from 'lucide-react'
+import { X, Edit, Trash2, Eye, Upload, Image as ImageIcon, Plus, Check, AlertCircle, Users, Repeat } from 'lucide-react'
 
 export default function AdminPackages() {
   const { packages, fetchPackages, createPackage, updatePackage, deletePackage, togglePackageStatus } = useSite()
@@ -23,57 +23,59 @@ export default function AdminPackages() {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [categoryFilter, setCategoryFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
   const [priceRangeFilter, setPriceRangeFilter] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
-  const [showFilters, setShowFilters] = useState(false)
 
-  const [formData, setFormData] = useState({
+  const emptyForm = {
     name: '',
     description: '',
     price: '',
     duration: '',
     destination: '',
     category: '',
+    type: 'group', // 'group' | 'personal'
     pickupPoint: '',
     dropPoint: '',
     tripDate: '',
-       images: [],
- upcomingDates: [],
+    images: [],
+    upcomingDates: [],
     itinerary: [],
     inclusions: [],
     exclusions: [],
-    status: true
-  })
+    status: true,
+    personPricing: Array.from({ length: 12 }, (_, i) => ({ persons: i + 1, price: '' }))
+  }
+
+  const [formData, setFormData] = useState(emptyForm)
 
   useEffect(() => {
     fetchPackages()
   }, [fetchPackages])
 
-  // Get unique categories from packages
   const uniqueCategories = [...new Set(packages.map(pkg => pkg.category).filter(Boolean))]
 
-  // Filtering and sorting logic
   const filteredPackages = packages
     .filter((pkg) => {
-      // Search filter
       if (searchTerm && !pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
           !pkg.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
           !pkg.destination.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false
       }
 
-      // Status filter
       if (statusFilter !== 'all') {
         const isActive = statusFilter === 'active'
         if (pkg.status !== isActive) return false
       }
 
-      // Category filter
       if (categoryFilter !== 'all' && pkg.category !== categoryFilter) {
         return false
       }
 
-      // Price range filter
+      if (typeFilter !== 'all' && (pkg.type || 'group') !== typeFilter) {
+        return false
+      }
+
       if (priceRangeFilter !== 'all') {
         const price = pkg.price
         switch (priceRangeFilter) {
@@ -121,29 +123,21 @@ export default function AdminPackages() {
   const handleAdd = () => {
     setEditingPackage(null)
     setImages([])
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      duration: '',
-      destination: '',
-      category: '',
-      pickupPoint: '',
-      dropPoint: '',
-      tripDate: '',
-      upcomingDates: [],
-      images: [],
-      itinerary: [],
-      inclusions: [],
-      exclusions: [],
-      status: true
-    })
+    setSelectedFiles([])
+    setFormData(emptyForm)
     setShowForm(true)
   }
 
   const handleEdit = (pkg) => {
     setEditingPackage(pkg)
     setImages(pkg.images || [])
+    setSelectedFiles([])
+
+    const pkgType = pkg.type || 'group'
+    const existingPricing = pkgType === 'personal' && Array.isArray(pkg.personPricing) && pkg.personPricing.length > 0
+      ? pkg.personPricing.map(p => ({ persons: Number(p.persons), price: p.price != null ? p.price : '' }))
+      : Array.from({ length: 12 }, (_, i) => ({ persons: i + 1, price: pkg.price ?? '' }))
+
     setFormData({
       name: pkg.name,
       description: pkg.description,
@@ -151,6 +145,7 @@ export default function AdminPackages() {
       duration: pkg.duration,
       destination: pkg.destination,
       category: pkg.category,
+      type: pkgType,
       pickupPoint: pkg.pickupPoint || '',
       dropPoint: pkg.dropPoint || '',
       tripDate: pkg.tripDate ? new Date(pkg.tripDate).toISOString().split('T')[0] : '',
@@ -159,7 +154,8 @@ export default function AdminPackages() {
       itinerary: pkg.itinerary || [],
       inclusions: pkg.inclusions || [],
       exclusions: pkg.exclusions || [],
-      status: pkg.status
+      status: pkg.status,
+      personPricing: existingPricing
     })
     setShowForm(true)
   }
@@ -200,17 +196,12 @@ export default function AdminPackages() {
     const files = Array.from(e.target.files)
     const newImages = files.map(file => ({ url: URL.createObjectURL(file), public_id: `temp_${Date.now()}_${Math.random()}` }))
     setImages([...images, ...newImages])
-    setSelectedFiles(files)
+    setSelectedFiles([...selectedFiles, ...files])
   }
-
-
 
   const handleAddInclusion = () => {
     if (newInclusion.trim()) {
-      setFormData({
-        ...formData,
-        inclusions: [...formData.inclusions, newInclusion]
-      })
+      setFormData({ ...formData, inclusions: [...formData.inclusions, newInclusion] })
       setNewInclusion('')
     }
   }
@@ -223,10 +214,7 @@ export default function AdminPackages() {
 
   const handleAddExclusion = () => {
     if (newExclusion.trim()) {
-      setFormData({
-        ...formData,
-        exclusions: [...formData.exclusions, newExclusion]
-      })
+      setFormData({ ...formData, exclusions: [...formData.exclusions, newExclusion] })
       setNewExclusion('')
     }
   }
@@ -239,10 +227,7 @@ export default function AdminPackages() {
 
   const handleAddItinerary = () => {
     if (newItinerary.trim()) {
-      setFormData({
-        ...formData,
-        itinerary: [...formData.itinerary, newItinerary]
-      })
+      setFormData({ ...formData, itinerary: [...formData.itinerary, newItinerary] })
       setNewItinerary('')
     }
   }
@@ -253,17 +238,37 @@ export default function AdminPackages() {
     setFormData({ ...formData, itinerary: newItinerary })
   }
 
+  const handlePersonPriceChange = (index, value) => {
+    const newPricing = [...(formData.personPricing || [])]
+    if (newPricing[index]) {
+      newPricing[index] = { ...newPricing[index], price: value === '' ? '' : Number(value) }
+      setFormData({ ...formData, personPricing: newPricing })
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
     try {
       const token = localStorage.getItem('adminToken')
+      const basePrice = Number(formData.price) || 0
+      const isPersonal = formData.type === 'personal'
+
+      // Group packages don't carry a personPricing table — flat price only
+      const personPricing = isPersonal
+        ? (formData.personPricing || []).map(p => ({
+            persons: Number(p.persons),
+            price: p.price !== '' && p.price != null ? Number(p.price) : basePrice
+          }))
+        : []
+
       const dataToSubmit = {
         ...formData,
-        selectedFiles: selectedFiles, // Send the selected files for upload
-        images: images, // Send the uploaded image objects
-        price: Number(formData.price)
+        selectedFiles: selectedFiles,
+        images: images,
+        price: basePrice,
+        personPricing: JSON.stringify(personPricing)
       }
 
       if (editingPackage) {
@@ -275,6 +280,7 @@ export default function AdminPackages() {
       }
 
       setShowForm(false)
+      setSelectedFiles([])
     } catch (error) {
       showAlert('error', `Error saving package: ${error.message}`)
     } finally {
@@ -282,9 +288,17 @@ export default function AdminPackages() {
     }
   }
 
+  const TypeBadge = ({ type }) => (
+    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
+      type === 'personal' ? 'bg-purple-100 text-purple-800' : 'bg-indigo-100 text-indigo-800'
+    }`}>
+      {type === 'personal' ? <Users className="w-3 h-3" /> : <Repeat className="w-3 h-3" />}
+      {type === 'personal' ? 'Personal' : 'Group'}
+    </span>
+  )
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
-      {/* Alert Component */}
       {alert.show && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
           alert.type === 'success' ? 'bg-green-100 text-green-800 border-l-4 border-green-500' : 
@@ -302,16 +316,15 @@ export default function AdminPackages() {
       )}
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-black">Tour Packages</h1>
-            <p className="text-gray-600 mt-1">Manage your tour packages and offerings</p>
+            <p className="text-gray-600 mt-1">Manage Group & Personal tour packages</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
             <button
               onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
-              className="px-4 py-2 bg-white border border-gray-300 text-black rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center"
+              className="px-4 py-2 bg-white border border-gray-300 text-black rounded-lg hover:bg-gray-50 transition-colors"
             >
               {viewMode === 'grid' ? 'Table View' : 'Grid View'}
             </button>
@@ -328,19 +341,24 @@ export default function AdminPackages() {
         {/* Filters */}
         <div className="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6">
           <div className="space-y-4">
-            {/* Search */}
-            <div className="w-full">
-              <input
-                type="text"
-                placeholder="Search packages..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="Search packages..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+            />
 
-            {/* Filter Selects */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+              >
+                <option value="all">All Types</option>
+                <option value="group">Group Packages</option>
+                <option value="personal">Personal Packages</option>
+              </select>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -357,9 +375,7 @@ export default function AdminPackages() {
               >
                 <option value="all">All Categories</option>
                 {uniqueCategories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
+                  <option key={category} value={category}>{category}</option>
                 ))}
               </select>
               <select
@@ -393,13 +409,15 @@ export default function AdminPackages() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPackages.map((pkg) => (
               <div key={pkg._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                {/* Image */}
                 <div className="relative h-48">
                   <img 
                     src={pkg.images?.[0]?.url || '/placeholder.jpg'} 
                     alt={pkg.name} 
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute top-3 left-3">
+                    <TypeBadge type={pkg.type || 'group'} />
+                  </div>
                   <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-sm font-medium ${
                     pkg.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}>
@@ -407,7 +425,6 @@ export default function AdminPackages() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-lg font-bold text-black truncate">{pkg.name}</h3>
@@ -427,7 +444,17 @@ export default function AdminPackages() {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
+                  {pkg.type === 'personal' && pkg.personPricing && pkg.personPricing.length > 0 ? (
+                    <div className="mb-4 p-2 bg-purple-50 rounded-lg text-xs">
+                      <p className="text-purple-700 font-semibold mb-1">Per-Person Pricing (varies by group size):</p>
+                      <p className="text-gray-600">1P: ₹{pkg.personPricing[0]?.price || pkg.price} | 2P: ₹{pkg.personPricing[1]?.price || pkg.price}</p>
+                    </div>
+                  ) : (
+                    <div className="mb-4 p-2 bg-indigo-50 rounded-lg text-xs">
+                      <p className="text-indigo-700 font-semibold">Flat price: ₹{pkg.price} / person (all group sizes)</p>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
                     <button
                       onClick={() => handleViewDetails(pkg)}
@@ -466,33 +493,18 @@ export default function AdminPackages() {
             ))}
           </div>
         ) : (
-          /* Table View */
           <div className="bg-white rounded-xl shadow overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Package
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Destination
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Category
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Duration
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Price
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Package</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Destination</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Duration</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -500,70 +512,36 @@ export default function AdminPackages() {
                     <tr key={pkg._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full object-cover"
-                              src={pkg.images?.[0]?.url || '/placeholder.jpg'}
-                              alt={pkg.name}
-                            />
-                          </div>
+                          <img
+                            className="h-10 w-10 rounded-full object-cover"
+                            src={pkg.images?.[0]?.url || '/placeholder.jpg'}
+                            alt={pkg.name}
+                          />
                           <div className="ml-4">
                             <div className="text-sm font-medium text-black">{pkg.name}</div>
-                            <div className="text-sm text-gray-500 truncate max-w-xs">
-                              {pkg.description.substring(0, 60)}...
-                            </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                        {pkg.destination}
-                      </td>
-                       <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                        {pkg.category}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                        {pkg.duration}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-pink-600">
-                        ₹{pkg.price}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap"><TypeBadge type={pkg.type || 'group'} /></td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{pkg.destination}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{pkg.duration}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-pink-600">₹{pkg.price}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          pkg.status 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
+                          pkg.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                         }`}>
                           {pkg.status ? 'Active' : 'Inactive'}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex gap-2">
-                          <button
-                            onClick={() => handleViewDetails(pkg)}
-                            className="text-blue-600 hover:text-blue-900"
-                            title="View Details"
-                          >
+                          <button onClick={() => handleViewDetails(pkg)} className="text-blue-600 hover:text-blue-900">
                             <Eye className="w-5 h-5" />
                           </button>
-                          <button
-                            onClick={() => handleEdit(pkg)}
-                            className="text-green-600 hover:text-green-900"
-                            title="Edit"
-                          >
+                          <button onClick={() => handleEdit(pkg)} className="text-green-600 hover:text-green-900">
                             <Edit className="w-5 h-5" />
                           </button>
-                          <button
-                            onClick={() => handleToggleStatus(pkg._id)}
-                            className={`${pkg.status ? 'text-yellow-600 hover:text-yellow-900' : 'text-green-600 hover:text-green-900'}`}
-                            title={pkg.status ? 'Deactivate' : 'Activate'}
-                          >
-                            {pkg.status ? 'Deactivate' : 'Activate'}
-                          </button>
-                          <button
-                            onClick={() => handleDelete(pkg._id)}
-                            className="text-red-600 hover:text-red-900"
-                            title="Delete"
-                          >
+                          <button onClick={() => handleDelete(pkg._id)} className="text-red-600 hover:text-red-900">
                             <Trash2 className="w-5 h-5" />
                           </button>
                         </div>
@@ -579,11 +557,8 @@ export default function AdminPackages() {
         {/* Empty State */}
         {packages.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <ImageIcon className="w-16 h-16 mx-auto" />
-            </div>
+            <ImageIcon className="w-16 h-16 mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No packages yet</h3>
-            <p className="text-gray-600 mb-6">Get started by creating your first tour package.</p>
             <button
               onClick={handleAdd}
               className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center"
@@ -602,22 +577,50 @@ export default function AdminPackages() {
                 <h2 className="text-xl font-bold text-black">
                   {editingPackage ? 'Edit Package' : 'Add New Package'}
                 </h2>
-                <button
-                  onClick={() => setShowForm(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-700">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               <form onSubmit={handleSubmit} className="p-6">
+                {/* Package Type Selector — top of form, drives the rest of the UI */}
+                <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-5">
+                  <label className="block text-sm font-bold text-gray-800 mb-3">Package Type *</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, type: 'group' })}
+                      className={`text-left p-4 rounded-xl border-2 transition-all ${
+                        formData.type === 'group' ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <Repeat className="w-4 h-4 text-indigo-600" />
+                        <span className="font-bold text-sm">Group Package</span>
+                      </div>
+                      <p className="text-xs text-gray-500">Fixed departure / shared tour. One flat price per person for every group size.</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, type: 'personal' })}
+                      className={`text-left p-4 rounded-xl border-2 transition-all ${
+                        formData.type === 'personal' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <Users className="w-4 h-4 text-purple-600" />
+                        <span className="font-bold text-sm">Personal Package</span>
+                      </div>
+                      <p className="text-xs text-gray-500">Private / customized tour. Set a different per-person price for each group size (1-12).</p>
+                    </button>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Left Column */}
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Package Name *
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Package Name *</label>
                       <input
                         type="text"
                         value={formData.name}
@@ -628,9 +631,7 @@ export default function AdminPackages() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Description *
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
                       <textarea
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -641,9 +642,7 @@ export default function AdminPackages() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Destination *
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Destination *</label>
                       <input
                         type="text"
                         value={formData.destination}
@@ -652,10 +651,9 @@ export default function AdminPackages() {
                         required
                       />
                     </div>
+
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Category *
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                       <input
                         type="text"
                         value={formData.category}
@@ -666,9 +664,36 @@ export default function AdminPackages() {
                     </div>
 
                     <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Duration *</label>
+                      <input
+                        type="text"
+                        value={formData.duration}
+                        onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        placeholder="e.g., 5 days 4 nights"
+                        required
+                      />
+                    </div>
+
+                    <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Pickup Point
+                        {formData.type === 'personal' ? 'Base Price (₹) *' : 'Price per Person (₹) *'}
+                        {formData.type === 'personal' && (
+                          <span className="text-xs text-gray-400"> (Default for all persons)</span>
+                        )}
                       </label>
+                      <input
+                        type="number"
+                        value={formData.price}
+                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        required
+                        min="0"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Pickup Point</label>
                       <input
                         type="text"
                         value={formData.pickupPoint}
@@ -679,9 +704,7 @@ export default function AdminPackages() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Drop Point
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Drop Point</label>
                       <input
                         type="text"
                         value={formData.dropPoint}
@@ -692,9 +715,7 @@ export default function AdminPackages() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Trip Date
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Trip Date</label>
                       <input
                         type="date"
                         value={formData.tripDate}
@@ -703,90 +724,9 @@ export default function AdminPackages() {
                       />
                     </div>
 
-                    {/* Upcoming Dates */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Upcoming Dates (Group Packages)
-                      </label>
-                      <div className="flex gap-2 mb-3">
-                        <input
-                          type="date"
-                          value={formData.newUpcomingDate || ''}
-                          onChange={(e) => setFormData({ ...formData, newUpcomingDate: e.target.value })}
-                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (formData.newUpcomingDate) {
-                              const newDate = new Date(formData.newUpcomingDate);
-                              setFormData({
-                                ...formData,
-                                upcomingDates: [...(formData.upcomingDates || []), newDate],
-                                newUpcomingDate: ''
-                              });
-                            }
-                          }}
-                          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                        >
-                          <Plus className="w-5 h-5" />
-                        </button>
-                      </div>
-                      <div className="space-y-2 max-h-40 overflow-y-auto p-2">
-                        {formData.upcomingDates?.map((date, index) => (
-                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                            <span className="text-sm">{new Date(date).toLocaleDateString()}</span>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newDates = [...formData.upcomingDates];
-                                newDates.splice(index, 1);
-                                setFormData({ ...formData, upcomingDates: newDates });
-                              }}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Duration *
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.duration}
-                          onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                          placeholder="e.g., 5 days 4 nights"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Price (₹) *
-                        </label>
-                        <input
-                          type="number"
-                          value={formData.price}
-                          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                          required
-                          min="0"
-                        />
-                      </div>
-                    </div>
-
                     {/* Images */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Images
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Images</label>
                       <div className="flex gap-2 mb-4">
                         <input
                           type="file"
@@ -805,9 +745,6 @@ export default function AdminPackages() {
                           Select Images
                         </button>
                       </div>
-
-
-
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {images.map((img, index) => (
                           <div key={index} className="relative group">
@@ -831,11 +768,46 @@ export default function AdminPackages() {
 
                   {/* Right Column */}
                   <div className="space-y-6">
+                    {/* Per-Person Pricing — ONLY for personal type packages */}
+                    {formData.type === 'personal' ? (
+                      <div className="bg-purple-50 sm:p-6 rounded-xl border border-purple-200">
+                        <label className="block text-sm font-bold text-purple-900 mb-2">
+                          💰 Per-Person Pricing (1-12 Persons)
+                        </label>
+                        <p className="text-xs text-purple-700 mb-4">
+                          Leave blank to use base price (₹{formData.price || 0}). Add custom prices for group sizes.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto p-2 bg-white rounded-lg">
+                          {(formData.personPricing || []).map((pp, index) => (
+                            <div key={pp.persons} className="flex items-center gap-2 bg-gray-50 rounded-lg border border-gray-300 px-2 py-1.5">
+                              <span className="text-xs font-semibold text-gray-600 whitespace-nowrap w-9">
+                                {pp.persons}P
+                              </span>
+                              <input
+                                type="number"
+                                min="0"
+                                value={pp.price ?? ''}
+                                onChange={(e) => handlePersonPriceChange(index, e.target.value)}
+                                placeholder={formData.price || '0'}
+                                className="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                              />
+                              <span className="text-xs text-gray-400">₹</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+                        <p className="text-sm font-bold text-indigo-900 mb-1">💰 Flat Pricing</p>
+                        <p className="text-xs text-indigo-700">
+                          This is a Group Package — every traveller pays the same ₹{formData.price || 0} per person, regardless of group size. Per-person pricing table is not needed.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Inclusions */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Inclusions
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Inclusions</label>
                       <div className="flex gap-2 mb-3">
                         <input
                           type="text"
@@ -871,9 +843,7 @@ export default function AdminPackages() {
 
                     {/* Exclusions */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Exclusions
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Exclusions</label>
                       <div className="flex gap-2 mb-3">
                         <input
                           type="text"
@@ -909,9 +879,7 @@ export default function AdminPackages() {
 
                     {/* Itinerary */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Itinerary (Day plan)
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Itinerary (Day Plan)</label>
                       <div className="flex gap-2 mb-3">
                         <input
                           type="text"
@@ -1000,33 +968,26 @@ export default function AdminPackages() {
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
               <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
                 <h2 className="text-xl font-bold text-black">Package Details</h2>
-                <button
-                  onClick={() => setShowDetails(null)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <button onClick={() => setShowDetails(null)} className="text-gray-500 hover:text-gray-700">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               <div className="p-6">
-                {/* Images Carousel */}
                 <div className="mb-6">
                   <div className="grid grid-cols-3 gap-2">
                     {showDetails.images?.map((img, index) => (
-                      <img
-                        key={index}
-                        src={img.url}
-                        alt={`${showDetails.name} ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
+                      <img key={index} src={img.url} alt={`${showDetails.name} ${index + 1}`} className="w-full h-32 object-cover rounded-lg" />
                     ))}
                   </div>
                 </div>
 
-                {/* Package Info */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-2xl font-bold text-black">{showDetails.name}</h3>
+                    <div>
+                      <h3 className="text-2xl font-bold text-black">{showDetails.name}</h3>
+                      <div className="mt-1"><TypeBadge type={showDetails.type || 'group'} /></div>
+                    </div>
                     <span className="text-xl font-bold text-pink-600">₹{showDetails.price}</span>
                   </div>
 
@@ -1039,18 +1000,6 @@ export default function AdminPackages() {
                       <p className="text-sm text-gray-500">Duration</p>
                       <p className="text-black">{showDetails.duration}</p>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Pickup Point</p>
-                      <p className="text-black">{showDetails.pickupPoint || 'Not specified'}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Drop Point</p>
-                      <p className="text-black">{showDetails.dropPoint || 'Not specified'}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Trip Date</p>
-                      <p className="text-black">{showDetails.tripDate ? new Date(showDetails.tripDate).toLocaleDateString() : 'Not specified'}</p>
-                    </div>
                   </div>
 
                   <div>
@@ -1058,41 +1007,57 @@ export default function AdminPackages() {
                     <p className="text-black">{showDetails.description}</p>
                   </div>
 
-                  {/* Inclusions */}
+                  {/* Per-Person Pricing Details — only for personal type */}
+                  {showDetails.type === 'personal' && showDetails.personPricing && showDetails.personPricing.length > 0 ? (
+                    <div className="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                      <p className="text-sm text-purple-900 font-bold mb-3">💰 Per-Person Pricing (1-12 Persons)</p>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {showDetails.personPricing.map((pp) => (
+                          <div key={pp.persons} className="bg-white p-2 rounded-lg border border-purple-100 text-center">
+                            <p className="text-xs text-gray-600 font-semibold">{pp.persons} {pp.persons === 1 ? 'Person' : 'Persons'}</p>
+                            <p className="text-sm font-bold text-black">₹{Number(pp.price).toLocaleString()}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                      <p className="text-sm text-indigo-900 font-bold">💰 Flat price: ₹{Number(showDetails.price).toLocaleString()} / person for every group size</p>
+                    </div>
+                  )}
+
                   {showDetails.inclusions?.length > 0 && (
                     <div>
-                      <p className="text-sm text-gray-500 mb-2">Inclusions</p>
+                      <p className="text-sm text-gray-500 mb-2 font-bold">Inclusions</p>
                       <ul className="list-disc pl-5 space-y-1">
                         {showDetails.inclusions.map((item, index) => (
-                          <li key={index} className="text-black">{item}</li>
+                          <li key={index} className="text-black text-sm">{item}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {/* Exclusions */}
                   {showDetails.exclusions?.length > 0 && (
                     <div>
-                      <p className="text-sm text-gray-500 mb-2">Exclusions</p>
+                      <p className="text-sm text-gray-500 mb-2 font-bold">Exclusions</p>
                       <ul className="list-disc pl-5 space-y-1">
                         {showDetails.exclusions.map((item, index) => (
-                          <li key={index} className="text-black">{item}</li>
+                          <li key={index} className="text-black text-sm">{item}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {/* Itinerary */}
                   {showDetails.itinerary?.length > 0 && (
                     <div>
-                      <p className="text-sm text-gray-500 mb-2">Itinerary</p>
+                      <p className="text-sm text-gray-500 mb-2 font-bold">Itinerary</p>
                       <ol className="space-y-2">
                         {showDetails.itinerary.map((item, index) => (
                           <li key={index} className="flex">
                             <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs mr-3 flex-shrink-0">
                               {index + 1}
                             </span>
-                            <span className="text-black">{item}</span>
+                            <span className="text-black text-sm">{item}</span>
                           </li>
                         ))}
                       </ol>
@@ -1100,26 +1065,11 @@ export default function AdminPackages() {
                   )}
 
                   <div className="pt-4 border-t">
-                    <div className="flex justify-between items-center">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        showDetails.status 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        Status: {showDetails.status ? 'Active' : 'Inactive'}
-                      </span>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => {
-                            setShowDetails(null)
-                            handleEdit(showDetails)
-                          }}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                          Edit Package
-                        </button>
-                      </div>
-                    </div>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      showDetails.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      Status: {showDetails.status ? 'Active' : 'Inactive'}
+                    </span>
                   </div>
                 </div>
               </div>

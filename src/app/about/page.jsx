@@ -90,7 +90,7 @@ export default function AboutPage() {
       <PageHeader
         title="About Avantika Travels"
         subtitle={`Connecting devotees and travelers to the soul of ${siteData.region} since 2020.`}
-        backgroundImage="/pik8.avif"
+        backgroundImage="/about.webp"
       />
 
       {/* Story Section */}

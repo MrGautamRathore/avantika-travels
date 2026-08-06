@@ -25,6 +25,17 @@ import { useSite } from "@/context/site-context";
 import PackageSchema from "@/components/seo/PackageSchema";
 import AIEnhancements from "@/components/seo/AIEnhancements";
 
+const getPerPersonPrice = (pkg, numberOfPeople) => {
+  if (!pkg) return 0;
+  if (Array.isArray(pkg.personPricing) && pkg.personPricing.length > 0) {
+    const entry = pkg.personPricing.find(
+      (p) => Number(p.persons) === Number(numberOfPeople)
+    );
+    if (entry && entry.price != null) return Number(entry.price);
+  }
+  return Number(pkg.price) || 0;
+};
+
 export default function PackageDetailsPage({ params }) {
   const resolvedParams = use(params);
   const { packages, siteData } = useSite();
@@ -32,7 +43,6 @@ export default function PackageDetailsPage({ params }) {
 
   const pkg = packages.find((p) => p.slug === resolvedParams.slug);
 
-  // Related packages logic
   let relatedPackages = packages.filter(
     (p) =>
       p._id !== pkg?._id &&
@@ -73,11 +83,9 @@ export default function PackageDetailsPage({ params }) {
       ? pkg.images[0].url
       : "/placeholder.svg";
 
-  // SEO Metadata
   const pageTitle = `${pkg.name} | ${pkg.duration} Tour Package @ ₹${pkg.price}`;
   const pageDesc = `Book ${pkg.name} covering ${pkg.destination}. Includes ${pkg.inclusions?.slice(0, 3).join(", ")}. Guide charges apply for small groups.`;
 
-  // Static FAQ
   const commonFaqs = [
     {
       question: "How do I book this package?",
@@ -128,7 +136,6 @@ export default function PackageDetailsPage({ params }) {
         <meta property="product:price:amount" content={pkg.price} />
         <meta property="product:price:currency" content="INR" />
 
-        <link rel="canonical" href={currentUrl} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -146,7 +153,7 @@ export default function PackageDetailsPage({ params }) {
       <main className="py-16 md:py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* --- LEFT COLUMN: CONTENT --- */}
+            {/* LEFT COLUMN: CONTENT */}
             <div className="lg:col-span-8">
               {/* Image Gallery */}
               <motion.div
@@ -230,9 +237,7 @@ export default function PackageDetailsPage({ params }) {
                       <FaTelegram className="w-5 h-5" />
                     </button>
 
-                   
-
-                    {/* Instagram Share (opens Instagram app/website) */}
+                    {/* Instagram Share */}
                     <button
                       onClick={() => {
                         const text = `Check out this amazing tour package: ${pkg.name}\n\n📍 Destination: ${pkg.destination}\n⏱️ Duration: ${pkg.duration}\n💰 Price: ₹${pkg.price}\n\n${pkg.pickupPoint ? `🚗 Pickup: ${pkg.pickupPoint}\n` : ""}${pkg.dropPoint ? `🏁 Drop: ${pkg.dropPoint}\n` : ""}${pkg.tripDate ? `📅 Date: ${new Date(pkg.tripDate).toLocaleDateString()}\n` : ""}\n${currentUrl}`;
@@ -259,12 +264,8 @@ export default function PackageDetailsPage({ params }) {
                     <FiClock className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold">
-                      Duration
-                    </p>
-                    <p className="font-semibold text-gray-900">
-                      {pkg.duration}
-                    </p>
+                    <p className="text-xs text-gray-500 uppercase font-bold">Duration</p>
+                    <p className="font-semibold text-gray-900">{pkg.duration}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -272,12 +273,8 @@ export default function PackageDetailsPage({ params }) {
                     <FiMapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold">
-                      Destination
-                    </p>
-                    <p className="font-semibold text-gray-900">
-                      {pkg.destination}
-                    </p>
+                    <p className="text-xs text-gray-500 uppercase font-bold">Destination</p>
+                    <p className="font-semibold text-gray-900">{pkg.destination}</p>
                   </div>
                 </div>
                 {pkg.pickupPoint && (
@@ -286,12 +283,8 @@ export default function PackageDetailsPage({ params }) {
                       <FiMapPin className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 uppercase font-bold">
-                        Pickup Point
-                      </p>
-                      <p className="font-semibold text-gray-900">
-                        {pkg.pickupPoint}
-                      </p>
+                      <p className="text-xs text-gray-500 uppercase font-bold">Pickup</p>
+                      <p className="font-semibold text-gray-900">{pkg.pickupPoint}</p>
                     </div>
                   </div>
                 )}
@@ -301,108 +294,12 @@ export default function PackageDetailsPage({ params }) {
                       <FiMapPin className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 uppercase font-bold">
-                        Drop Point
-                      </p>
-                      <p className="font-semibold text-gray-900">
-                        {pkg.dropPoint}
-                      </p>
+                      <p className="text-xs text-gray-500 uppercase font-bold">Drop</p>
+                      <p className="font-semibold text-gray-900">{pkg.dropPoint}</p>
                     </div>
                   </div>
                 )}
-                {pkg.upcomingDates && pkg.upcomingDates.length > 0 && (
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
-                      <FiClock className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase font-bold">
-                        Next Trip
-                      </p>
-                      <p className="font-semibold text-gray-900">
-                        {new Date(pkg.upcomingDates[0]).toLocaleDateString("en-IN", {
-                          day: "numeric",
-                          month: "short",
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {(!pkg.upcomingDates || pkg.upcomingDates.length === 0) && (pkg.tripDate && (
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
-                      <FiClock className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase font-bold">
-                        Trip Date
-                      </p>
-                      <p className="font-semibold text-gray-900">
-                        {pkg.tripDate
-                          ? new Date(pkg.tripDate).toLocaleDateString()
-                          : "Flexible Dates"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-purple-600">
-                    <FiShield className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold">
-                      Type
-                    </p>
-                    <p className="font-semibold text-gray-900">Private Tour</p>
-                  </div>
-                </div>
               </div>
-
-              {/* Upcoming Dates Section for Group Packages */}
-              {pkg.upcomingDates && pkg.upcomingDates.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="mb-8"
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Upcoming Trip Dates
-                  </h2>
-                  <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border border-indigo-100">
-                    <p className="text-gray-600 mb-4">
-                      Join our upcoming group tours on these dates:
-                    </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                      {pkg.upcomingDates.map((date, index) => (
-                        <div
-                          key={index}
-                          className="bg-white p-3 rounded-xl border border-indigo-200 text-center shadow-sm"
-                        >
-                          <p className="text-xs text-indigo-600 font-semibold uppercase">
-                            Trip {index + 1}
-                          </p>
-                          <p className="text-lg font-bold text-gray-900">
-                            {new Date(date).toLocaleDateString("en-IN", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-indigo-200">
-                      <Link
-                        href={`/booking?packageId=${pkg._id}`}
-                        className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700 transition-all"
-                      >
-                        Book Your Spot
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
 
               {/* Description */}
               <motion.div
@@ -410,9 +307,7 @@ export default function PackageDetailsPage({ params }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  Package Overview
-                </h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Package Overview</h2>
                 <div className="prose prose-lg max-w-none text-gray-600 bg-white p-6 rounded-2xl border border-gray-100 mb-8">
                   <p>{pkg.description}</p>
                 </div>
@@ -426,9 +321,7 @@ export default function PackageDetailsPage({ params }) {
                   viewport={{ once: true }}
                   className="mb-10"
                 >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    Day-wise Itinerary
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Day-wise Itinerary</h2>
                   <div className="space-y-0">
                     {pkg.itinerary.map((day, index) => (
                       <div key={index} className="flex gap-4">
@@ -441,9 +334,7 @@ export default function PackageDetailsPage({ params }) {
                           )}
                         </div>
                         <div className="pb-8">
-                          <h3 className="text-lg font-bold text-gray-800 mb-2">
-                            Day {index + 1}
-                          </h3>
+                          <h3 className="text-lg font-bold text-gray-800 mb-2">Day {index + 1}</h3>
                           <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-gray-600">
                             {day}
                           </div>
@@ -459,15 +350,12 @@ export default function PackageDetailsPage({ params }) {
                 {pkg.inclusions && pkg.inclusions.length > 0 && (
                   <div className="bg-green-50/50 p-6 rounded-2xl border border-green-100">
                     <h3 className="font-bold text-green-800 mb-4 flex items-center gap-2">
-                      <FiCheck className="w-5 h-5 bg-green-200 rounded-full p-0.5" />{" "}
+                      <FiCheck className="w-5 h-5 bg-green-200 rounded-full p-0.5" />
                       What's Included
                     </h3>
                     <ul className="space-y-3">
                       {pkg.inclusions.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-3 text-sm text-gray-700"
-                        >
+                        <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
                           <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>
                           {item}
                         </li>
@@ -478,15 +366,12 @@ export default function PackageDetailsPage({ params }) {
                 {pkg.exclusions && pkg.exclusions.length > 0 && (
                   <div className="bg-red-50/50 p-6 rounded-2xl border border-red-100">
                     <h3 className="font-bold text-red-800 mb-4 flex items-center gap-2">
-                      <FiX className="w-5 h-5 bg-red-200 rounded-full p-0.5" />{" "}
+                      <FiX className="w-5 h-5 bg-red-200 rounded-full p-0.5" />
                       What's Excluded
                     </h3>
                     <ul className="space-y-3">
                       {pkg.exclusions.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-3 text-sm text-gray-700"
-                        >
+                        <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
                           <span className="w-1.5 h-1.5 bg-red-400 rounded-full mt-1.5 shrink-0"></span>
                           {item}
                         </li>
@@ -496,21 +381,77 @@ export default function PackageDetailsPage({ params }) {
                 )}
               </div>
 
+              {/* Per-Person Pricing Table — only for 'personal' type packages */}
+{pkg.type === 'personal' && pkg.personPricing && pkg.personPricing.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="mb-10"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">💰 Pricing Per Person</h2>
+                  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <p className="text-gray-600 mb-6">
+                      Select the number of travelers to see the price per person for this package:
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                      {pkg.personPricing.map((pp) => {
+                        const ppPrice = Number(pp.price);
+                        const basePrice = Number(pkg.price);
+                        const isDifferent = ppPrice !== basePrice;
+                        const savings = isDifferent ? Math.round((1 - ppPrice/basePrice) * 100) : 0;
+                        
+                        return (
+                          <motion.div
+                            key={pp.persons}
+                            whileHover={{ scale: 1.05 }}
+                            className={`p-4 rounded-xl border-2 text-center transition-all cursor-pointer ${
+                              isDifferent
+                                ? 'bg-green-50 border-green-300 shadow-md'
+                                : 'bg-gray-50 border-gray-200'
+                            }`}
+                          >
+                            <p className="text-xs text-gray-500 uppercase font-bold mb-1">
+                              {pp.persons} {pp.persons === 1 ? 'Person' : 'Persons'}
+                            </p>
+                            <p className="text-2xl font-bold text-black mb-1">
+                              ₹{ppPrice.toLocaleString()}
+                            </p>
+                            <p className="text-xs text-gray-400 mb-2">/ person</p>
+                            {isDifferent && (
+                              <>
+                                <span className="inline-block mb-1 text-xs font-medium text-white bg-green-600 px-2 py-0.5 rounded-full">
+                                  Save {savings}%
+                                </span>
+                                {basePrice > 0 && (
+                                  <p className="text-xs text-gray-500 line-through">
+                                    ₹{basePrice.toLocaleString()}
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                      <p className="text-sm text-blue-900">
+                        <span className="font-bold">ℹ️ How pricing works:</span> The base price (₹{Number(pkg.price).toLocaleString()} per person) applies to all group sizes. If you see a different price above, it means we offer discounts for larger groups. The more people join, the better the deal!
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
               {/* FAQ */}
               <div className="mb-10">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <FiHelpCircle className="text-primary" /> Frequently Asked
-                  Questions
+                  <FiHelpCircle className="text-primary" /> Frequently Asked Questions
                 </h2>
                 <div className="space-y-4">
                   {commonFaqs.map((faq, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/30 transition-colors"
-                    >
-                      <h3 className="font-bold text-gray-800 mb-2 text-lg">
-                        {faq.question}
-                      </h3>
+                    <div key={idx} className="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/30 transition-colors">
+                      <h3 className="font-bold text-gray-800 mb-2 text-lg">{faq.question}</h3>
                       <p className="text-gray-600">{faq.answer}</p>
                     </div>
                   ))}
@@ -518,12 +459,15 @@ export default function PackageDetailsPage({ params }) {
               </div>
             </div>
 
-            {/* --- RIGHT COLUMN: STICKY BOOKING CARD --- */}
+            {/* RIGHT COLUMN: STICKY BOOKING CARD */}
             <div className="lg:col-span-4 w-full">
-              <div className="flex flex-col md:flex-row stic w-full space-y-6 gap-8">
+              <div className="flex flex-col md:flex-row lg:flex-col space-y-6 gap-8">
                 {/* 1. Price & Booking Card */}
-                <div className="bg-white flex-1 rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <div className="bg-white flex-1 rounded-2xl shadow-xl border border-gray-100 overflow-hidden sticky top-20">
                   <div className="bg-gradient-to-r from-primary to-pink-500 p-6 text-white text-center">
+                    <p className="text-gray-700 text-sm font-medium uppercase tracking-wider mb-1">
+  {pkg.type === 'personal' ? 'Private Tour • Best Deal Offer' : 'Group Tour • Fixed Price'}
+</p>
                     <p className="text-gray-700 text-sm font-medium uppercase tracking-wider mb-1">
                       Best Deal Offer
                     </p>
@@ -536,34 +480,13 @@ export default function PackageDetailsPage({ params }) {
                   </div>
 
                   <div className="p-6 flex flex-col gap-2">
-                    {/* --- IMPORTANT NOTE ABOUT GUIDE FEE --- */}
-                    {/*   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-5 flex gap-3 items-start">
-                             <FiAlertCircle className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
-                             <div className="text-xs text-yellow-800">
-                                 <strong>Note:</strong> Guide fee of <strong>₹1000/day</strong> is applicable if the group size is less than 12 people.
-                             </div>
-                        </div> */}
-
                     <div className="text-sm text-center px-2 text-gray-500 bg-gray-50 py-2 rounded-lg border border-gray-200 mb-5">
                       No hidden charges • Instant Confirmation
                     </div>
 
-                    <div className="space-y-3 text-gray-700">
+                    <div className="space-y-3">
                       {pkg.status !== false ? (
                         <>
-                          {/* <Link
-                            href={`https://wa.me/${siteData.contactInfo?.phone?.replace(/\D/g, "") || "918720006707"}?text=Hi, I want to book ${pkg.name}. Please confirm price including Guide fee.`}
-                            target="_blank"
-                            className="flex items-center justify-center gap-2 w-full font-bold py-3 rounded-xl hover:bg-[#20bd5a] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                          >
-                            <FaWhatsapp className="w-5 h-5" /> Book via WhatsApp
-                          </Link>
-                          <Link
-                            href={`tel:${siteData.contactInfo?.phone || "+91 8720006707"}`}
-                            className="flex items-center justify-center gap-2 w-full bg-white border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all"
-                          >
-                            <FiPhone className="w-5 h-5" /> Call to Book
-                          </Link> */}
                           <Link
                             href={`/booking?packageId=${pkg._id}`}
                             className="flex items-center justify-center gap-2 w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all"
@@ -589,7 +512,7 @@ export default function PackageDetailsPage({ params }) {
                 </div>
 
                 {/* 2. Trust Badges */}
-                <div className="flex flex-col gap-6 md:w-1/2">
+                <div className="flex flex-col gap-6 md:w-1/2 lg:w-full">
                   <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm space-y-4">
                     <h4 className="font-bold text-gray-800 mb-2">
                       Why Book with Avantika Travels?

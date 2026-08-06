@@ -7,12 +7,15 @@ export async function GET() {
     "description": "Comprehensive tourism data for Madhya Pradesh",
     "url": "https://avantikatravels.com/api/seo/data",
     "version": "2026.1.0",
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "keywords": ["Madhya Pradesh", "Tourism", "Pilgrimage", "Travel"],
-    "creator": {
-      "@type": "Organization",
-      "name": "Avantika Travels"
-    },
+    // Search Console suggestion: make sure required Dataset fields exist
+    // https://schema.org/Dataset
+"license": "Copyright © 2026 Avantika Travels. All Rights Reserved. No data can be used without permission.",
+"keywords": ["Madhya Pradesh", "Tourism", "Pilgrimage", "Travel"],
+"creator": {
+  "@type": "Organization",
+  "name": "Avantika Travels",
+  "url": "https://avantikatravels.com"
+},
     "distribution": [
       {
         "@type": "DataDownload",

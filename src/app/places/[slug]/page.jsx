@@ -92,7 +92,7 @@ export default function PlaceDetailsPage({ params }) {
         <meta property="og:image" content={mainImage} />
         <meta property="og:type" content="place" />
         
-        <link rel="canonical" href={currentUrl} />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -45,7 +45,7 @@ const defaultSiteData = {
   ],
   logo: "/logo.png",
   secondaryImage: "/mahakal-coridor-ujjain.png",
-  heroImage: "/pik5.avif",
+  heroImage: "/mahakal.jpg",
 contactInfo: { email: "info@avanikatravels.com",
   phone: "+91 8720006707",
   alternatePhone: "+91 8720006707",

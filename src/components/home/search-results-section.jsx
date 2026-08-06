@@ -33,6 +33,8 @@ export default function SearchResultsSection({ selectedTripType, selectedRegion,
 
   // Initial visibility setup (only based on search)
   useEffect(() => {
+      console.log('selectedRegion', selectedRegion);
+
     if (selectedRegion && !hasInitialSearch) {
       setIsVisible(true)
       setHasInitialSearch(true)
@@ -42,13 +44,14 @@ export default function SearchResultsSection({ selectedTripType, selectedRegion,
   // Filter packages
   useEffect(() => {
     let filtered = packages
-
+  console.log('selectedRegion', selectedRegion);
+  
     // Filter by region/destination
     if (selectedRegion) {
       filtered = filtered.filter(pkg =>
         pkg.destination?.toLowerCase().includes(selectedRegion.toLowerCase()) ||
         pkg.location?.toLowerCase().includes(selectedRegion.toLowerCase()) ||
-        pkg.title?.toLowerCase().includes(selectedRegion.toLowerCase())
+        pkg.name?.toLowerCase().includes(selectedRegion.toLowerCase())
       )
     }
 

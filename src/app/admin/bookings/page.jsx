@@ -13,18 +13,8 @@ import {
   Phone,
   MapPin,
   Edit,
-  Plus,
   Filter,
-  MessageCircle,
-  CheckCircle,
-  Clock,
-  Rocket,
-  Award,
-  Star,
-  Gift,
-  Sparkles,
 } from "lucide-react";
-
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState([]);
@@ -35,8 +25,7 @@ export default function AdminBookings() {
   const [editingBooking, setEditingBooking] = useState(null);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [showFilters, setShowFilters] = useState(true);
-
-
+  const [typeFilter, setTypeFilter] = useState("all");
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,22 +47,17 @@ export default function AdminBookings() {
     packageName: "",
     packagePrice: "",
     packageDuration: "",
+    packageType: "",
+    pricePerPerson: "",
     serviceName: "",
     totalPrice: 0,
     status: "pending",
     pickupPoints: "",
     dropPoints: "",
-    groupPackage: false,
-    personalGroupPackage: false,
     profId: "",
     adharNumber: "",
-    roomType: "",
-    otherRequirements: "",
     advancePayment: 0,
     balancePayment: 0,
-    paymentStatus: "pending",
-    paymentId: "",
-    paymentDate: "",
   });
 
   useEffect(() => {
@@ -181,24 +165,17 @@ export default function AdminBookings() {
       packageName: booking.packageName || "",
       packagePrice: booking.packagePrice || "",
       packageDuration: booking.packageDuration || "",
+      packageType: booking.packageType || "",
+      pricePerPerson: booking.pricePerPerson || "",
       serviceName: booking.serviceName || "",
       totalPrice: booking.totalPrice || 0,
       status: booking.status || "pending",
       pickupPoints: booking.pickupPoints || "",
       dropPoints: booking.dropPoints || "",
-      groupPackage: booking.groupPackage || false,
-      personalGroupPackage: booking.personalGroupPackage || false,
       profId: booking.profId || "",
       adharNumber: booking.adharNumber || "",
-      roomType: booking.roomType || "",
-      otherRequirements: booking.otherRequirements || "",
       advancePayment: booking.advancePayment || 0,
       balancePayment: booking.balancePayment || 0,
-      paymentStatus: booking.paymentStatus || "pending",
-      paymentId: booking.paymentId || "",
-      paymentDate: booking.paymentDate
-        ? new Date(booking.paymentDate).toISOString().split("T")[0]
-        : "",
     });
     setShowForm(true);
   };
@@ -233,8 +210,6 @@ export default function AdminBookings() {
     }
   };
 
-
-
   // Filtering and sorting logic
   const filteredBookings = bookings
     .filter((booking) => {
@@ -265,6 +240,9 @@ export default function AdminBookings() {
       if (statusFilter !== "all" && booking.status !== statusFilter) {
         return false;
       }
+
+      if (typeFilter !== "all" && booking.packageType !== typeFilter)
+        return false;
 
       // Date filter
       if (dateFilter !== "all") {
@@ -437,6 +415,15 @@ export default function AdminBookings() {
               {/* Filter Selects */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                >
+                  <option value="all">All Types</option>
+                  <option value="group">Group</option>
+                  <option value="personal">Personal</option>
+                </select>
+                <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
@@ -447,6 +434,7 @@ export default function AdminBookings() {
                   <option value="completed">Completed</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
+
                 <select
                   value={dateFilter}
                   onChange={(e) => setDateFilter(e.target.value)}
@@ -514,11 +502,30 @@ export default function AdminBookings() {
                 <div className="px-5 pb-3">
                   {booking.packageName && (
                     <div className="bg-pink-50 rounded-lg p-3 mb-3">
-                      <p className="text-sm font-medium text-pink-800 truncate">
-                        {booking.packageName}
-                      </p>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-medium text-pink-800 truncate">
+                          {booking.packageName}
+                        </p>
+                        {booking.packageType && (
+                          <span
+                            className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                              booking.packageType === "personal"
+                                ? "bg-purple-100 text-purple-700"
+                                : "bg-indigo-100 text-indigo-700"
+                            }`}
+                          >
+                            {booking.packageType === "personal"
+                              ? "Personal"
+                              : "Group"}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-pink-600">
-                        ₹{booking.packagePrice} • {booking.packageDuration}
+                        {booking.packageType === "personal" &&
+                        booking.pricePerPerson
+                          ? `₹${booking.pricePerPerson}/person`
+                          : `₹${booking.packagePrice}`}{" "}
+                        • {booking.packageDuration}
                       </p>
                     </div>
                   )}
@@ -550,6 +557,14 @@ export default function AdminBookings() {
                     <div className="flex items-center text-gray-600">
                       <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
                       <span>{formatDate(booking.travelDate)}</span>
+                    </div>
+                  )}
+                  {(booking.pickupPoints || booking.dropPoints) && (
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">
+                        {booking.pickupPoints || "-"} → {booking.dropPoints || "-"}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -687,8 +702,23 @@ export default function AdminBookings() {
                       </td>
                       <td className="px-6 py-4">
                         {booking.packageName && (
-                          <div className="text-sm font-medium text-black">
-                            {booking.packageName}
+                          <div>
+                            <div className="text-sm font-medium text-black">
+                              {booking.packageName}
+                            </div>
+                            {booking.packageType && (
+                              <span
+                                className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                                  booking.packageType === "personal"
+                                    ? "bg-purple-100 text-purple-700"
+                                    : "bg-indigo-100 text-indigo-700"
+                                }`}
+                              >
+                                {booking.packageType === "personal"
+                                  ? "Personal"
+                                  : "Group"}
+                              </span>
+                            )}
                           </div>
                         )}
                         {booking.serviceName && (
@@ -849,9 +879,24 @@ export default function AdminBookings() {
                 {/* Package/Service Info */}
                 {showDetails.packageName && (
                   <div className="bg-pink-50 rounded-lg p-4 mb-6">
-                    <h3 className="font-bold text-pink-800 mb-2">
-                      Package Details
-                    </h3>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h3 className="font-bold text-pink-800">
+                        Package Details
+                      </h3>
+                      {showDetails.packageType && (
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                            showDetails.packageType === "personal"
+                              ? "bg-purple-100 text-purple-700"
+                              : "bg-indigo-100 text-indigo-700"
+                          }`}
+                        >
+                          {showDetails.packageType === "personal"
+                            ? "Personal"
+                            : "Group"}
+                        </span>
+                      )}
+                    </div>
                     <p className="font-medium text-black">
                       {showDetails.packageName}
                     </p>
@@ -859,13 +904,28 @@ export default function AdminBookings() {
                       <div>
                         <span className="text-gray-500">Price:</span>
                         <span className="ml-2 font-medium">
-                          ₹{showDetails.packagePrice}
+                          {showDetails.packageType === "personal" &&
+                          showDetails.pricePerPerson
+                            ? `₹${showDetails.pricePerPerson}/person`
+                            : `₹${showDetails.packagePrice}`}
                         </span>
                       </div>
                       <div>
                         <span className="text-gray-500">Duration:</span>
                         <span className="ml-2">
                           {showDetails.packageDuration}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Pickup:</span>
+                        <span className="ml-2">
+                          {showDetails.pickupPoints || "-"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Drop:</span>
+                        <span className="ml-2">
+                          {showDetails.dropPoints || "-"}
                         </span>
                       </div>
                     </div>
@@ -959,6 +1019,13 @@ export default function AdminBookings() {
                         {showDetails.totalPrice > 0
                           ? `₹${showDetails.totalPrice.toLocaleString()}`
                           : "-"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Advance / Balance</p>
+                      <p className="font-medium text-black text-sm">
+                        ₹{(showDetails.advancePayment || 0).toLocaleString()} / ₹
+                        {(showDetails.balancePayment || 0).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -1132,6 +1199,22 @@ export default function AdminBookings() {
                           <option value="other">Other</option>
                         </select>
                       </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Aadhar Number
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.adharNumber}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              adharNumber: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -1159,6 +1242,25 @@ export default function AdminBookings() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Package Type
+                        </label>
+                        <select
+                          value={formData.packageType}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              packageType: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        >
+                          <option value="">-</option>
+                          <option value="group">Group</option>
+                          <option value="personal">Personal</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                           Package Price
                         </label>
                         <input
@@ -1173,6 +1275,24 @@ export default function AdminBookings() {
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                         />
                       </div>
+                      {formData.packageType === "personal" && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Price Per Person
+                          </label>
+                          <input
+                            type="number"
+                            value={formData.pricePerPerson}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                pricePerPerson: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                          />
+                        </div>
+                      )}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Package Duration
@@ -1200,6 +1320,38 @@ export default function AdminBookings() {
                             setFormData({
                               ...formData,
                               serviceName: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Pickup Point
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.pickupPoints}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              pickupPoints: e.target.value,
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Drop Point
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.dropPoints}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              dropPoints: e.target.value,
                             })
                           }
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
@@ -1279,6 +1431,38 @@ export default function AdminBookings() {
                           <option value="cancelled">Cancelled</option>
                         </select>
                       </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Advance Payment
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.advancePayment}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              advancePayment: parseFloat(e.target.value),
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Balance Payment
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.balancePayment}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              balancePayment: parseFloat(e.target.value),
+                            })
+                          }
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -1321,7 +1505,6 @@ export default function AdminBookings() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

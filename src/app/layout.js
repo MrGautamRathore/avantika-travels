@@ -10,8 +10,10 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Suspense } from "react";
 import AIEnhancements from "@/components/seo/AIEnhancements";
 import Script from "next/script"; // Import Script component
+import { CanonicalInjector } from "@/components/seo/CanonicalInjector";
 
 // Font Optimization
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -118,11 +120,10 @@ export const metadata = {
     'format-detection': 'telephone=no', // Prevents random numbers from becoming links
   },
 
-  // 10. Canonical URL (Prevents Duplicate Content Issues)
-  alternates: {
-    canonical: './',
-  }
+  // 10. Canonical URL is injected per-page using a global CanonicalInjector.
+  // Keeping Next metadata alternates canonical removed to avoid conflicts.
 };
+
 
 // ... Rest of your component code
 
@@ -158,7 +159,9 @@ export default function RootLayout({ children }) {
      </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
+        <CanonicalInjector />
         <Suspense fallback={
+
           <div className="min-h-screen flex items-center justify-center bg-white text-primary">
             <div className="text-lg font-bold animate-pulse">Loading Avantika Travels...</div>
           </div>

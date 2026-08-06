@@ -65,7 +65,7 @@ export default function HomePage() {
         <meta name="keywords" content="Ujjain Tour Packages, Mahakal Darshan, Indore to Ujjain Taxi, Omkareshwar Trip Cost, Ujjain Travels, Best Travel Agency in Ujjain" />
         <meta property="og:title" content="Avantika Travels | Ujjain & Omkareshwar Tour Packages" />
         <meta property="og:description" content="Plan your spiritual journey with Avantika Travels. We provide the best taxi service and hotel booking for Mahakaleshwar and Omkareshwar." />
-        <link rel="canonical" href="https://avantikatravels.com/" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

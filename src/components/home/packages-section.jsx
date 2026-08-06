@@ -65,8 +65,8 @@ export default function PackagesSection() {
         </div>
 
         {/* Package Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {filteredPackages.slice(0, 8).map((pkg, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {filteredPackages.slice(0, 6).map((pkg, index) => (
             <PackageCard key={pkg._id} pkg={pkg} index={index} />
           ))}
         </div>

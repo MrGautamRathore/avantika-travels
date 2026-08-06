@@ -98,13 +98,13 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden overflow-hidden"
             >
-              <div className="py-4 space-y-4">
+              <div className="py-4 space-y-4 flex flex-col items-center">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     prefetch={link.name === "Home" || link.name === "Packages" ? true : false}
-                    className="block text-foreground hover:text-primary transition-colors font-medium py-2"
+                    className="block text-foreground hover:text-primary transition-colors font-medium py-2 text-xl"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -112,7 +112,7 @@ export default function Header() {
                 ))}
                 <Link
                   href="/booking"
-                  className=" bg-primary text-white px-6 py-3 rounded-full font-semibold text-center hover:bg-primary/90 transition-colors"
+                  className=" bg-primary text-white text-xl px-6 py-3 rounded-full font-semibold text-center hover:bg-primary/90 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Book Now

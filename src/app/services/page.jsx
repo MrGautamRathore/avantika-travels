@@ -101,7 +101,7 @@ export default function ServicesPage() {
       <PageHeader
         title="Our Services"
         subtitle="Your One-Stop Solution for Train, Flight, Bus & Tour Bookings in Madhya Pradesh"
-        backgroundImage="/ram-ghat-ujjain.png"
+        backgroundImage="/mandu.webp"
       />
 
       <section className="py-16 md:py-24 bg-gray-50">
