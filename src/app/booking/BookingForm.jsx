@@ -421,7 +421,7 @@ export default function BookingForm() {
       total = perPersonPrice * numPeople;
     } else {
       // Group package: single fixed price regardless of headcount
-      total = Number(packageData.price) || 0;
+      total = Number(packageData.price)  * numPeople  || 0;
     }
 
     const advance = Math.round(total * 0.4);

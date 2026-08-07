@@ -28,7 +28,7 @@ export default function PlaceCard({ place, index = 0, variant = "default" }) {
       <Link href={`/places/${place.slug}`}>
         <div className={`relative rounded-2xl overflow-hidden ${isLarge ? "h-[400px]" : "h-48"}`}>
           <Image
-            src={imageUrl}
+            src={'/bhopal2.jfif'|| imageUrl}
             // SEO Optimized Alt Text
             alt={`Visit ${place.title || place.name} - Best Tourist Place in Madhya Pradesh`}
             fill
