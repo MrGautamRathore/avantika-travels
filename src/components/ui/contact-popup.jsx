@@ -19,8 +19,6 @@ export default function ContactPopup() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
-
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 328)
@@ -57,7 +55,7 @@ export default function ContactPopup() {
     setError("")
 
     try {
-      await axios.post(`${API_BASE_URL}/contacts`, formData)
+      await axios.post(`/api/contacts`, formData)
       setIsSubmitted(true)
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
       setTimeout(() => {

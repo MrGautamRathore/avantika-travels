@@ -22,8 +22,6 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -34,7 +32,7 @@ export default function ContactPage() {
     setError("")
 
     try {
-      await axios.post(`${API_BASE_URL}/contacts`, formData)
+      await axios.post(`/api/contacts`, formData)
       setIsSubmitted(true)
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
       setTimeout(() => setIsSubmitted(false), 5000)

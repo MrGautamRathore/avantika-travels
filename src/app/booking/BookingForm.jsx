@@ -126,18 +126,11 @@ const ReceiptContent = ({ formData, packageData, prices, bookingId, siteData, cu
       {/* Price Breakdown - Responsive */}
       <div style={{ marginBottom: '20px' }}>
         <h4 style={{ fontSize: '12px', borderBottom: `2px solid ${pinkPrimary}`, paddingBottom: '5px', marginBottom: '10px' }} className="sm:text-sm">AMOUNT DESCRIPTION</h4>
-        <div style={{ border: `1px solid ${borderGray}`, borderRadius: '8px', overflow: 'hidden', fontSize: '11px' }} className="sm:text-xs md:text-[13px]">
-          {isPersonal ? (
+<div style={{ border: `1px solid ${borderGray}`, borderRadius: '8px', overflow: 'hidden', fontSize: '11px' }} className="sm:text-xs md:text-[13px]">
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderBottom: `1px solid ${borderGray}` }}>
               <span>Package Price (₹{prices.perPersonPrice.toLocaleString()} x {numPeople} {numPeople === 1 ? 'person' : 'people'})</span>
               <span>₹{prices.total.toLocaleString()}</span>
             </div>
-          ) : (
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderBottom: `1px solid ${borderGray}` }}>
-              <span>Package Price ({numPeople} {numPeople === 1 ? 'person' : 'people'})</span>
-              <span>₹{prices.total.toLocaleString()}</span>
-            </div>
-          )}
 
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: grayLight, fontWeight: 'bold' }}>
             <span>TOTAL AMOUNT</span>
@@ -407,22 +400,13 @@ export default function BookingForm() {
     pkg.destination?.toLowerCase().includes(packageSearch.toLowerCase())
   );
 
-  // Price is fully driven by the package: fixed price for group packages,
-  // per-person price (x number of people) for personal packages.
+  // Price: for both group & personal, it's per-person price × number of people.
   const calculatePrices = () => {
     if (!packageData) return { total: 0, advance: 0, balance: 0, perPersonPrice: 0 };
     const numPeople = parseInt(formData.numberOfPeople) || 1;
 
-    let total = 0;
-    let perPersonPrice = 0;
-
-    if (packageData.type === 'personal') {
-      perPersonPrice = getPerPersonPrice(packageData, numPeople);
-      total = perPersonPrice * numPeople;
-    } else {
-      // Group package: single fixed price regardless of headcount
-      total = Number(packageData.price)  * numPeople  || 0;
-    }
+    const perPersonPrice = getPerPersonPrice(packageData, numPeople);
+    const total = perPersonPrice * numPeople;
 
     const advance = Math.round(total * 0.4);
     return { total, advance, balance: total - advance, perPersonPrice };
@@ -609,13 +593,11 @@ export default function BookingForm() {
                       {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
                         <option key={num} value={num}>
                           {num} {num === 1 ? "Person" : "People"}
-                          {packageData?.type === 'personal'
-                            ? ` — ₹${getPerPersonPrice(packageData, num).toLocaleString()}/person`
-                            : ""}
+                          {packageData ? ` — ₹${getPerPersonPrice(packageData, num).toLocaleString()}/person` : ""}
                         </option>
                       ))}
                     </select>
-                    {packageData?.type === 'personal' && (
+                    {packageData && (
                       <p className="text-xs text-pink-600 mt-1">
                         Price per person for {formData.numberOfPeople} {parseInt(formData.numberOfPeople) === 1 ? 'person' : 'people'}: ₹{prices.perPersonPrice.toLocaleString()}
                       </p>
@@ -630,17 +612,10 @@ export default function BookingForm() {
 
                   {packageData && (
                     <div className="bg-pink-50 rounded-lg p-3 sm:p-4">
-                      {packageData.type === 'personal' ? (
-                        <div className="flex justify-between text-sm sm:text-base">
-                          <span>Price (₹{prices.perPersonPrice.toLocaleString()} x {formData.numberOfPeople}):</span>
-                          <span>₹{prices.total.toLocaleString()}</span>
-                        </div>
-                      ) : (
-                        <div className="flex justify-between text-sm sm:text-base">
-                          <span>Package Price:</span>
-                          <span>₹{prices.total.toLocaleString()}</span>
-                        </div>
-                      )}
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span>Price (₹{prices.perPersonPrice.toLocaleString()} x {formData.numberOfPeople} {parseInt(formData.numberOfPeople) === 1 ? 'person' : 'people'}):</span>
+                        <span>₹{prices.total.toLocaleString()}</span>
+                      </div>
                       <div className="flex justify-between mt-2 pt-2 border-t border-pink-200"><span className="font-bold text-sm sm:text-base">Total Price:</span><span className="font-bold text-lg sm:text-xl text-pink-600">₹{prices.total.toLocaleString()}</span></div>
                       <div className="flex justify-between text-xs sm:text-sm mt-2"><span>Advance (40%):</span><span className="font-semibold text-pink-600">₹{prices.advance.toLocaleString()}</span></div>
                       <div className="flex justify-between text-xs sm:text-sm"><span>Balance:</span><span>₹{prices.balance.toLocaleString()}</span></div>
