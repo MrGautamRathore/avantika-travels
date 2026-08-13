@@ -35,11 +35,11 @@ const collectionPageSchema = {
           "url": `https://avantikatravels.com/places/${place.slug}`,
           // Adding dummy/placeholder rating to fix the error 
           // (Agar database mein real rating hai toh wahan se fetch karein)
-          "aggregateRating": {
+          /* "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.8",
             "reviewCount": "150"
-          }
+          } */
         }
       }))
     }
