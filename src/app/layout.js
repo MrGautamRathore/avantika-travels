@@ -10,7 +10,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Suspense } from "react";
 import AIEnhancements from "@/components/seo/AIEnhancements";
 import Script from "next/script"; // Import Script component
-import { CanonicalInjector } from "@/components/seo/CanonicalInjector";
+//import { CanonicalInjector } from "@/components/seo/CanonicalInjector";
 
 // Font Optimization
 
@@ -157,7 +157,7 @@ export default function RootLayout({ children }) {
      </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
-        <CanonicalInjector />
+       {/*  <CanonicalInjector /> */}
         <Suspense fallback={
 
           <div className="min-h-screen flex items-center justify-center bg-white text-primary">
