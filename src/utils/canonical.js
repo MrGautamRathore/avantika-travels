@@ -12,7 +12,7 @@ function normalizePath(pathname = '/') {
   return p
 }
 
-/**
+/* *
  * Build canonical URL for a given pathname.
  * - Always uses https://www.avantikatravels.com
  * - Removes trailing slash except for root
