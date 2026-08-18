@@ -1,10 +1,8 @@
 "use client";
 
-import Script from "next/script"
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FiMaximize2,
   FiX,
   FiMapPin,
   FiChevronRight,

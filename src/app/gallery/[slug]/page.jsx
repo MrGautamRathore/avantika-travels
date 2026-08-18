@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { FiMaximize2, FiX, FiMapPin, FiChevronRight, FiUser, FiArrowLeft, FiShare2, FiCheck } from "react-icons/fi"
+import { FiX, FiMapPin, FiChevronRight, FiUser, FiArrowLeft, FiShare2, FiCheck } from "react-icons/fi"
 import { FaFacebook, FaTwitter, FaWhatsapp, FaLink } from "react-icons/fa"
 import Link from "next/link"
 import PageHeader from "@/components/ui/page-header"

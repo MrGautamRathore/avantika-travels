@@ -9,12 +9,8 @@ import {
   FiMapPin,
   FiClock,
   FiCheck,
-  FiPhone,
-  FiInfo,
   FiHelpCircle,
-  FiShield,
   FiX,
-  FiAlertCircle,
   FiShare2,
 } from "react-icons/fi";
 import { FaWhatsapp, FaGooglePay } from "react-icons/fa";
