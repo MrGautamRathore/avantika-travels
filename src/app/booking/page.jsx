@@ -59,7 +59,7 @@ export const metadata = {
         alt: "Avantika Travels - Book Your Tour Package",
       },
       {
-        url: "/icon.jpg",
+        url: "/mahakal.webp",
         width: 940,
         height: 940,
         alt: "Ujjain Travels and Madhya Pradesh Tours with Avantika Travels",

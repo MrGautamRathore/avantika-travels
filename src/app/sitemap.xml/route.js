@@ -74,7 +74,7 @@ export async function GET(request) {
       }
 
       // ✅ Process Blogs (FIXED - was missing)
-      if (blogsRes.status === 'fulfilled' && blogsRes.value.ok) {
+      /* if (blogsRes.status === 'fulfilled' && blogsRes.value.ok) {
         const blogs = await blogsRes.value.json();
         console.log(`✅ Found ${blogs.length} blogs for sitemap`);
         blogs.forEach(blog => {
@@ -89,7 +89,7 @@ export async function GET(request) {
         });
       } else {
         console.warn('⚠️ Blogs API failed:', blogsRes.status === 'rejected' ? blogsRes.reason : 'Not OK');
-      }
+      } */
       // Dynamic Galleries
       if (galleriesRes.status === 'fulfilled' && galleriesRes.value.ok) {
         const galleries = await galleriesRes.value.json();
