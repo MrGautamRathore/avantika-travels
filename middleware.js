@@ -18,10 +18,10 @@ export function middleware(request) {
     )
     
     // ✅ Agar www hai toh redirect karo
-    if (hostname === 'www.avantikatravels.com') {
+   /*  if (hostname === 'www.avantikatravels.com') {
       const newUrl = new URL(`https://avantikatravels.com${pathname}`)
       return NextResponse.redirect(newUrl, 301)
-    }
+    } */
     
     return response
   }
