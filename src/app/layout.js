@@ -94,7 +94,6 @@ export const metadata = {
     'google-site-verification': "Kzya8PN69Pu0Wy8EeAaDq8-GKXBErwII4ela_A_nTqY",
     'format-detection': 'telephone=no',
   },
-  // ✅ CANONICAL को यहाँ से हटा दिया (अब page.js में manage करेंगे)
 };
 
 const defaultSiteData = {
