@@ -59,7 +59,6 @@ const collectionPageSchema = {
         "@type": "ListItem",
         "position": 2,
         "name": "Places to Visit",
-        "item": "https://avantikatravels.com/places"
       }
     ]
   }
@@ -98,7 +97,7 @@ const collectionPageSchema = {
       <PageHeader
         title="Explore Madhya Pradesh"
         subtitle="From the spiritual energy of Gwalior Fort to the natural beauty of Pachmarhi."
-        backgroundImage="/gwalior1.jpeg"
+        backgroundImage="/maheshwar.webp"
       />
 
       <main className="bg-gray-50">
