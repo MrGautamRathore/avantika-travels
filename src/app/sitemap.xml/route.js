@@ -73,6 +73,23 @@ export async function GET(request) {
         });
       }
 
+      // ✅ Process Blogs (FIXED - was missing)
+      if (blogsRes.status === 'fulfilled' && blogsRes.value.ok) {
+        const blogs = await blogsRes.value.json();
+        console.log(`✅ Found ${blogs.length} blogs for sitemap`);
+        blogs.forEach(blog => {
+          if (blog.slug) {
+            allEntries.push({
+              loc: sanitizeUrl(`${baseUrl}/blogs/${blog.slug}`),
+              lastmod: formatDate(blog.updatedAt || blog.publishedAt || blog.createdAt),
+              changefreq: 'weekly',
+              priority: 0.7
+            });
+          }
+        });
+      } else {
+        console.warn('⚠️ Blogs API failed:', blogsRes.status === 'rejected' ? blogsRes.reason : 'Not OK');
+      }
       // Dynamic Galleries
       if (galleriesRes.status === 'fulfilled' && galleriesRes.value.ok) {
         const galleries = await galleriesRes.value.json();
@@ -86,16 +103,7 @@ export async function GET(request) {
         });
       }
 
-      // Categories
-      const categories = ['holiday', 'adventure', 'honeymoon', 'pilgrimage', 'family', 'weekend'];
-      categories.forEach(cat => {
-        allEntries.push({
-          loc: sanitizeUrl(`${baseUrl}/packages?type=${cat}`),
-          lastmod: formatDate(new Date()),
-          changefreq: 'weekly',
-          priority: 0.7
-        });
-      });
+      
 
     } catch (apiErr) {
       console.error('Dynamic fetch error:', apiErr);

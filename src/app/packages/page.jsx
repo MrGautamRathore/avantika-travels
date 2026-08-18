@@ -1,3 +1,4 @@
+// packages/page.js (Complete Modified Version)
 "use client"
 
 import { useState, useEffect } from "react"
@@ -10,15 +11,25 @@ import { useSite } from "@/context/site-context"
 import Head from "next/head"
 import Link from "next/link"
 import { FaWhatsapp } from "react-icons/fa"
+import { useSearchParams, useRouter } from "next/navigation" // ✅ Use next/navigation for App Router
 
 export default function PackagesPage() {
   const { packages, places, siteData } = useSite()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  
+  // ✅ Get category from URL (if exists)
+  const urlCategory = searchParams.get('category') || 'all'
+  
   const [selectedLocation, setSelectedLocation] = useState("all")
   const [selectedDuration, setSelectedDuration] = useState("all")
-  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory) // ✅ Set from URL
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 12
+
+  // ✅ Get current clean URL for canonical
+  const canonicalUrl = "https://avantikatravels.com/packages"
 
   // JSON-LD Schema
   const jsonLd = {
@@ -43,6 +54,7 @@ export default function PackagesPage() {
   // Categories logic
   const uniqueCategories = [...new Set(packages.map(pkg => pkg.category).filter(Boolean))]
 
+  // ✅ Filter packages based on all criteria including URL category
   const filteredPackages = packages.filter((pkg) => {
     const locationMatch =
       selectedLocation === "all" || pkg.location?.toLowerCase().includes(selectedLocation.toLowerCase()) || pkg.destination?.toLowerCase().includes(selectedLocation.toLowerCase())
@@ -67,6 +79,21 @@ export default function PackagesPage() {
     setCurrentPage(1)
   }, [selectedLocation, selectedDuration, selectedCategory])
 
+  // ✅ Update URL when category changes (without causing re-render issues)
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category)
+    setCurrentPage(1)
+    
+    // ✅ Update URL with category parameter but keep it clean
+    if (category !== 'all') {
+      // Use shallow routing to update URL without page reload
+      router.push(`/packages?category=${category}`, { scroll: false })
+    } else {
+      // Remove query parameter if 'all' is selected
+      router.push('/packages', { scroll: false })
+    }
+  }
+
   const durations = ["1 Day", "2 Days", "3 Days", "4 Days", "5 Days", "7 Days"]
 
   return (
@@ -75,7 +102,20 @@ export default function PackagesPage() {
         <title>Best Ujjain Tour Packages 2026 | Mahakal Darshan & Indore Taxi</title>
         <meta name="description" content="Book affordable Ujjain tour packages, Omkareshwar yatra, and Indore to Ujjain taxi services. Compare prices for family, couple & group trips." />
         <meta name="keywords" content="Ujjain Tour Packages, Mahakal Darshan Booking, Indore to Ujjain Taxi Fare, Omkareshwar Trip Cost, Ujjain Tourism, MP Travel Agency" />
-        <link rel="canonical" href="https://avantikatravels.com/packages" />
+        
+        {/* ✅ CRITICAL: Always use clean canonical URL */}
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* ✅ Prevent Google from indexing parameter-based URLs */}
+        <meta name="robots" content="index, follow" />
+        
+        {/* ✅ Tell Google about the main version */}
+        <link rel="alternate" href={canonicalUrl} />
+        
+        {/* ✅ Also add for Google's duplicate detection */}
+        <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:url" content={canonicalUrl} />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -85,7 +125,7 @@ export default function PackagesPage() {
       <PageHeader
         title="Ujjain & MP Tour Packages"
         subtitle="Affordable Mahakal Darshan, Omkareshwar Yatra & Indore Taxi Services tailored for you."
-        backgroundImage="/mahakal-coridor-ujjain.png"
+        backgroundImage="/omkareshwar2.jpeg"
       />
 
       <main className="bg-gray-50">
@@ -93,7 +133,12 @@ export default function PackagesPage() {
         {/* Intro SEO Text */}
         <section className="bg-white border-b border-gray-200 py-8 hidden md:block">
           <div className="container mx-auto px-4 text-center max-w-4xl">
-             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Plan Your Spiritual Journey with Avantika Travels</h2>
+             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+               {selectedCategory !== 'all' 
+                 ? `${selectedCategory} Tour Packages - Plan Your Spiritual Journey` 
+                 : 'Plan Your Spiritual Journey with Avantika Travels'
+               }
+             </h2>
              <p className="text-gray-600">
                Looking for the <strong>best Ujjain tour packages</strong>? Whether you need a quick <strong>1-day Mahakal darshan</strong> or a complete <strong>Indore-Ujjain-Omkareshwar itinerary</strong>, we offer the best rates. 
              </p>
@@ -103,10 +148,9 @@ export default function PackagesPage() {
         <section id="package-grid-start" className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             
-            {/* Filter Bar (Same as before) */}
+            {/* Filter Bar */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100 sticky top-20 z-20 md:static">
-              {/* ... Filters Logic kept same for brevity ... */}
-               <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
+              <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className="md:hidden flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full font-medium shadow-md"
@@ -129,10 +173,14 @@ export default function PackagesPage() {
                   <div className="h-6 w-px bg-gray-300"></div>
                   <div className="flex items-center gap-3">
                     <span className="text-gray-500 font-medium text-sm uppercase tracking-wide">Type:</span>
-                     <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="bg-transparent font-medium text-gray-700 focus:outline-none cursor-pointer hover:text-primary">
-                        <option value="all">All Categories</option>
-                        {uniqueCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                     </select>
+                    <select 
+                      value={selectedCategory} 
+                      onChange={(e) => handleCategoryChange(e.target.value)} // ✅ Use updated handler
+                      className="bg-transparent font-medium text-gray-700 focus:outline-none cursor-pointer hover:text-primary"
+                    >
+                      <option value="all">All Categories</option>
+                      {uniqueCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -147,11 +195,31 @@ export default function PackagesPage() {
                 exit={{ opacity: 0, height: 0 }}
                 className="md:hidden mb-8 p-6 bg-white rounded-2xl shadow-lg border border-gray-100"
               >
-                 <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-6">
                   <h3 className="font-bold text-lg text-gray-900">Filter Packages</h3>
                   <button onClick={() => setShowFilters(false)} className="p-2 bg-gray-100 rounded-full"><FiX className="w-5 h-5" /></button>
                 </div>
                 <div className="space-y-6">
+                  <div>
+                    <p className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Category</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button 
+                        onClick={() => handleCategoryChange('all')} 
+                        className={`px-4 py-2 rounded-lg text-sm transition-colors ${selectedCategory === 'all' ? "bg-primary text-white" : "bg-gray-100 text-gray-700"}`}
+                      >
+                        All
+                      </button>
+                      {uniqueCategories.map((cat) => (
+                        <button 
+                          key={cat} 
+                          onClick={() => handleCategoryChange(cat)} 
+                          className={`px-4 py-2 rounded-lg text-sm transition-colors ${selectedCategory === cat ? "bg-primary text-white" : "bg-gray-100 text-gray-700"}`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                   <div>
                     <p className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Duration</p>
                     <div className="flex flex-wrap gap-2">
@@ -172,15 +240,24 @@ export default function PackagesPage() {
               ))}
             </div>
 
-             {/* Empty State */}
-             {filteredPackages.length === 0 && (
+            {/* Empty State */}
+            {filteredPackages.length === 0 && (
               <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300 mt-6">
                 <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <FiInfo className="w-8 h-8 text-gray-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">No packages found</h3>
                 <p className="text-gray-500 mb-6">Try adjusting your filters to find what you're looking for.</p>
-                <button onClick={() => { setSelectedLocation("all"); setSelectedDuration("all"); setSelectedCategory("all") }} className="text-primary font-semibold hover:underline">Clear all filters</button>
+                <button 
+                  onClick={() => { 
+                    setSelectedLocation("all"); 
+                    setSelectedDuration("all"); 
+                    handleCategoryChange('all');
+                  }} 
+                  className="text-primary font-semibold hover:underline"
+                >
+                  Clear all filters
+                </button>
               </div>
             )}
 
@@ -193,7 +270,7 @@ export default function PackagesPage() {
           </div>
         </section>
 
-        {/* --- DYNAMIC RESPONSIVE TABLE SECTION --- */}
+        {/* Dynamic Responsive Table Section */}
         {paginatedPackages.length > 0 && (
             <section className="bg-white py-12 border-t border-gray-200">
                 <div className="container mx-auto px-4">
@@ -252,7 +329,7 @@ export default function PackagesPage() {
             </section>
         )}
 
-        {/* --- DEEP SEO CONTENT BLOCK --- */}
+        {/* Deep SEO Content Block */}
         <article className="bg-gray-50 py-16 border-t border-gray-200">
             <div className="container mx-auto px-4 max-w-5xl">
                 <header className="mb-10 text-center">
@@ -277,34 +354,31 @@ export default function PackagesPage() {
                     </section>
                     <section>
                       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                 <Link
-                    href={`tel:${siteData.contactInfo?.phone || '+91 8720006707'}`}
-                    className="flex items-center gap-2 bg-primary text-white font-bold px-4 py-2 rounded-full shadow-lg hover:text-primary hover:bg-gray-100 hover:scale-105 transition-all text-lg"
-                 >
-                    <FiPhone className="w-5 h-5" />
-                    Get Free Consultation
-                 </Link>
+                        <Link
+                          href={`tel:${siteData.contactInfo?.phone || '+91 8720006707'}`}
+                          className="flex items-center gap-2 bg-primary text-white font-bold px-4 py-2 rounded-full shadow-lg hover:text-primary hover:bg-gray-100 hover:scale-105 transition-all text-lg"
+                        >
+                          <FiPhone className="w-5 h-5" />
+                          Get Free Consultation
+                        </Link>
 
-                 <a
-                    href={`https://wa.me/${siteData.contactInfo?.phone || '+91 8720006707'}?text=Hi, I need a custom package for Ujjain.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-white text-primary font-bold px-4 py-2 rounded-full shadow-lg hover:bg-green-600 hover:scale-105 transition-all text-lg"
-                 >
-                    <FaWhatsapp className="w-5 h-5 text-green-500 font-extrabold" />
-                    Chat on WhatsApp
-                 </a>
-              </div>
-              <p className="mt-6 text-sm text-blue-200 opacity-80">
-                 Trusted by 5000+ Yatris • 24/7 Support during Trip
-              </p>
+                        <a
+                          href={`https://wa.me/${siteData.contactInfo?.phone || '+91 8720006707'}?text=Hi, I need a custom package for Ujjain.`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 bg-white text-primary font-bold px-4 py-2 rounded-full shadow-lg hover:bg-green-600 hover:scale-105 transition-all text-lg"
+                        >
+                          <FaWhatsapp className="w-5 h-5 text-green-500 font-extrabold" />
+                          Chat on WhatsApp
+                        </a>
+                      </div>
+                      <p className="mt-6 text-sm text-blue-200 opacity-80">
+                         Trusted by 5000+ Yatris • 24/7 Support during Trip
+                      </p>
                     </section>
                 </div>
             </div>
         </article>
-
-       
-
       </main>
     </>
   )

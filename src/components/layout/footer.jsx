@@ -46,12 +46,12 @@ export default function Footer() {
   ];
 
   const destinations = [
-    { name: "Holiday Packages", href: "/packages?type=holiday", title: "Best Holiday Packages in Madhya Pradesh" },
-    { name: "Adventure Trips", href: "/packages?type=adventure", title: "Adventure Activities & Trekking in MP" },
+    { name: "Spritual Packages", href: "/packages?type=spritual", title: "Best Holiday Packages in Madhya Pradesh" },
+   /*  { name: "Adventure Trips", href: "/packages?type=adventure", title: "Adventure Activities & Trekking in MP" },
     { name: "Honeymoon Tours", href: "/packages?type=honeymoon", title: "Romantic Honeymoon Packages in Pachmarhi & Mandu" },
-    { name: "Pilgrimage Tours", href: "/packages?type=pilgrimage", title: "Mahakal Darshan & Omkareshwar Yatra Packages" },
-    { name: "Family Vacations", href: "/packages?type=family", title: "Family Tour Packages for Ujjain & Indore" },
-    { name: "Weekend Getaways", href: "/packages?type=weekend", title: "Short Weekend Trips from Indore" },
+    */ { name: "Pilgrimage Tours", href: "/packages?type=pilgrim", title: "Mahakal Darshan & Omkareshwar Yatra Packages" },
+    { name: "Group Tour Vacations", href: "/packages?type=group-tour-package", title: "Family Tour Packages for Ujjain & Indore" },
+   /*  { name: "Weekend Getaways", href: "/packages?type=weekend", title: "Short Weekend Trips from Indore" }, */
   ];
 
   return (
