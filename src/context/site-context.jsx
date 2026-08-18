@@ -703,7 +703,7 @@ export function SiteProvider({ children }) {
   return "just now";
 }
 
-//console.log('all data', packages, blogs, places, contacts, reviews, galleries);
+console.log('all data', packages, blogs, places, contacts, reviews, galleries);
 
   const value = {
     timeAgo,
