@@ -1,13 +1,13 @@
 // app/places/page.js
-import PlacesClient from './places-client'
-import { getSiteData } from '@/lib/data-fetcher' // ✅ Tera data fetching function
+import PlacesClient from '/places-client'
+import { getSiteData } from '@/lib/data-fetcher' 
 
 // ✅ Server Component mein metadata export
 export const metadata = {
   title: "Best Places to Visit in Madhya Pradesh | MP Tourism & Ujjain Darshan",
   description: "Explore top tourist places in Madhya Pradesh. From Mahakal Ujjain & Omkareshwar Jyotirlinga to Pachmarhi Hill Station. Book taxi for MP tour packages.",
   alternates: {
-    canonical: "/places", // ✅ Relative path - automatic base URL join
+    canonical: "/places", 
   },
   openGraph: {
     title: "Best Places to Visit in Madhya Pradesh",
