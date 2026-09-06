@@ -2,18 +2,18 @@
 
 import { motion } from "framer-motion";
 import PlaceCard from "@/components/ui/place-card";
+import FeaturedPlaceCard from "@/components/home/featured-place-card";
 import { useSite } from "@/context/site-context";
 import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function PlacesSection() {
-  const { places } = useSite();
+  const { places = [] } = useSite();
 
   const categorizedPlaces = {
-    featured: places[0],
-    popular: places.slice(1, 4),
-  }
+    popular: places.slice(0, 3),
+  };
 
   return (
     <section className="py-16 md:py-24 bg-white lg:px-10 sm:px-2">
@@ -43,11 +43,9 @@ export default function PlacesSection() {
           </Link>
         </div>
 
-        {/* Featured Section (UI Preserved) */}
+        {/* Featured Destination Banner (Local Static Data & Art-Directed Responsive Images) */}
         <div className="mb-12">
-          {categorizedPlaces.featured && (
-            <PlaceCard key={categorizedPlaces.featured._id} place={categorizedPlaces.featured} index={0} variant="large" />
-          )}
+          <FeaturedPlaceCard />
         </div>
 
         {/* Popular Grid */}

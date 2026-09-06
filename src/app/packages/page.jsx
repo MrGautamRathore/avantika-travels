@@ -121,8 +121,8 @@ export default function PackagesPage() {
                     <span className="text-gray-500 font-medium text-sm uppercase tracking-wide">Destination:</span>
                     <div className="flex gap-2">
                         <button onClick={() => setSelectedLocation("all")} className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${selectedLocation === "all" ? "bg-primary/10 text-primary" : "text-gray-600 hover:bg-gray-100"}`}>All</button>
-                        {places.slice(0, 4).map((place) => (
-                        <button key={place.id} onClick={() => setSelectedLocation(place.name)} className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${selectedLocation === place.name ? "bg-primary/10 text-primary" : "text-gray-600 hover:bg-gray-100"}`}>{place.name}</button>
+                        {places.slice(0, 4).map((place, pIdx) => (
+                        <button key={place._id || place.id || place.name || pIdx} onClick={() => setSelectedLocation(place.name)} className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${selectedLocation === place.name ? "bg-primary/10 text-primary" : "text-gray-600 hover:bg-gray-100"}`}>{place.name}</button>
                         ))}
                     </div>
                   </div>
@@ -131,7 +131,7 @@ export default function PackagesPage() {
                     <span className="text-gray-500 font-medium text-sm uppercase tracking-wide">Type:</span>
                      <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="bg-transparent font-medium text-gray-700 focus:outline-none cursor-pointer hover:text-primary">
                         <option value="all">All Categories</option>
-                        {uniqueCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                        {uniqueCategories.map((cat, cIdx) => <option key={cat || cIdx} value={cat}>{cat}</option>)}
                      </select>
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export default function PackagesPage() {
             {/* Package Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[400px]">
               {paginatedPackages.map((pkg, index) => (
-                <PackageCard key={pkg._id} pkg={pkg} index={index} />
+                <PackageCard key={pkg._id || pkg.slug || index} pkg={pkg} index={index} />
               ))}
             </div>
 
@@ -224,8 +224,8 @@ export default function PackagesPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {paginatedPackages.map((pkg) => (
-                                    <tr key={`table-${pkg._id}`} className="hover:bg-blue-50/50 transition-colors group">
+                                {paginatedPackages.map((pkg, index) => (
+                                    <tr key={`table-${pkg._id || pkg.slug || index}`} className="hover:bg-blue-50/50 transition-colors group">
                                         <td className="p-4 font-medium text-gray-900 sticky left-0 bg-white group-hover:bg-blue-50/50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
                                             {pkg.name}
                                         </td>

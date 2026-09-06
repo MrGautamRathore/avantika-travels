@@ -20,6 +20,7 @@ import PackageCard from "@/components/ui/package-card";
 import { useSite } from "@/context/site-context";
 import PackageSchema from "@/components/seo/PackageSchema";
 import AIEnhancements from "@/components/seo/AIEnhancements";
+import ItineraryView from "@/components/packages/itinerary-view";
 
 const getPerPersonPrice = (pkg, numberOfPeople) => {
   if (!pkg) return 0;
@@ -311,34 +312,7 @@ export default function PackageDetailsPage({ params }) {
 
               {/* Itinerary */}
               {pkg.itinerary && pkg.itinerary.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="mb-10"
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Day-wise Itinerary</h2>
-                  <div className="space-y-0">
-                    {pkg.itinerary.map((day, index) => (
-                      <div key={index} className="flex gap-4">
-                        <div className="flex flex-col items-center">
-                          <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0 z-10">
-                            {index + 1}
-                          </div>
-                          {index !== pkg.itinerary.length - 1 && (
-                            <div className="w-0.5 h-full bg-gray-200 -mt-2 -mb-2"></div>
-                          )}
-                        </div>
-                        <div className="pb-8">
-                          <h3 className="text-lg font-bold text-gray-800 mb-2">Day {index + 1}</h3>
-                          <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-gray-600">
-                            {day}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
+                <ItineraryView itinerary={pkg.itinerary} />
               )}
 
               {/* Inclusions & Exclusions */}
@@ -351,7 +325,7 @@ export default function PackageDetailsPage({ params }) {
                     </h3>
                     <ul className="space-y-3">
                       {pkg.inclusions.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
+                        <li key={`inc-${idx}`} className="flex items-start gap-3 text-sm text-gray-700">
                           <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>
                           {item}
                         </li>
@@ -367,7 +341,7 @@ export default function PackageDetailsPage({ params }) {
                     </h3>
                     <ul className="space-y-3">
                       {pkg.exclusions.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
+                        <li key={`exc-${idx}`} className="flex items-start gap-3 text-sm text-gray-700">
                           <span className="w-1.5 h-1.5 bg-red-400 rounded-full mt-1.5 shrink-0"></span>
                           {item}
                         </li>
@@ -378,66 +352,83 @@ export default function PackageDetailsPage({ params }) {
               </div>
 
               {/* Per-Person Pricing Table — only for 'personal' type packages */}
-{pkg.type === 'personal' && pkg.personPricing && pkg.personPricing.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="mb-10"
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">💰 Pricing Per Person</h2>
-                  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <p className="text-gray-600 mb-6">
-                      Select the number of travelers to see the price per person for this package:
-                    </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                      {pkg.personPricing.map((pp) => {
-                        const ppPrice = Number(pp.price);
-                        const basePrice = Number(pkg.price);
-                        const isDifferent = ppPrice !== basePrice;
-                        const savings = isDifferent ? Math.round((1 - ppPrice/basePrice) * 100) : 0;
-                        
-                        return (
-                          <motion.div
-                            key={pp.persons}
-                            whileHover={{ scale: 1.05 }}
-                            className={`p-4 rounded-xl border-2 text-center transition-all cursor-pointer ${
-                              isDifferent
-                                ? 'bg-green-50 border-green-300 shadow-md'
-                                : 'bg-gray-50 border-gray-200'
-                            }`}
-                          >
-                            <p className="text-xs text-gray-500 uppercase font-bold mb-1">
-                              {pp.persons} {pp.persons === 1 ? 'Person' : 'Persons'}
-                            </p>
-                            <p className="text-2xl font-bold text-black mb-1">
-                              ₹{ppPrice.toLocaleString()}
-                            </p>
-                            <p className="text-xs text-gray-400 mb-2">/ person</p>
-                            {isDifferent && (
-                              <>
-                                <span className="inline-block mb-1 text-xs font-medium text-white bg-green-600 px-2 py-0.5 rounded-full">
-                                  Save {savings}%
-                                </span>
-                                {basePrice > 0 && (
-                                  <p className="text-xs text-gray-500 line-through">
-                                    ₹{basePrice.toLocaleString()}
-                                  </p>
-                                )}
-                              </>
-                            )}
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                      <p className="text-sm text-blue-900">
-                        <span className="font-bold">ℹ️ How pricing works:</span> The base price (₹{Number(pkg.price).toLocaleString()} per person) applies to all group sizes. If you see a different price above, it means we offer discounts for larger groups. The more people join, the better the deal!
+              {pkg.type === 'personal' && pkg.personPricing && pkg.personPricing.length > 0 && (() => {
+                // Find reference price (1 Person price, fallback to pkg.price)
+                const onePersonEntry = pkg.personPricing.find(p => Number(p.persons) === 1);
+                const referencePrice = onePersonEntry && Number(onePersonEntry.price) > 0 
+                  ? Number(onePersonEntry.price) 
+                  : Number(pkg.price) || 0;
+
+                const maxSavings = Math.max(
+                  0,
+                  ...pkg.personPricing.map(p =>
+                    referencePrice > Number(p.price)
+                      ? Math.round((1 - Number(p.price) / referencePrice) * 100)
+                      : 0
+                  )
+                );
+
+                return (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mb-10"
+                  >
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">💰 Pricing Per Person</h2>
+                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                      <p className="text-gray-600 mb-6">
+                        Select the number of travelers to see the price per person for this package:
                       </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {pkg.personPricing.map((pp) => {
+                          const ppPrice = Number(pp.price);
+                          // Only show savings if price is strictly lower than 1 person reference price
+                          const hasSavings = referencePrice > 0 && ppPrice < referencePrice;
+                          const savings = hasSavings ? Math.round((1 - ppPrice / referencePrice) * 100) : 0;
+                          
+                          return (
+                            <motion.div
+                              key={`pp-${pp.persons}`}
+                              whileHover={{ scale: 1.04 }}
+                              className={`p-4 rounded-xl border-2 text-center transition-all cursor-pointer ${
+                                hasSavings && savings > 0
+                                  ? 'bg-green-50/80 border-green-300 shadow-xs'
+                                  : 'bg-gray-50/70 border-gray-200'
+                              }`}
+                            >
+                              <p className="text-xs text-gray-500 uppercase font-bold mb-1">
+                                {pp.persons} {pp.persons === 1 ? 'Person' : 'Persons'}
+                              </p>
+                              <p className="text-2xl font-bold text-black mb-1">
+                                ₹{ppPrice.toLocaleString()}
+                              </p>
+                              <p className="text-xs text-gray-400 mb-2">/ person</p>
+                              {hasSavings && savings > 0 && (
+                                <>
+                                  <span className="inline-block mb-1 text-xs font-medium text-white bg-green-600 px-2 py-0.5 rounded-full">
+                                    Save {savings}%
+                                  </span>
+                                  {referencePrice > 0 && (
+                                    <p className="text-xs text-gray-500 line-through">
+                                      ₹{referencePrice.toLocaleString()}
+                                    </p>
+                                  )}
+                                </>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                        <p className="text-sm text-blue-900">
+                          <span className="font-bold">ℹ️ How pricing works:</span> Rates are based on group size compared to the solo (1 Person) rate of ₹{referencePrice.toLocaleString()}. As more travelers join, the cost per person decreases{maxSavings > 0 ? ` (saving you up to ${maxSavings}%)` : ''}!
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                );
+              })()}
 
               {/* FAQ */}
               <div className="mb-10">
@@ -446,7 +437,7 @@ export default function PackageDetailsPage({ params }) {
                 </h2>
                 <div className="space-y-4">
                   {commonFaqs.map((faq, idx) => (
-                    <div key={idx} className="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/30 transition-colors">
+                    <div key={`faq-${idx}`} className="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/30 transition-colors">
                       <h3 className="font-bold text-gray-800 mb-2 text-lg">{faq.question}</h3>
                       <p className="text-gray-600">{faq.answer}</p>
                     </div>
@@ -579,7 +570,7 @@ export default function PackageDetailsPage({ params }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedPackages.map((relatedPkg, index) => (
-              <PackageCard key={relatedPkg.id} pkg={relatedPkg} index={index} />
+              <PackageCard key={relatedPkg._id || relatedPkg.id || index} pkg={relatedPkg} index={index} />
             ))}
           </div>
         </div>

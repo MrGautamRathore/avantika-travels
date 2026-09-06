@@ -12,6 +12,8 @@ import {
   FiMail,
   FiMapPin,
   FiPhone,
+  FiCreditCard,
+  FiShield,
 } from "react-icons/fi";
 import { useSite } from "@/context/site-context";
 
@@ -52,6 +54,15 @@ export default function Footer() {
     */ { name: "Pilgrimage Tours", href: "/packages?type=pilgrim", title: "Mahakal Darshan & Omkareshwar Yatra Packages" },
     { name: "Group Tour Vacations", href: "/packages?type=group-tour-package", title: "Family Tour Packages for Ujjain & Indore" },
    /*  { name: "Weekend Getaways", href: "/packages?type=weekend", title: "Short Weekend Trips from Indore" }, */
+  ];
+
+  const paymentMethods = [
+    { name: "RuPay", src: "/payments/rupay.svg", alt: "RuPay Debit & Credit Cards" },
+    { name: "Visa", src: "/payments/visa.svg", alt: "Visa Cards" },
+    { name: "Mastercard", src: "/payments/mastercard.svg", alt: "Mastercard" },
+    { name: "Maestro", src: "/payments/maestro.svg", alt: "Maestro Cards" },
+    { name: "American Express", src: "/payments/amex.svg", alt: "American Express" },
+    { name: "UPI", src: "/payments/upi.svg", alt: "UPI Payments" },
   ];
 
   return (
@@ -145,7 +156,7 @@ export default function Footer() {
   </p>
 
   <a
-    href="https://share.google/ROllp7phdAfAwrSoI"
+    href="https://maps.app.goo.gl/7mFuWB7EmXvgBng77"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors text-sm"
@@ -156,8 +167,50 @@ export default function Footer() {
 
         </div>
 
-        {/* Contact Info Bar */}
+        {/* We Accept Payments From Cards Section */}
         <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-5 bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-5 shadow-lg shadow-black/20">
+            <div className="flex flex-col sm:flex-row items-center gap-3.5 text-center sm:text-left">
+              <div className="w-11 h-11 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                <FiCreditCard className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <h4 className="text-base font-semibold text-white tracking-wide">
+                    We Accept Payments from Cards
+                  </h4>
+                  <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                    <FiShield className="w-3 h-3" /> 100% Secure Checkout
+                  </span>
+                </div>
+                <p className="text-xs text-gray-300 mt-1">
+                  Credit Cards, Debit Cards, RuPay, Visa, Mastercard, Maestro, Amex & UPI accepted for seamless tour & taxi booking.
+                </p>
+              </div>
+            </div>
+
+            {/* Payment Icons */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+              {paymentMethods.map((method) => (
+                <div
+                  key={method.name}
+                  className="bg-white rounded-lg px-2.5 py-1.5 h-8 sm:h-9 min-w-[50px] flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 border border-gray-100/20 group"
+                  title={method.alt}
+                >
+                  <img
+                    src={method.src}
+                    alt={method.alt}
+                    className="h-4 sm:h-5 w-auto max-w-[56px] object-contain transition-transform group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Info Bar */}
+        <div className="mt-8 pt-6 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-wrap justify-center md:justify-start gap-6 text-gray-300 text-sm" itemScope itemType="http://schema.org/PostalAddress">
               <a href={`tel:${siteData.contactInfo.phone}`} className="flex items-center gap-2 hover:text-primary transition-colors" title="Call for Booking">
@@ -169,7 +222,7 @@ export default function Footer() {
                 <span itemProp="email">{siteData.contactInfo.email}</span>
               </a>
               <a
-  href="https://share.google/ROllp7phdAfAwrSoI"
+  href="https://maps.app.goo.gl/7mFuWB7EmXvgBng77"
   target="_blank"
   rel="noopener noreferrer"
   className="flex items-center gap-2 hover:text-primary transition-colors"

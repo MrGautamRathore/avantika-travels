@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSite } from '../../../context/site-context'
 import { X, Edit, Trash2, Eye, Upload, Image as ImageIcon, Plus, Check, AlertCircle, Users, Repeat } from 'lucide-react'
+import ItineraryView from '../../../components/packages/itinerary-view'
 
 export default function AdminPackages() {
   const { packages, fetchPackages, createPackage, updatePackage, deletePackage, togglePackageStatus } = useSite()
@@ -16,6 +17,8 @@ export default function AdminPackages() {
   const [newInclusion, setNewInclusion] = useState('')
   const [newExclusion, setNewExclusion] = useState('')
   const [newItinerary, setNewItinerary] = useState('')
+  const [editingItineraryIndex, setEditingItineraryIndex] = useState(null)
+  const [itineraryPreview, setItineraryPreview] = useState(false)
   const [loading, setLoading] = useState(false)
   const fileInputRef = useRef(null)
 
@@ -228,14 +231,49 @@ export default function AdminPackages() {
   const handleAddItinerary = () => {
     if (newItinerary.trim()) {
       setFormData({ ...formData, itinerary: [...formData.itinerary, newItinerary] })
+      if (editingItineraryIndex !== null) {
+        const updated = [...formData.itinerary]
+        updated[editingItineraryIndex] = newItinerary.trim()
+        setFormData({ ...formData, itinerary: updated })
+        setEditingItineraryIndex(null)
+      } else {
+        setFormData({ ...formData, itinerary: [...formData.itinerary, newItinerary.trim()] })
+      }
       setNewItinerary('')
+      setItineraryPreview(false)
     }
+  }
+
+  const handleEditItinerary = (index) => {
+    setNewItinerary(formData.itinerary[index] || '')
+    setEditingItineraryIndex(index)
+    setItineraryPreview(false)
+  }
+
+  const handleCancelEditItinerary = () => {
+    setNewItinerary('')
+    setEditingItineraryIndex(null)
+    setItineraryPreview(false)
+  }
+
+  const handleInsertSymbol = (template) => {
+    setNewItinerary((prev) => {
+      if (!prev) return template
+      const needsNewline = !prev.endsWith('\n')
+      return prev + (needsNewline ? '\n' : '') + template
+    })
   }
 
   const handleRemoveItinerary = (index) => {
     const newItinerary = [...formData.itinerary]
     newItinerary.splice(index, 1)
     setFormData({ ...formData, itinerary: newItinerary })
+    const newItineraryList = [...formData.itinerary]
+    newItineraryList.splice(index, 1)
+    setFormData({ ...formData, itinerary: newItineraryList })
+    if (editingItineraryIndex === index) {
+      handleCancelEditItinerary()
+    }
   }
 
   const handlePersonPriceChange = (index, value) => {
@@ -571,7 +609,7 @@ export default function AdminPackages() {
 
         {/* Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0  bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
               <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
                 <h2 className="text-xl font-bold text-black">
@@ -878,38 +916,168 @@ export default function AdminPackages() {
                     </div>
 
                     {/* Itinerary */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Itinerary (Day Plan)</label>
-                      <div className="flex gap-2 mb-3">
-                        <input
-                          type="text"
-                          value={newItinerary}
-                          onChange={(e) => setNewItinerary(e.target.value)}
-                          placeholder="Add itinerary item"
-                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                          onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddItinerary())}
-                        />
+                    <div className="bg-gray-50/80 p-4 rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-bold text-gray-800">
+                          Itinerary (Day-wise Plan)
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => setItineraryPreview(!itineraryPreview)}
+                          className="text-xs font-semibold px-2.5 py-1 rounded bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+                        >
+                          {itineraryPreview ? 'Hide Preview' : 'Live Preview'}
+                        </button>
+                      </div>
+
+                      {/* Quick Symbol Toolbar */}
+                      <div className="flex flex-wrap gap-1.5 mb-2.5">
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('# Day Title')}
+                          className="text-xs px-2 py-1 bg-white border border-gray-300 hover:border-black rounded text-gray-700 font-medium transition-colors"
+                          title="Add Main Day Heading"
+                        >
+                          + # Title
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('## Morning Darshan (8:30 AM - 12:30 PM)')}
+                          className="text-xs px-2 py-1 bg-white border border-gray-300 hover:border-black rounded text-gray-700 font-medium transition-colors"
+                          title="Add Subheading"
+                        >
+                          + ## Subheading
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('- Visit Mahakaleshwar Temple')}
+                          className="text-xs px-2 py-1 bg-white border border-gray-300 hover:border-black rounded text-gray-700 font-medium transition-colors"
+                          title="Add Bullet Point"
+                        >
+                          + - Bullet
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('**Special Darshan**')}
+                          className="text-xs px-2 py-1 bg-white border border-gray-300 hover:border-black rounded text-gray-700 font-medium transition-colors"
+                          title="Add Bold Text"
+                        >
+                          + **Bold**
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('> Tip: Carry original photo ID.')}
+                          className="text-xs px-2 py-1 bg-white border border-amber-300 hover:border-amber-600 rounded text-amber-800 font-medium bg-amber-50/50 transition-colors"
+                          title="Add Tip / Note Callout"
+                        >
+                          + &gt; Tip
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('🏨 Stay: 3-Star Hotel in Ujjain')}
+                          className="text-xs px-2 py-1 bg-white border border-purple-300 hover:border-purple-600 rounded text-purple-800 font-medium bg-purple-50/50 transition-colors"
+                          title="Add Hotel Stay"
+                        >
+                          + 🏨 Stay
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('🍽️ Meals: Breakfast & Dinner')}
+                          className="text-xs px-2 py-1 bg-white border border-emerald-300 hover:border-emerald-600 rounded text-emerald-800 font-medium bg-emerald-50/50 transition-colors"
+                          title="Add Meals"
+                        >
+                          + 🍽️ Meals
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleInsertSymbol('🚗 Transfer: Private AC Sedan')}
+                          className="text-xs px-2 py-1 bg-white border border-blue-300 hover:border-blue-600 rounded text-blue-800 font-medium bg-blue-50/50 transition-colors"
+                          title="Add Cab / Transfer"
+                        >
+                          + 🚗 Transfer
+                        </button>
+                      </div>
+
+                      {/* Textarea or Preview */}
+                      {itineraryPreview ? (
+                        <div className="bg-white p-4 rounded-lg border border-gray-300 mb-3 min-h-[120px]">
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Live Day Preview:</p>
+                          {newItinerary.trim() ? (
+                            <ItineraryView itinerary={[newItinerary]} />
+                          ) : (
+                            <p className="text-xs text-gray-400 italic">Type something in the box below to see preview...</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="mb-3">
+                          <textarea
+                            rows={5}
+                            value={newItinerary}
+                            onChange={(e) => setNewItinerary(e.target.value)}
+                            placeholder={`Enter Day Plan details with symbols:\n# Arrival & Mahakal Darshan\n## Morning (8:00 AM - 12:00 PM)\n- Visit Mahakaleshwar Jyotirlinga\n- Holy bath at Ram Ghat\n> Tip: Traditional attire required for Garbhagriha\n🏨 Stay: 3-Star Hotel\n🍽️ Meals: Dinner`}
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent font-mono"
+                          />
+                        </div>
+                      )}
+
+                      <div className="flex gap-2 mb-4">
                         <button
                           type="button"
                           onClick={handleAddItinerary}
-                          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                          className="flex-1 px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                         >
-                          <Plus className="w-5 h-5" />
+                          <Plus className="w-4 h-4" />
+                          {editingItineraryIndex !== null ? 'Update Day Plan' : 'Add Day to Itinerary'}
                         </button>
+                        {editingItineraryIndex !== null && (
+                          <button
+                            type="button"
+                            onClick={handleCancelEditItinerary}
+                            className="px-3 py-2 bg-gray-200 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        )}
                       </div>
-                      <div className="space-y-2 max-h-40 overflow-y-auto p-2">
-                        {formData.itinerary.map((item, index) => (
-                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                            <span className="text-sm">{item}</span>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveItinerary(index)}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ))}
+
+                      {/* List of Added Days */}
+                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                        {formData.itinerary.length === 0 ? (
+                          <p className="text-xs text-gray-400 italic text-center py-2">No itinerary days added yet.</p>
+                        ) : (
+                          formData.itinerary.map((item, index) => (
+                            <div key={index} className="flex items-start justify-between bg-white p-3 rounded-lg border border-gray-200 text-xs shadow-xs">
+                              <div className="flex-1 pr-3">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="px-2 py-0.5 rounded font-bold bg-black text-white text-[10px]">
+                                    Day {index + 1}
+                                  </span>
+                                </div>
+                                <div className="text-gray-700 whitespace-pre-line line-clamp-3 font-mono text-[11px]">
+                                  {item}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-1 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditItinerary(index)}
+                                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                                  title="Edit Day"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveItinerary(index)}
+                                  className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                                  title="Delete Day"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        )}
                       </div>
                     </div>
 
@@ -964,7 +1132,7 @@ export default function AdminPackages() {
 
         {/* Details Modal */}
         {showDetails && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
               <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
                 <h2 className="text-xl font-bold text-black">Package Details</h2>
@@ -1061,6 +1229,10 @@ export default function AdminPackages() {
                           </li>
                         ))}
                       </ol>
+                      <p className="text-sm text-gray-500 mb-3 font-bold">Day-wise Itinerary</p>
+                      <div className="bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+                        <ItineraryView itinerary={showDetails.itinerary} />
+                      </div>
                     </div>
                   )}
 
