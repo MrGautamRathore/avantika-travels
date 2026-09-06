@@ -32,8 +32,7 @@ export default function PlaceCard({ place, index = 0, variant = "default" }) {
             // SEO Optimized Alt Text
             alt={`Visit ${place.title || place.name} - Best Tourist Place in Madhya Pradesh`}
             fill
-            priority={index < 3}
-            quality={90}
+            quality={75}
             className="object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             itemProp="image"

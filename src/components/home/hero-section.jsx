@@ -27,11 +27,13 @@ export default function HeroSection({
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={siteData.heroImage || "/placeholder-hero.jpg"}
+          src={siteData.heroImage || "/mahakal.jpg"}
           alt="Mahakal Temple Ujjain"
           fill
           priority
-          quality={60}
+          fetchPriority="high"
+          loading="eager"
+          quality={75}
           className="object-cover object-[55%] lg:object-[70%]"
           sizes="100vw"
         />
@@ -43,11 +45,7 @@ export default function HeroSection({
         <div className="max-w-4xl">
 
           {/* Heading */}
-          <motion.header
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
+          <header>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
               <span className="block text-xl md:text-2xl lg:text-3xl font-medium text-gray-300 mb-3">
                 Crafting Memorable Journeys & Spiritual Tours
@@ -56,17 +54,12 @@ export default function HeroSection({
               <br />
               Travel Planner
             </h1>
-          </motion.header>
+          </header>
 
           {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-6 text-lg md:text-xl text-gray-200 max-w-2xl leading-relaxed"
-          >
+          <p className="mt-6 text-lg md:text-xl text-gray-200 max-w-2xl leading-relaxed">
             Explore custom tour packages, seamless itineraries, and guided darshan experiences. <strong className="text-white">Trusted by 5,000+ happy travelers</strong> for unforgettable trips.
-          </motion.p>
+          </p>
 
           {/* Search */}
           <motion.div

@@ -80,8 +80,7 @@ export default function FeaturedPlaceCard() {
           <img
             src={data.desktopImage}
             alt={data.altText}
-            fetchPriority="high"
-            loading="eager"
+            loading="lazy"
             decoding="async"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out will-change-transform"
           />

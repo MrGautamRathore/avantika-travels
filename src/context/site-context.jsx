@@ -94,24 +94,20 @@ export function SiteProvider({ children }) {
       setLoading(true)
       setError(null)
 
-      // Fetch other data in parallel
-      const [placesRes, packagesRes, blogsRes, contactsRes, reviewsRes, galleriesRes, bookingsRes] = await Promise.all([
+      // Fetch public content data in parallel (excluding admin endpoints contacts & bookings)
+      const [placesRes, packagesRes, blogsRes, reviewsRes, galleriesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/places`),
         axios.get(`${API_BASE_URL}/packages`),
         axios.get(`${API_BASE_URL}/blogs/published`),
-        axios.get(`${API_BASE_URL}/contacts`),
         axios.get(`${API_BASE_URL}/reviews`),
-        axios.get(`${API_BASE_URL}/galleries`),
-        axios.get(`${API_BASE_URL}/bookings`)
+        axios.get(`${API_BASE_URL}/galleries`)
       ])
 
       setPlaces(placesRes.data)
       setPackages(packagesRes.data)
       setBlogs(blogsRes.data)
-      setContacts(contactsRes.data)
       setReviews(reviewsRes.data)
       setGalleries(galleriesRes.data)
-      setBookings(bookingsRes.data)
 
       // Fetch website data separately - only update if successful
       try {

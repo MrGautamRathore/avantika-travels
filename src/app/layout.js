@@ -16,7 +16,7 @@ import Script from "next/script"; // Import Script component
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-poppins",
   display: 'swap',
   preload: true,
@@ -144,43 +144,41 @@ export default function RootLayout({ children }) {
         {/* Manual links removed to avoid conflicts with Metadata API */}
         
         {/* 6. Optimized Script Loading for Consent/Analytics */}
-        <Script id="consent-mode" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('consent', 'default', {
-              'analytics_storage': 'denied',
-              'ad_storage': 'denied'
-            });
-          `}
-        </Script>
+        <script
+          id="consent-mode"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied'
+              });
+            `,
+          }}
+        />
      </head>
 
       <body className={`${poppins.variable} font-sans antialiased`}>
        {/*  <CanonicalInjector /> */}
-        <Suspense fallback={
-
-          <div className="min-h-screen flex items-center justify-center bg-white text-primary">
-            <div className="text-lg font-bold animate-pulse">Loading Avantika Travels...</div>
-          </div>
-        }>
-          <SiteProvider>
-            <ThemeProvider>
-              <StructuredData />
-              <AIEnhancements pageType="global" data={defaultSiteData} />
-              <Header />
-              <main className="min-h-screen">{children}</main>
-              <Footer />
-              <WhatsAppIcon />
-            </ThemeProvider>
-          </SiteProvider>
+        <SiteProvider>
+          <ThemeProvider>
+            <StructuredData />
+            <AIEnhancements pageType="global" data={defaultSiteData} />
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <WhatsAppIcon />
+          </ThemeProvider>
+        </SiteProvider>
+        <Suspense fallback={null}>
           <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_ID} />
         </Suspense>
         <Script 
           src="https://cdn.counter.dev/script.js" 
           data-id="4118ced0-591b-4232-9a15-f6fd72ffe86a" 
           data-utcoffset="6"
-          strategy="afterInteractive" // Isse page load hone ke baad script chalegi
+          strategy="lazyOnload"
         />
       </body>
     </html>

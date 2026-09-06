@@ -41,7 +41,6 @@ export default function PackageCard({ pkg, index = 0 }) {
               src={pkg.images[0]?.url || "/placeholder.svg"}
               alt={`${pkg.name} - ${pkg.duration} Tour Package to ${pkg.destination}, Madhya Pradesh | Avantika Travels`}
               fill
-              priority={index < 3}
               quality={75}
               className="object-cover group-hover:scale-110 transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
